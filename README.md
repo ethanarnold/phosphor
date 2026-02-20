@@ -65,4 +65,4 @@ Lab data is proprietary and often pre-publication. Security is the highest prior
 
 ## License
 
-Proprietary. All rights reserved.
+MIT License. See [LICENSE](LICENSE) for details.
