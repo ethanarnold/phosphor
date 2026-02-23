@@ -1,0 +1,71 @@
+{
+  "name": "Cell Biology Lab",
+  "description": "A lab focused on cell signaling and microscopy",
+  "ground_truth": {
+    "equipment": [
+      {
+        "name": "Zeiss LSM 880 confocal microscope",
+        "capabilities": ["live cell imaging", "multi-color fluorescence", "FRAP", "FRET"],
+        "limitations": "Booking required 1 week in advance"
+      },
+      {
+        "name": "BD FACSAria III flow cytometer",
+        "capabilities": ["cell sorting", "multiparameter analysis", "rare event detection"],
+        "limitations": null
+      },
+      {
+        "name": "IncuCyte S3",
+        "capabilities": ["real-time cell proliferation", "scratch wound assays", "apoptosis monitoring"],
+        "limitations": null
+      },
+      {
+        "name": "Cell culture facility",
+        "capabilities": ["mammalian cell culture", "primary cell isolation", "transfection"],
+        "limitations": null
+      }
+    ],
+    "techniques": [
+      {"name": "Immunofluorescence", "proficiency": "expert", "notes": null},
+      {"name": "Flow cytometry", "proficiency": "expert", "notes": "10+ color panels"},
+      {"name": "CRISPR screening", "proficiency": "competent", "notes": "Pooled library screens"},
+      {"name": "Western blotting", "proficiency": "expert", "notes": null},
+      {"name": "Live cell imaging", "proficiency": "expert", "notes": "Time-lapse up to 72 hours"}
+    ],
+    "expertise": [
+      {"domain": "Cell signaling", "confidence": "high"},
+      {"domain": "Cancer biology", "confidence": "high"},
+      {"domain": "Microscopy", "confidence": "high"},
+      {"domain": "Immunology", "confidence": "medium"}
+    ],
+    "organisms": [
+      {"name": "HeLa", "strains": [], "notes": "Multiple stable lines available"},
+      {"name": "MCF7", "strains": [], "notes": "Breast cancer model"},
+      {"name": "Primary T cells", "strains": [], "notes": "Human and mouse"},
+      {"name": "Organoids", "strains": [], "notes": "Intestinal and tumor organoids"}
+    ],
+    "reagents": [
+      {"name": "Validated antibody panel", "quantity": ">100 antibodies", "notes": "For flow and IF"},
+      {"name": "Lentiviral vectors", "quantity": "sufficient", "notes": "Third-gen system"},
+      {"name": "Fluorescent dyes", "quantity": "sufficient", "notes": "Live/dead, mitochondrial, calcium"}
+    ],
+    "experimental_history": [
+      {"technique": "CRISPR screen", "outcome": "success", "insight": "Identified 3 novel regulators of cell migration"},
+      {"technique": "Flow cytometry", "outcome": "success", "insight": "Developed 12-color panel for T cell phenotyping"},
+      {"technique": "Organoid culture", "outcome": "partial", "insight": "Passage efficiency variable, optimizing media composition"}
+    ],
+    "resource_constraints": {
+      "budget_notes": "Good funding through R01 and industry collaboration",
+      "time_constraints": "Confocal microscope in high demand",
+      "personnel_notes": "1 lab manager, 3 postdocs, 5 graduate students, 2 technicians"
+    },
+    "signal_count": 35
+  },
+  "qa_pairs": [
+    {"question": "Can they do live cell imaging?", "expected": "yes"},
+    {"question": "Do they have flow cytometry?", "expected": "yes"},
+    {"question": "Can they work with organoids?", "expected": "yes"},
+    {"question": "Do they have electron microscopy?", "expected": "no"},
+    {"question": "What cancer cell lines do they have?", "expected": "HeLa and MCF7"},
+    {"question": "Can they isolate primary T cells?", "expected": "yes"}
+  ]
+}

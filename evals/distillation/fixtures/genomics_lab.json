@@ -1,0 +1,68 @@
+{
+  "name": "Genomics Research Lab",
+  "description": "A molecular biology lab focused on genomics and gene editing",
+  "ground_truth": {
+    "equipment": [
+      {
+        "name": "Illumina MiSeq",
+        "capabilities": ["targeted sequencing", "amplicon sequencing", "small genome sequencing"],
+        "limitations": "Max 15 Gb output per run"
+      },
+      {
+        "name": "Bio-Rad CFX96 qPCR",
+        "capabilities": ["real-time PCR", "gene expression analysis", "genotyping"],
+        "limitations": null
+      },
+      {
+        "name": "Nanodrop 2000",
+        "capabilities": ["DNA quantification", "RNA quantification", "protein quantification"],
+        "limitations": null
+      },
+      {
+        "name": "Gel documentation system",
+        "capabilities": ["DNA visualization", "gel imaging"],
+        "limitations": null
+      }
+    ],
+    "techniques": [
+      {"name": "PCR", "proficiency": "expert", "notes": null},
+      {"name": "CRISPR-Cas9 gene editing", "proficiency": "competent", "notes": "Primarily in cell lines"},
+      {"name": "RNA extraction", "proficiency": "expert", "notes": null},
+      {"name": "Library preparation", "proficiency": "competent", "notes": "Illumina TruSeq"},
+      {"name": "Sanger sequencing", "proficiency": "expert", "notes": null}
+    ],
+    "expertise": [
+      {"domain": "Molecular biology", "confidence": "high"},
+      {"domain": "Genomics", "confidence": "high"},
+      {"domain": "Bioinformatics", "confidence": "medium"}
+    ],
+    "organisms": [
+      {"name": "E. coli", "strains": ["DH5α", "BL21"], "notes": "For cloning and expression"},
+      {"name": "HEK293T", "strains": [], "notes": "Human cell line for transfection"},
+      {"name": "Saccharomyces cerevisiae", "strains": ["BY4741"], "notes": null}
+    ],
+    "reagents": [
+      {"name": "Cas9 protein", "quantity": "sufficient", "notes": null},
+      {"name": "sgRNA synthesis kit", "quantity": "3 kits", "notes": null},
+      {"name": "Illumina TruSeq adapters", "quantity": "96 reactions", "notes": null}
+    ],
+    "experimental_history": [
+      {"technique": "CRISPR knockout", "outcome": "success", "insight": "Achieved 80% editing efficiency in HEK293T with optimized guide RNAs"},
+      {"technique": "RNA-seq", "outcome": "success", "insight": "Identified differentially expressed genes in response to treatment"}
+    ],
+    "resource_constraints": {
+      "budget_notes": "Core sequencing budget of $50K annually",
+      "time_constraints": "Sequencing turnaround typically 2 weeks",
+      "personnel_notes": "2 postdocs, 3 graduate students"
+    },
+    "signal_count": 15
+  },
+  "qa_pairs": [
+    {"question": "Does this lab have PCR capability?", "expected": "yes"},
+    {"question": "Can they perform CRISPR gene editing?", "expected": "yes"},
+    {"question": "What sequencing platform do they have?", "expected": "Illumina MiSeq"},
+    {"question": "Can they work with yeast?", "expected": "yes"},
+    {"question": "Do they have flow cytometry capability?", "expected": "no"},
+    {"question": "What is their expertise level in bioinformatics?", "expected": "medium"}
+  ]
+}

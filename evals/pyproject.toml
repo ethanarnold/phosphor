@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "phosphor-evals"
+version = "0.1.0"
+description = "Evaluation harness for Phosphor LLM components"
+authors = ["Phosphor Team"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytest = "^8.3.0"
+pytest-asyncio = "^0.24.0"
+litellm = "^1.55.0"
+tiktoken = "^0.8.0"
+pydantic = "^2.9.0"
+httpx = "^0.28.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["distillation"]
+markers = [
+    "fidelity: marks tests as fidelity tests (may call LLM)",
+    "compression: marks tests as compression ratio tests",
+]

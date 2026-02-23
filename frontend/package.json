@@ -1,0 +1,11 @@
+{
+  "name": "phosphor-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phosphor frontend - Phase 5 implementation",
+  "scripts": {
+    "dev": "echo 'Frontend implementation in Phase 5'",
+    "build": "echo 'Frontend implementation in Phase 5'",
+    "lint": "echo 'Frontend implementation in Phase 5'"
+  }
+}

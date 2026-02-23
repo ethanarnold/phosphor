@@ -1,0 +1,68 @@
+{
+  "name": "Structural Biology Lab",
+  "description": "A lab focused on protein structure and biochemistry",
+  "ground_truth": {
+    "equipment": [
+      {
+        "name": "ÄKTA pure FPLC",
+        "capabilities": ["protein purification", "size exclusion chromatography", "ion exchange"],
+        "limitations": null
+      },
+      {
+        "name": "Bruker 600 MHz NMR",
+        "capabilities": ["protein structure determination", "dynamics studies", "ligand binding"],
+        "limitations": "Requires >100 µM protein concentration"
+      },
+      {
+        "name": "Malvern Zetasizer",
+        "capabilities": ["dynamic light scattering", "particle sizing"],
+        "limitations": null
+      },
+      {
+        "name": "Circular dichroism spectrometer",
+        "capabilities": ["secondary structure analysis", "thermal stability"],
+        "limitations": null
+      }
+    ],
+    "techniques": [
+      {"name": "Protein expression", "proficiency": "expert", "notes": "E. coli and insect cells"},
+      {"name": "Affinity chromatography", "proficiency": "expert", "notes": null},
+      {"name": "NMR spectroscopy", "proficiency": "competent", "notes": "1D and 2D experiments"},
+      {"name": "X-ray crystallography", "proficiency": "learning", "notes": "Collaborating with synchrotron"},
+      {"name": "Mass spectrometry", "proficiency": "competent", "notes": "Intact mass and peptide mapping"}
+    ],
+    "expertise": [
+      {"domain": "Protein biochemistry", "confidence": "high"},
+      {"domain": "Structural biology", "confidence": "high"},
+      {"domain": "Enzyme kinetics", "confidence": "medium"}
+    ],
+    "organisms": [
+      {"name": "E. coli", "strains": ["BL21(DE3)", "Rosetta", "SHuffle"], "notes": "Expression hosts"},
+      {"name": "Sf9 insect cells", "strains": [], "notes": "Baculovirus expression"}
+    ],
+    "reagents": [
+      {"name": "Ni-NTA resin", "quantity": "500 mL", "notes": null},
+      {"name": "Isotope-labeled media", "quantity": "limited", "notes": "15N and 13C for NMR"},
+      {"name": "Protease inhibitor cocktail", "quantity": "sufficient", "notes": null}
+    ],
+    "experimental_history": [
+      {"technique": "Protein purification", "outcome": "success", "insight": "Optimized buffer conditions improved yield 3-fold"},
+      {"technique": "NMR assignment", "outcome": "partial", "insight": "Achieved 85% backbone assignment, flexible loops remain unassigned"},
+      {"technique": "Crystallization", "outcome": "failed", "insight": "Protein aggregates at high concentration, need to try additives"}
+    ],
+    "resource_constraints": {
+      "budget_notes": "NMR time allocation limited to 40 hours/month",
+      "time_constraints": null,
+      "personnel_notes": "1 staff scientist, 2 postdocs, 4 graduate students"
+    },
+    "signal_count": 22
+  },
+  "qa_pairs": [
+    {"question": "Can they purify proteins?", "expected": "yes"},
+    {"question": "Do they have NMR capability?", "expected": "yes"},
+    {"question": "Can they do cryo-EM?", "expected": "no"},
+    {"question": "What expression systems do they use?", "expected": "E. coli and insect cells"},
+    {"question": "Are they expert in X-ray crystallography?", "expected": "no"},
+    {"question": "Do they work with mammalian cells?", "expected": "no"}
+  ]
+}

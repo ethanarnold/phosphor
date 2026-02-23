@@ -1,0 +1,9 @@
+# Example Terraform variables file
+# Copy to terraform.tfvars and fill in your values
+
+project_id    = "your-gcp-project-id"
+region        = "us-central1"
+environment   = "staging"
+database_tier = "db-f1-micro"
+api_image     = "gcr.io/your-project/phosphor-api:latest"
+worker_image  = "gcr.io/your-project/phosphor-worker:latest"
