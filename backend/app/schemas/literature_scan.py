@@ -2,7 +2,7 @@
 
 import uuid
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -19,7 +19,7 @@ class ScanRequest(BaseModel):
     field_of_study: str | None = Field(default=None, max_length=100)
     max_results: int = Field(default=100, ge=1, le=500)
     sources: list[Literal["pubmed", "semantic_scholar"]] = Field(
-        default_factory=lambda: ["pubmed", "semantic_scholar"]
+        default=["pubmed", "semantic_scholar"]
     )
 
 
@@ -31,7 +31,7 @@ class ScanResponse(BaseModel):
     id: uuid.UUID
     lab_id: uuid.UUID
     scan_type: str
-    query_params: dict
+    query_params: dict[str, Any]
     papers_found: int
     papers_new: int
     opportunities_extracted: int

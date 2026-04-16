@@ -40,7 +40,7 @@ app = FastAPI(
 
 # Rate limiting
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
 # CORS middleware - locked to known origins
 app.add_middleware(
@@ -56,7 +56,7 @@ app.add_middleware(AuditLogMiddleware)
 
 
 @app.middleware("http")
-async def set_user_context(request: Request, call_next):
+async def set_user_context(request: Request, call_next):  # type: ignore[no-untyped-def]
     """Set user context for downstream middleware (audit logging)."""
     # Skip for unauthenticated endpoints
     if request.url.path in ["/health", "/docs", "/openapi.json", "/redoc"]:

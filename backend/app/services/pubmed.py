@@ -172,7 +172,7 @@ class PubMedClient:
                 if last is not None:
                     authors.append({
                         "last_name": last.text or "",
-                        "first_name": first.text if first is not None else "",
+                        "first_name": (first.text or "") if first is not None else "",
                     })
 
         # Journal
@@ -236,7 +236,8 @@ class PubMedClient:
             if year is not None and year.text:
                 month = pub_date.find("Month")
                 try:
-                    month_num = int(month.text) if month is not None and month.text.isdigit() else 1
+                    month_text = month.text if month is not None else None
+                    month_num = int(month_text) if month_text and month_text.isdigit() else 1
                     return date(int(year.text), month_num, 1)
                 except (ValueError, TypeError):
                     try:

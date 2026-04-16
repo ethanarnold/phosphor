@@ -1,6 +1,7 @@
 """Dependency injection for API routes."""
 
 import uuid
+from collections.abc import AsyncGenerator
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, Path, status
@@ -17,7 +18,7 @@ CurrentUser = Annotated[AuthenticatedUser, Depends(get_current_user)]
 
 async def get_db_session(
     user: CurrentUser,
-) -> AsyncSession:
+) -> AsyncGenerator[AsyncSession, None]:
     """Get database session with tenant context from current user."""
     async with get_db_with_tenant(user.org_id) as session:
         yield session

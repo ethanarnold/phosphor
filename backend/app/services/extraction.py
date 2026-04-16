@@ -1,5 +1,6 @@
 """Opportunity extraction from literature using LLM."""
 
+import contextlib
 import json
 import uuid
 from typing import Any
@@ -77,10 +78,8 @@ async def extract_opportunities(
 
     # Generate embeddings for accepted opportunities (best-effort)
     if all_opportunities:
-        try:
+        with contextlib.suppress(Exception):
             await _generate_opportunity_embeddings(session, all_opportunities, settings)
-        except Exception:
-            pass  # Embeddings are for ranking, not required for core extraction
 
     return all_opportunities
 

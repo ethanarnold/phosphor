@@ -62,6 +62,11 @@ ignore = [
     "S101",  # Allow assert in tests
     "B008",  # Allow Depends() in function defaults (FastAPI pattern)
     "E501",  # Allow long lines in LLM prompt strings
+    "E402",  # Allow late imports for circular dependency avoidance in models
+    "S314",  # PubMed XML parsing is from a trusted source (NCBI)
+    "S106",  # Test files use hardcoded credentials by design
+    "S104",  # Binding to 0.0.0.0 is intentional for Docker containers
+    "S110",  # Intentional try-except-pass for non-critical operations
 ]
 
 [tool.mypy]
@@ -89,7 +94,13 @@ ENVIRONMENT = "test"
 
 [tool.bandit]
 exclude_dirs = ["tests"]
-skips = ["B101"]  # Skip assert warnings
+skips = [
+    "B101",  # Allow assert
+    "B110",  # Allow try-except-pass for non-critical operations (audit, embeddings)
+    "B104",  # Binding 0.0.0.0 is intentional for Docker
+    "B314",  # PubMed XML is from trusted NCBI source
+    "B405",  # xml.etree.ElementTree used for trusted PubMed data
+]
 
 [tool.coverage.run]
 source = ["app"]

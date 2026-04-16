@@ -67,7 +67,7 @@ class AuditLogMiddleware(BaseHTTPMiddleware):
         # Remove API prefix and split
         parts = path.strip("/").split("/")
         # Find the resource type (usually after 'api/v1')
-        for i, part in enumerate(parts):
+        for _i, part in enumerate(parts):
             if part in ("v1", "api"):
                 continue
             # Skip UUIDs

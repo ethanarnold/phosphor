@@ -38,7 +38,7 @@ async def create_signal(
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Invalid content for signal type: {e}",
-        )
+        ) from e
 
     signal = RawSignal(
         lab_id=lab.id,

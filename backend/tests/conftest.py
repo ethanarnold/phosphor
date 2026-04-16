@@ -100,10 +100,10 @@ def client(mock_user: AuthenticatedUser) -> Generator[TestClient, None, None]:
     app.dependency_overrides[get_settings] = override_get_settings
 
     # Mock database initialization to avoid needing a real database connection
-    with patch("app.main.init_db", new_callable=AsyncMock) as mock_init, \
-         patch("app.main.close_db", new_callable=AsyncMock) as mock_close:
-        with TestClient(app) as client:
-            yield client
+    with patch("app.main.init_db", new_callable=AsyncMock), \
+         patch("app.main.close_db", new_callable=AsyncMock), \
+         TestClient(app) as client:
+        yield client
 
     app.dependency_overrides.clear()
 

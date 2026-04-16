@@ -1,6 +1,7 @@
 """API key management endpoints."""
 
 import uuid
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -32,7 +33,7 @@ async def create_key(
     session: DbSession,
     user: CurrentUser,
     _admin: AuthenticatedUser = Depends(require_role(["admin"])),
-) -> dict:
+) -> dict[str, Any]:
     """Create a new API key for programmatic access.
 
     The plaintext key is returned only once in this response.

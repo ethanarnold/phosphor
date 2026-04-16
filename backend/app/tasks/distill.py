@@ -9,7 +9,7 @@ from app.services.distillation import get_unprocessed_signals, run_distillation
 from app.tasks import celery_app
 
 
-@celery_app.task(bind=True, max_retries=3)
+@celery_app.task(bind=True, max_retries=3)  # type: ignore[untyped-decorator]
 def distill_lab_state(
     self: Any,
     lab_id: str,
@@ -32,7 +32,7 @@ def distill_lab_state(
         return result
     except Exception as e:
         # Retry with exponential backoff
-        raise self.retry(exc=e, countdown=2 ** self.request.retries * 10)
+        raise self.retry(exc=e, countdown=2 ** self.request.retries * 10) from e
 
 
 async def _run_distillation_async(
@@ -70,7 +70,7 @@ async def _run_distillation_async(
         }
 
 
-@celery_app.task
+@celery_app.task  # type: ignore[untyped-decorator]
 def process_pending_signals() -> dict[str, Any]:
     """Scheduled task to process pending signals for all labs.
 

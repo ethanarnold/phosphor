@@ -102,7 +102,7 @@ class SemanticScholarClient:
         Returns:
             List of normalized paper dicts
         """
-        params = {
+        params: dict[str, str | int] = {
             "fields": S2_FIELDS,
             "limit": min(max_results, 100),
         }

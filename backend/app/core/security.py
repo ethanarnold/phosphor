@@ -66,18 +66,18 @@ class ClerkJWTValidator:
             )
             return claims
 
-        except jwt.ExpiredSignatureError:
+        except jwt.ExpiredSignatureError as e:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token has expired",
                 headers={"WWW-Authenticate": "Bearer"},
-            )
+            ) from e
         except jwt.InvalidTokenError as e:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=f"Invalid token: {e}",
                 headers={"WWW-Authenticate": "Bearer"},
-            )
+            ) from e
 
 
 # Singleton validator instance

@@ -15,7 +15,7 @@ from app.services.literature import ingest_literature
 from app.tasks import celery_app
 
 
-@celery_app.task(bind=True, max_retries=3)
+@celery_app.task(bind=True, max_retries=3)  # type: ignore[untyped-decorator]
 def run_literature_scan(
     self: Any,
     lab_id: str,
@@ -142,7 +142,7 @@ async def _mark_scan_failed(scan_id: str, error: str) -> None:
         await session.commit()
 
 
-@celery_app.task
+@celery_app.task  # type: ignore[untyped-decorator]
 def scheduled_literature_scan() -> dict[str, Any]:
     """Celery beat task: scan literature for all labs with configured search interests."""
     result = asyncio.run(_run_scheduled_scans())
