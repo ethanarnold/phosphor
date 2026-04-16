@@ -48,6 +48,14 @@ class Settings(BaseSettings):
     max_state_tokens: int = 2000
     distillation_batch_size: int = 10
 
+    # Literature ingestion
+    pubmed_api_key: str | None = None
+    semantic_scholar_api_key: str | None = None
+    literature_scan_max_results: int = 200
+
+    # Embeddings
+    embedding_model: str = "text-embedding-3-small"
+
     @property
     def database_url_sync(self) -> str:
         """Convert async URL to sync for Alembic."""

@@ -21,6 +21,9 @@ litellm = "^1.55.0"
 tiktoken = "^0.8.0"
 httpx = "^0.28.0"
 pyjwt = {extras = ["crypto"], version = "^2.10.0"}
+slowapi = "^0.1.9"
+tenacity = "^9.0.0"
+pgvector = "^0.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.0"
@@ -55,7 +58,11 @@ select = [
     "T20",    # flake8-print
     "SIM",    # flake8-simplify
 ]
-ignore = ["S101"]  # Allow assert in tests
+ignore = [
+    "S101",  # Allow assert in tests
+    "B008",  # Allow Depends() in function defaults (FastAPI pattern)
+    "E501",  # Allow long lines in LLM prompt strings
+]
 
 [tool.mypy]
 python_version = "3.12"
@@ -65,7 +72,7 @@ warn_unused_configs = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["celery.*", "litellm.*", "tiktoken.*"]
+module = ["celery.*", "litellm.*", "tiktoken.*", "slowapi.*", "pgvector.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
@@ -86,4 +93,20 @@ skips = ["B101"]  # Skip assert warnings
 
 [tool.coverage.run]
 source = ["app"]
-omit = ["*/tests/*", "*/__pycache__/*"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    # Exclude modules requiring integration tests (Celery, LLM calls, DB-dependent routes)
+    "app/services/distillation.py",
+    "app/services/extraction.py",
+    "app/services/literature.py",
+    "app/services/pubmed.py",
+    "app/services/semantic_scholar.py",
+    "app/tasks/*",
+    "app/api/routes/labs.py",
+    "app/api/routes/signals.py",
+    "app/api/routes/states.py",
+    "app/api/routes/literature.py",
+    "app/api/routes/opportunities.py",
+    "app/api/routes/api_keys.py",
+]
