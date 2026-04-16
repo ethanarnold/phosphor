@@ -2,7 +2,7 @@
 
 import asyncio
 from collections.abc import AsyncGenerator, Generator
-from typing import Any
+from unittest.mock import AsyncMock, patch
 
 import pytest
 import pytest_asyncio
@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core.config import Settings, get_settings
-from app.core.database import Base, get_db
+from app.core.database import Base
 from app.core.security import AuthenticatedUser, get_current_user
 from app.main import app
 
@@ -99,8 +99,11 @@ def client(mock_user: AuthenticatedUser) -> Generator[TestClient, None, None]:
     app.dependency_overrides[get_current_user] = override_get_current_user
     app.dependency_overrides[get_settings] = override_get_settings
 
-    with TestClient(app) as client:
-        yield client
+    # Mock database initialization to avoid needing a real database connection
+    with patch("app.main.init_db", new_callable=AsyncMock) as mock_init, \
+         patch("app.main.close_db", new_callable=AsyncMock) as mock_close:
+        with TestClient(app) as client:
+            yield client
 
     app.dependency_overrides.clear()
 
@@ -118,10 +121,13 @@ async def async_client(mock_user: AuthenticatedUser) -> AsyncGenerator[AsyncClie
     app.dependency_overrides[get_current_user] = override_get_current_user
     app.dependency_overrides[get_settings] = override_get_settings
 
-    async with AsyncClient(
-        transport=ASGITransport(app=app),
-        base_url="http://test",
-    ) as client:
-        yield client
+    # Mock database initialization to avoid needing a real database connection
+    with patch("app.main.init_db", new_callable=AsyncMock), \
+         patch("app.main.close_db", new_callable=AsyncMock):
+        async with AsyncClient(
+            transport=ASGITransport(app=app),
+            base_url="http://test",
+        ) as client:
+            yield client
 
     app.dependency_overrides.clear()

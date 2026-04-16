@@ -1,0 +1,76 @@
+[
+  {
+    "id": "edge_001",
+    "pmid": "38301234",
+    "title": "Interdisciplinary approaches to understanding consciousness: a philosophical review",
+    "abstract": "This review examines philosophical frameworks for understanding consciousness including integrated information theory, global workspace theory, and higher-order theories. We discuss how these frameworks relate to empirical neuroscience findings. More interdisciplinary dialogue is needed between philosophers and neuroscientists to advance our understanding of the hard problem of consciousness.",
+    "domain": "philosophy",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Philosophical review, no experimental opportunity"
+  },
+  {
+    "id": "edge_002",
+    "pmid": "38302345",
+    "title": "Statistical methods for analyzing high-dimensional genomic data: a comparison study",
+    "abstract": "We compared 15 statistical methods for differential gene expression analysis on 100 simulated RNA-seq datasets with known ground truth. LIMMA-voom and DESeq2 showed the best calibration, while edgeR had highest power for small sample sizes. We provide an R package implementing our benchmarking framework. Researchers should use the appropriate method based on their sample size and expected effect sizes.",
+    "domain": "bioinformatics",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Methods comparison with no wet-lab opportunity"
+  },
+  {
+    "id": "edge_003",
+    "pmid": "38303456",
+    "title": "Retraction: Superconductivity above 200K in LaH10 at ambient pressure",
+    "abstract": "RETRACTED. This paper has been retracted due to data fabrication. The original claims of room-temperature superconductivity at ambient pressure in LaH10 could not be reproduced by independent groups.",
+    "domain": "physics",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Retracted paper - should extract nothing"
+  },
+  {
+    "id": "edge_004",
+    "pmid": "38304567",
+    "title": "CRISPR-based diagnostics and environmental monitoring: dual-domain applications",
+    "abstract": "CRISPR-Cas12a collateral cleavage enables rapid nucleic acid detection. We applied SHERLOCK and DETECTR platforms to both clinical diagnostics (SARS-CoV-2 detection, 98% sensitivity) and environmental monitoring (microplastic-associated bacteria in water samples). The environmental monitoring application could be deployed as a field-portable test for water quality assessment in developing regions, requiring Cas12a enzyme, isothermal amplification reagents, lateral flow strips for readout, and lyophilization equipment for reagent stabilization in field conditions.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["CRISPR", "field-portable", "water quality", "diagnostic"],
+        "required_equipment_keywords": ["Cas12a", "lateral flow", "lyophilization"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Multi-domain paper with concrete deployment opportunity"
+  },
+  {
+    "id": "edge_005",
+    "pmid": "38305678",
+    "title": "Machine learning in materials science: promises and pitfalls",
+    "abstract": "We survey the application of machine learning to materials discovery, property prediction, and synthesis optimization. Common pitfalls include data leakage, overfitting to small datasets, and lack of physical constraints in models. Best practices for reproducible ML in materials science are discussed. The community should work toward standardized benchmarks and shared datasets.",
+    "domain": "materials science",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Survey/perspective with only community-level recommendations"
+  },
+  {
+    "id": "edge_006",
+    "pmid": "38306789",
+    "title": "Biodegradable piezoelectric scaffold for bone regeneration combines physics and biology",
+    "abstract": "We developed a PLLA-based piezoelectric scaffold that generates electrical stimulation during mechanical loading, promoting osteoblast differentiation without external power. The scaffold degraded completely within 12 months in vivo. The piezoelectric coefficient could be enhanced by incorporating BaTiO3 nanoparticles into the PLLA matrix, requiring electrospinning equipment for scaffold fabrication, a d33 meter for piezoelectric characterization, and cell culture facilities with mechanical loading bioreactor for in vitro bone formation assays.",
+    "domain": "bioengineering",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["piezoelectric", "BaTiO3", "scaffold", "bone"],
+        "required_equipment_keywords": ["electrospinning", "d33 meter", "bioreactor"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Interdisciplinary opportunity crossing physics/biology/engineering"
+  }
+]

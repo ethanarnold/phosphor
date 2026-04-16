@@ -16,8 +16,8 @@ def test_health_check(client: TestClient) -> None:
 def test_health_check_no_auth_required(client: TestClient) -> None:
     """Health check should work without authentication."""
     # Remove auth override to test unauthenticated access
-    from app.main import app
     from app.core.security import get_current_user
+    from app.main import app
 
     # Clear overrides temporarily
     original_override = app.dependency_overrides.get(get_current_user)

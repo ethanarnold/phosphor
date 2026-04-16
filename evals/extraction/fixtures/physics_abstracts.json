@@ -1,0 +1,114 @@
+[
+  {
+    "id": "phys_001",
+    "pmid": "38201234",
+    "title": "Room-temperature quantum coherence in nitrogen-vacancy centers for nanoscale NMR",
+    "abstract": "We demonstrate nanoscale NMR spectroscopy using nitrogen-vacancy (NV) centers in diamond at room temperature, achieving chemical shift resolution of 0.1 ppm for volumes as small as (5 nm)^3. This technique enables structural characterization of single proteins under physiological conditions. The approach could be extended to study conformational dynamics of membrane proteins in lipid bilayers, requiring a confocal microscope with 532nm laser excitation, microwave delivery system for NV spin manipulation, and expertise in diamond surface functionalization for protein attachment.",
+    "domain": "physics",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["NV center", "membrane protein", "conformational dynamics", "nanoscale NMR"],
+        "required_equipment_keywords": ["confocal microscope", "532nm laser", "microwave"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete biophysics application of quantum sensing"
+  },
+  {
+    "id": "phys_002",
+    "pmid": "38202345",
+    "title": "Topological photonic crystals for robust optical waveguiding",
+    "abstract": "We fabricated a topological photonic crystal using electron beam lithography in silicon-on-insulator that exhibits backscattering-free edge states at telecom wavelengths (1550nm). Light propagates along sharp corners with <0.5 dB loss. This platform could enable compact optical interconnects for on-chip quantum information processing by integrating single-photon sources (quantum dots) at topological edge state channels, requiring e-beam lithography, near-infrared characterization setup, and quantum dot epitaxial growth capability.",
+    "domain": "physics",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["topological", "quantum dot", "single-photon", "optical interconnect"],
+        "required_equipment_keywords": ["e-beam lithography", "near-infrared", "epitaxial growth"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete integration opportunity for quantum photonics"
+  },
+  {
+    "id": "phys_003",
+    "pmid": "38203456",
+    "title": "Ultrafast electron diffraction reveals structural dynamics of photoinduced phase transition",
+    "abstract": "Using MeV ultrafast electron diffraction with 100 fs temporal resolution, we captured the structural trajectory of the photoinduced insulator-metal transition in VO2 thin films. We resolved a previously hypothesized intermediate monoclinic phase lasting ~500 fs. This pump-probe approach could characterize phase transitions in other strongly correlated materials like rare-earth nickelates, requiring pulsed laser system (800nm, 35fs), electron gun with MeV accelerator, and thin film deposition capability (MBE or PLD) for sample preparation.",
+    "domain": "physics",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["ultrafast", "rare-earth nickelate", "phase transition", "pump-probe"],
+        "required_equipment_keywords": ["pulsed laser", "electron gun", "thin film deposition"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Extension to new material system"
+  },
+  {
+    "id": "phys_004",
+    "pmid": "38204567",
+    "title": "Gravitational wave detection: challenges and future directions",
+    "abstract": "The detection of gravitational waves has opened a new window on the universe. Current detectors like LIGO and Virgo continue to be upgraded. Future space-based detectors like LISA will extend the detection bandwidth. The field requires continued investment in quantum squeezing technology and mirror coating development to improve sensitivity.",
+    "domain": "physics",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "General commentary with no lab-scale actionable opportunity"
+  },
+  {
+    "id": "phys_005",
+    "pmid": "38205678",
+    "title": "Spin-orbit torque switching in ferrimagnetic Mn3Sn for antiferromagnetic spintronics",
+    "abstract": "We demonstrate deterministic spin-orbit torque switching of the magnetic octupole in Mn3Sn thin films using a Pt heavy metal layer. Switching occurs at current densities of 5x10^6 A/cm2, comparable to ferromagnetic systems but with THz-scale dynamics. The anomalous Hall effect provides electrical readout. This could enable ultrafast memory devices by patterning Mn3Sn/Pt nanopillars and measuring switching speed with time-resolved MOKE, requiring sputter deposition system, e-beam lithography for nanopatterning, and femtosecond laser system for time-resolved magneto-optical measurements.",
+    "domain": "physics",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["Mn3Sn", "nanopillar", "ultrafast memory", "switching speed"],
+        "required_equipment_keywords": ["sputter deposition", "e-beam lithography", "femtosecond laser"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete device fabrication and characterization"
+  },
+  {
+    "id": "phys_006",
+    "pmid": "38206789",
+    "title": "Acoustic metamaterial lens achieves super-resolution ultrasound imaging",
+    "abstract": "We fabricated an acoustic metamaterial lens from 3D-printed polymer with embedded air cavities that achieves lambda/10 resolution at 1 MHz ultrasound frequency. The lens converts evanescent waves to propagating waves via a Fabry-Perot resonance mechanism. This could be applied to non-destructive testing of composite materials by adapting the lens geometry for industrial ultrasound frequencies (5-10 MHz), requiring a 3D printer with <50um resolution, ultrasound transducer and pulser-receiver, and composite material test samples.",
+    "domain": "physics",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["acoustic metamaterial", "non-destructive testing", "composite", "ultrasound"],
+        "required_equipment_keywords": ["3D printer", "ultrasound transducer"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Applied physics opportunity with accessible equipment"
+  },
+  {
+    "id": "phys_007",
+    "pmid": "38207890",
+    "title": "Quantum error correction in a trapped-ion processor exceeds break-even",
+    "abstract": "Our trapped-ion quantum processor with 32 qubits demonstrates quantum error correction that extends logical qubit lifetime beyond the physical qubit lifetime for the first time. The system uses the Bacon-Shor code with real-time syndrome decoding. We achieved a logical error rate of 10^-4 per round. The decoder algorithm could be ported to superconducting qubit architectures by adapting the syndrome extraction circuits, requiring access to a superconducting qubit processor, cryogenic measurement equipment, and FPGA-based real-time control electronics.",
+    "domain": "physics",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["error correction", "decoder", "superconducting", "port"],
+        "required_equipment_keywords": ["superconducting qubit", "cryogenic", "FPGA"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Cross-platform quantum computing opportunity"
+  }
+]

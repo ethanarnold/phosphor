@@ -1,0 +1,124 @@
+[
+  {
+    "id": "chem_001",
+    "pmid": "38101234",
+    "title": "Electrochemical CO2 reduction to ethanol using copper-nitrogen single-atom catalysts",
+    "abstract": "We report a copper-nitrogen single-atom catalyst (Cu-N-SAC) supported on graphene that achieves 78% Faradaic efficiency for CO2-to-ethanol conversion at -0.8V vs RHE. Density functional theory calculations suggest the Cu-N4 active sites stabilize the *CO intermediate enabling C-C coupling. This catalyst architecture could be extended to produce higher-value C3+ products by tuning the Cu-N coordination environment, requiring an electrochemical workstation with CO2-saturated electrolyte capability, XPS for surface characterization, and computational chemistry expertise for DFT screening of modified coordination environments.",
+    "domain": "chemistry",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["CO2 reduction", "C3+", "Cu-N coordination", "catalyst"],
+        "required_equipment_keywords": ["electrochemical workstation", "XPS"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete catalyst optimization opportunity"
+  },
+  {
+    "id": "chem_002",
+    "pmid": "38102345",
+    "title": "Machine learning-guided synthesis of metal-organic frameworks with targeted pore sizes",
+    "abstract": "We developed a random forest model trained on 12,000 MOF structures from the Cambridge Structural Database that predicts pore size distribution from linker geometry with R2=0.94. Model-guided synthesis of 5 novel MOFs confirmed predictions within 5% error. Researchers with solvothermal synthesis capability and basic Python skills could use our open-source model to design MOFs for specific gas separation applications, requiring an autoclave for solvothermal synthesis, powder XRD for structure confirmation, and BET surface area analyzer for pore characterization.",
+    "domain": "chemistry",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["MOF", "design", "gas separation", "model-guided"],
+        "required_equipment_keywords": ["autoclave", "XRD", "BET"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Open-source tool enables follow-up synthesis"
+  },
+  {
+    "id": "chem_003",
+    "pmid": "38103456",
+    "title": "Flow chemistry enables continuous manufacturing of perovskite quantum dots",
+    "abstract": "We demonstrate continuous synthesis of CsPbBr3 perovskite quantum dots in a microfluidic reactor with residence time of 3 seconds, achieving 95% quantum yield and batch-to-batch variation under 2%. The flow system uses a T-junction mixer followed by a heated coil reactor. This platform could be adapted for mixed-halide perovskite QDs (CsPbBrxCl3-x) to tune emission wavelength across the visible spectrum, requiring a microfluidic reactor setup, UV-Vis spectrophotometer, and photoluminescence spectrometer for optical characterization.",
+    "domain": "chemistry",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["perovskite", "mixed-halide", "tune", "emission"],
+        "required_equipment_keywords": ["microfluidic", "UV-Vis", "photoluminescence"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Clear platform extension opportunity"
+  },
+  {
+    "id": "chem_004",
+    "pmid": "38104567",
+    "title": "Green chemistry approaches to pharmaceutical synthesis: a comprehensive review",
+    "abstract": "This review covers recent advances in sustainable pharmaceutical manufacturing including biocatalytic cascades, solvent-free mechanochemistry, and photocatalytic C-H activation. We discuss the environmental benefits and economic considerations of each approach. The field would benefit from greater adoption of these methods and more research into scaling green chemistry processes to industrial production.",
+    "domain": "chemistry",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Review article with only vague recommendations"
+  },
+  {
+    "id": "chem_005",
+    "pmid": "38105678",
+    "title": "Solid-state lithium batteries with garnet-type Li7La3Zr2O12 electrolyte",
+    "abstract": "We achieved ionic conductivity of 1.2 mS/cm in Li7La3Zr2O12 (LLZO) pellets by Al-doping and optimized sintering at 1200C. The LLZO-based full cell with LiFePO4 cathode showed stable cycling for 500 cycles. Interface resistance between LLZO and lithium metal remains the key bottleneck. A promising approach would be to apply a thin interlayer of amorphous Li3PO4 via atomic layer deposition (ALD) to reduce interfacial resistance, requiring an ALD system, impedance spectroscopy equipment, and an argon glovebox for cell assembly.",
+    "domain": "chemistry",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["LLZO", "interlayer", "ALD", "interfacial resistance"],
+        "required_equipment_keywords": ["ALD", "impedance spectroscopy", "glovebox"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete interface engineering approach"
+  },
+  {
+    "id": "chem_006",
+    "pmid": "38106789",
+    "title": "Enantioselective C-H functionalization using chiral rhodium catalysts",
+    "abstract": "A novel chiral dirhodium catalyst Rh2(S-TCPTAD)4 enables enantioselective C-H insertion with >95% ee and >90% yield across 30 substrates. The catalyst is commercially available and reactions proceed under mild conditions (room temperature, 2 hours). This methodology could be applied to late-stage functionalization of pharmaceutical intermediates, requiring only standard organic chemistry lab equipment (Schlenk line, rotary evaporator), chiral HPLC for ee determination, and the commercial catalyst.",
+    "domain": "chemistry",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["C-H functionalization", "pharmaceutical", "late-stage"],
+        "required_equipment_keywords": ["Schlenk line", "HPLC"],
+        "estimated_complexity": "low",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Low-barrier methodology application"
+  },
+  {
+    "id": "chem_007",
+    "pmid": "38107890",
+    "title": "Photocatalytic water splitting using g-C3N4 nanosheets modified with cobalt phosphide",
+    "abstract": "Graphitic carbon nitride (g-C3N4) nanosheets decorated with CoP nanoparticles achieved hydrogen evolution rate of 2,450 umol/h/g under visible light, 8x higher than bare g-C3N4. The CoP co-catalyst was deposited via a simple wet-chemical method. The H2 evolution rate could be further improved by coupling with an oxygen evolution catalyst (e.g., IrO2 or RuO2) for overall water splitting, requiring a photocatalytic reactor with gas chromatography for H2/O2 quantification, and solar simulator for standardized light source.",
+    "domain": "chemistry",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["water splitting", "oxygen evolution", "overall", "g-C3N4"],
+        "required_equipment_keywords": ["photocatalytic reactor", "gas chromatography", "solar simulator"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Natural next-step experiment with clear equipment needs"
+  },
+  {
+    "id": "chem_008",
+    "pmid": "38108901",
+    "title": "Advances in polymer recycling: current state and future perspectives",
+    "abstract": "Chemical recycling of plastics through depolymerization offers a route to circular polymer economy. Various approaches including pyrolysis, glycolysis, and enzymatic degradation are being explored. Significant challenges remain in developing economically viable processes. Further research is needed to improve catalyst lifetime and process efficiency for real-world mixed plastic waste streams.",
+    "domain": "chemistry",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Review with vague future directions"
+  }
+]

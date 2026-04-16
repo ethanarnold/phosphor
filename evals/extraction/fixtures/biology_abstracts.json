@@ -1,0 +1,158 @@
+[
+  {
+    "id": "bio_001",
+    "pmid": "38001234",
+    "title": "CRISPR-Cas9 mediated knockout of BRCA1 reveals synthetic lethality with PARP inhibitors in triple-negative breast cancer organoids",
+    "abstract": "We demonstrate that CRISPR-Cas9 knockout of BRCA1 in patient-derived triple-negative breast cancer organoids creates a synthetic lethal interaction with PARP inhibitors. Using a high-throughput screening platform with 96-well organoid cultures, we identified that olaparib sensitivity increased 15-fold in BRCA1-null organoids compared to wild-type controls. This approach could be extended to screen additional DNA damage repair genes using the same organoid culture system and CRISPR library, requiring a Cas9 delivery system, organoid culture capability, and expertise in functional genomics screening.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["CRISPR", "screen", "DNA damage repair", "organoid"],
+        "required_equipment_keywords": ["Cas9", "screening", "organoid"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Clear concrete opportunity with specific equipment requirements"
+  },
+  {
+    "id": "bio_002",
+    "pmid": "38002345",
+    "title": "Single-cell RNA sequencing reveals heterogeneous response to immunotherapy in melanoma",
+    "abstract": "Using 10x Genomics Chromium single-cell RNA sequencing, we profiled 50,000 cells from pre- and post-treatment melanoma biopsies. We identified a CD8+ T cell subpopulation expressing high levels of CXCL13 that predicted response to anti-PD-1 therapy. Labs with single-cell sequencing capability and bioinformatics expertise in trajectory analysis could validate this biomarker in additional cancer types using standard flow cytometry sorting followed by scRNA-seq on sorted populations.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["CXCL13", "biomarker", "validate", "cancer"],
+        "required_equipment_keywords": ["single-cell", "flow cytometry"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete validation opportunity with specified equipment"
+  },
+  {
+    "id": "bio_003",
+    "pmid": "38003456",
+    "title": "Long-read nanopore sequencing identifies novel structural variants in pediatric leukemia",
+    "abstract": "Oxford Nanopore long-read sequencing of 30 pediatric acute lymphoblastic leukemia samples revealed 47 previously uncharacterized structural variants affecting known tumor suppressors. The recurrent ETV6-RUNX1 fusion showed unexpected complexity that was invisible to short-read approaches. These structural variants represent potential therapeutic targets that warrant functional validation using CRISPR base editing in leukemia cell lines, requiring nanopore sequencing, CRISPR base editing reagents, and cell culture facilities for suspension leukemia lines.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["structural variants", "functional validation", "CRISPR", "leukemia"],
+        "required_equipment_keywords": ["nanopore", "CRISPR", "cell culture"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete with explicit resource requirements"
+  },
+  {
+    "id": "bio_004",
+    "pmid": "38004567",
+    "title": "Spatial transcriptomics reveals tumor microenvironment architecture in pancreatic cancer",
+    "abstract": "We applied 10x Visium spatial transcriptomics to 20 pancreatic ductal adenocarcinoma samples, mapping gene expression to tissue architecture. We found that immune-excluded tumors have a distinct fibroblast signaling signature at the tumor-stroma boundary. Future work should investigate the mechanisms underlying immune exclusion in pancreatic cancer.",
+    "domain": "biology",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Vague future direction - 'should investigate mechanisms' without specific resource requirements"
+  },
+  {
+    "id": "bio_005",
+    "pmid": "38005678",
+    "title": "Engineered bacterial therapeutics for IBD using synthetic biology circuits",
+    "abstract": "We engineered E. coli Nissle 1917 with a synthetic gene circuit that senses inflammatory markers (nitric oxide) and releases anti-inflammatory IL-10 in response. The circuit uses a NorR-responsive promoter driving IL-10 secretion via OmpA signal peptide. This chassis could be adapted for other therapeutic payloads by swapping the effector module, requiring standard molecular cloning equipment, anaerobic culture capability for gut-simulating conditions, and expertise in synthetic biology circuit design.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["synthetic biology", "therapeutic", "circuit", "adapt", "payload"],
+        "required_equipment_keywords": ["cloning", "anaerobic culture"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete modular engineering opportunity"
+  },
+  {
+    "id": "bio_006",
+    "pmid": "38006789",
+    "title": "High-throughput CRISPR screen identifies metabolic vulnerabilities in glioblastoma stem cells",
+    "abstract": "A genome-wide CRISPR-Cas9 knockout screen in patient-derived glioblastoma stem cells identified fatty acid oxidation as an essential metabolic pathway. CPT1A knockout selectively killed GSCs while sparing normal neural progenitors. Pharmacological inhibition of CPT1A with etomoxir phenocopied the genetic result. This finding could be validated in additional GBM subtypes using standard cell viability assays with etomoxir treatment, requiring GBM stem cell culture expertise, the drug etomoxir, and a plate reader for cell viability quantification.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["CPT1A", "etomoxir", "validate", "GBM"],
+        "required_equipment_keywords": ["plate reader", "cell culture"],
+        "estimated_complexity": "low",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Low complexity drug validation opportunity"
+  },
+  {
+    "id": "bio_007",
+    "pmid": "38007890",
+    "title": "mRNA vaccine platform for rapid response to emerging viral threats",
+    "abstract": "Our study demonstrates the importance of continuing research into mRNA vaccine technologies. The COVID-19 pandemic highlighted the need for rapid vaccine development platforms. More research is needed to understand the long-term durability of mRNA-induced immune responses and optimize lipid nanoparticle delivery systems for various target populations.",
+    "domain": "biology",
+    "expected_opportunities": [],
+    "expected_none": true,
+    "notes": "Purely review/commentary with no actionable opportunity"
+  },
+  {
+    "id": "bio_008",
+    "pmid": "38008901",
+    "title": "Optogenetic control of CAR-T cell activation improves solid tumor targeting",
+    "abstract": "We developed a light-inducible CAR construct where T cell activation requires both antigen binding and blue light illumination (470nm). Using a fiber optic implant in mouse xenografts, we achieved spatially controlled CAR-T activation that reduced on-target off-tumor toxicity by 80%. This system could be tested with alternative light-responsive domains (e.g., red-shifted variants for deeper tissue penetration) using standard T cell culture and lentiviral transduction, plus access to LED illumination systems and flow cytometry for activation monitoring.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["optogenetic", "CAR-T", "light-responsive", "red-shifted"],
+        "required_equipment_keywords": ["T cell culture", "lentiviral", "LED", "flow cytometry"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete engineering opportunity with clear equipment list"
+  },
+  {
+    "id": "bio_009",
+    "pmid": "38009012",
+    "title": "Microbiome transplant from young mice restores cognitive function in aged mice",
+    "abstract": "Fecal microbiome transplant from 3-month-old to 24-month-old mice restored hippocampal neurogenesis and improved Morris water maze performance. 16S rRNA sequencing identified Akkermansia muciniphila as significantly enriched in the transplanted aged mice. Monoculture colonization with A. muciniphila alone could be tested as a simpler intervention, requiring gnotobiotic mouse facilities, behavioral testing equipment (Morris water maze), and 16S rRNA sequencing capability.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["Akkermansia", "monoculture", "colonization", "cognitive"],
+        "required_equipment_keywords": ["gnotobiotic", "Morris water maze", "16S"],
+        "estimated_complexity": "high",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Concrete follow-up experiment with specialized equipment"
+  },
+  {
+    "id": "bio_010",
+    "pmid": "38010123",
+    "title": "Deep learning predicts protein-protein interactions from sequence alone",
+    "abstract": "We present PPINet, a transformer-based model that predicts protein-protein interactions with 92% accuracy from amino acid sequences alone, without requiring structural information. The model was trained on 500,000 experimentally validated interactions from BioGRID. PPINet predictions for novel interactions in the uncharacterized human interactome could be experimentally validated using co-immunoprecipitation followed by mass spectrometry, requiring a mass spectrometer, antibodies against predicted interacting proteins, and expertise in proteomics sample preparation.",
+    "domain": "biology",
+    "expected_opportunities": [
+      {
+        "description_keywords": ["PPINet", "validate", "protein-protein interaction", "co-immunoprecipitation"],
+        "required_equipment_keywords": ["mass spectrometer", "antibodies"],
+        "estimated_complexity": "medium",
+        "is_concrete": true
+      }
+    ],
+    "expected_none": false,
+    "notes": "Computational prediction validation with wet lab"
+  }
+]
