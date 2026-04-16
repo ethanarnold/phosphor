@@ -4,7 +4,7 @@ import asyncio
 import uuid
 from typing import Any
 
-from app.core.database import AsyncSessionLocal
+from app.core.database import task_session
 from app.services.distillation import get_unprocessed_signals, run_distillation
 from app.tasks import celery_app
 
@@ -42,7 +42,7 @@ async def _run_distillation_async(
     """Async implementation of distillation task."""
     lab_uuid = uuid.UUID(lab_id)
 
-    async with AsyncSessionLocal() as session:
+    async with task_session() as session:
         # Get signals to process
         if signal_ids:
             ids = [uuid.UUID(s) for s in signal_ids]

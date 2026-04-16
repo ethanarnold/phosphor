@@ -2,9 +2,8 @@
 
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import Any
 
-from sqlalchemy import event, text
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -58,9 +57,13 @@ async def get_db_with_tenant(org_id: str) -> AsyncGenerator[AsyncSession, None]:
     async with AsyncSessionLocal() as session:
         try:
             # Set the tenant context for row-level security
+            # asyncpg doesn't support parameters in SET/SET LOCAL,
+            # so we format the value into the query.
+            # org_id is from Clerk JWT claims (alphanumeric + underscore),
+            # but we sanitize to be safe.
+            safe_org_id = org_id.replace("'", "''")
             await session.execute(
-                text("SET LOCAL app.current_org_id = :org_id"),
-                {"org_id": org_id},
+                text(f"SET LOCAL app.current_org_id = '{safe_org_id}'")
             )
             yield session
             await session.commit()
@@ -81,3 +84,29 @@ async def init_db() -> None:
 async def close_db() -> None:
     """Close database connection pool."""
     await engine.dispose()
+
+
+@asynccontextmanager
+async def task_session() -> AsyncGenerator[AsyncSession, None]:
+    """Create a session with a fresh engine for use in Celery tasks.
+
+    Celery tasks call asyncio.run() which creates a new event loop,
+    so the module-level engine (bound to the web server's loop) can't be reused.
+    """
+    task_engine = create_async_engine(
+        str(settings.database_url),
+        pool_pre_ping=True,
+        pool_size=2,
+        max_overflow=3,
+    )
+    session_factory = async_sessionmaker(
+        task_engine,
+        class_=AsyncSession,
+        expire_on_commit=False,
+    )
+    async with session_factory() as session:
+        try:
+            yield session
+        finally:
+            await session.close()
+    await task_engine.dispose()
