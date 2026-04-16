@@ -1,6 +1,5 @@
 """Lab state retrieval endpoints."""
 
-import uuid
 
 from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import func, select
@@ -8,7 +7,6 @@ from sqlalchemy import func, select
 from app.api.deps import CurrentLab, CurrentUser, DbSession
 from app.models.lab_state import LabState
 from app.schemas.lab_state import (
-    LabStateData,
     LabStateHistoryResponse,
     LabStateResponse,
 )

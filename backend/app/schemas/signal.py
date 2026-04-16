@@ -2,7 +2,7 @@
 
 import uuid
 from datetime import datetime
-from typing import Annotated, Any, Literal, Union
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -53,7 +53,7 @@ class CorrectionContent(BaseModel):
 
 
 SignalContent = Annotated[
-    Union[ExperimentContent, DocumentContent, CorrectionContent],
+    ExperimentContent | DocumentContent | CorrectionContent,
     Field(discriminator=None),
 ]
 
