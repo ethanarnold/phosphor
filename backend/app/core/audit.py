@@ -22,9 +22,7 @@ class AuditLogMiddleware(BaseHTTPMiddleware):
     # Paths to exclude from audit logging
     EXCLUDED_PATHS = {"/health", "/docs", "/openapi.json", "/redoc"}
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         """Process request and log write operations."""
         # Skip non-write methods and excluded paths
         if request.method not in self.AUDIT_METHODS:

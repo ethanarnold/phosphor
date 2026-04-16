@@ -62,9 +62,7 @@ async def get_db_with_tenant(org_id: str) -> AsyncGenerator[AsyncSession, None]:
             # org_id is from Clerk JWT claims (alphanumeric + underscore),
             # but we sanitize to be safe.
             safe_org_id = org_id.replace("'", "''")
-            await session.execute(
-                text(f"SET LOCAL app.current_org_id = '{safe_org_id}'")
-            )
+            await session.execute(text(f"SET LOCAL app.current_org_id = '{safe_org_id}'"))
             yield session
             await session.commit()
         except Exception:

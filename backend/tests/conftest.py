@@ -63,9 +63,7 @@ async def db_session(test_settings: Settings) -> AsyncGenerator[AsyncSession, No
 
     async with AsyncTestSession() as session:
         # Set tenant context for RLS
-        await session.execute(
-            text("SET LOCAL app.current_org_id = 'test_org'")
-        )
+        await session.execute(text("SET LOCAL app.current_org_id = 'test_org'"))
         yield session
         await session.rollback()
 
@@ -100,9 +98,11 @@ def client(mock_user: AuthenticatedUser) -> Generator[TestClient, None, None]:
     app.dependency_overrides[get_settings] = override_get_settings
 
     # Mock database initialization to avoid needing a real database connection
-    with patch("app.main.init_db", new_callable=AsyncMock), \
-         patch("app.main.close_db", new_callable=AsyncMock), \
-         TestClient(app) as client:
+    with (
+        patch("app.main.init_db", new_callable=AsyncMock),
+        patch("app.main.close_db", new_callable=AsyncMock),
+        TestClient(app) as client,
+    ):
         yield client
 
     app.dependency_overrides.clear()
@@ -122,8 +122,10 @@ async def async_client(mock_user: AuthenticatedUser) -> AsyncGenerator[AsyncClie
     app.dependency_overrides[get_settings] = override_get_settings
 
     # Mock database initialization to avoid needing a real database connection
-    with patch("app.main.init_db", new_callable=AsyncMock), \
-         patch("app.main.close_db", new_callable=AsyncMock):
+    with (
+        patch("app.main.init_db", new_callable=AsyncMock),
+        patch("app.main.close_db", new_callable=AsyncMock),
+    ):
         async with AsyncClient(
             transport=ASGITransport(app=app),
             base_url="http://test",

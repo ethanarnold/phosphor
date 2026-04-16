@@ -1,6 +1,5 @@
 """Lab state retrieval endpoints."""
 
-
 from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import func, select
 
@@ -29,10 +28,7 @@ async def get_current_state(
     capabilities, techniques, and experimental history.
     """
     result = await session.execute(
-        select(LabState)
-        .where(LabState.lab_id == lab.id)
-        .order_by(LabState.version.desc())
-        .limit(1)
+        select(LabState).where(LabState.lab_id == lab.id).order_by(LabState.version.desc()).limit(1)
     )
     state = result.scalar_one_or_none()
 
@@ -63,9 +59,7 @@ async def get_state_history(
     version descending (newest first).
     """
     # Get total count
-    count_result = await session.execute(
-        select(func.count()).where(LabState.lab_id == lab.id)
-    )
+    count_result = await session.execute(select(func.count()).where(LabState.lab_id == lab.id))
     total = count_result.scalar() or 0
 
     # Get paginated results

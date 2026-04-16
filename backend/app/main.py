@@ -10,7 +10,15 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api.routes import api_keys as api_keys_routes
-from app.api.routes import health, labs, literature, opportunities, signals, states
+from app.api.routes import (
+    health,
+    labs,
+    literature,
+    matching,
+    opportunities,
+    signals,
+    states,
+)
 from app.core.audit import AuditLogMiddleware
 from app.core.config import get_settings
 from app.core.database import close_db, init_db
@@ -128,6 +136,11 @@ app.include_router(
     opportunities.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["opportunities"],
+)
+app.include_router(
+    matching.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["matching"],
 )
 app.include_router(
     api_keys_routes.router,

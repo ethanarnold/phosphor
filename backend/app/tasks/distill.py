@@ -26,13 +26,11 @@ def distill_lab_state(
         Dict with result information
     """
     try:
-        result = asyncio.run(
-            _run_distillation_async(lab_id, signal_ids)
-        )
+        result = asyncio.run(_run_distillation_async(lab_id, signal_ids))
         return result
     except Exception as e:
         # Retry with exponential backoff
-        raise self.retry(exc=e, countdown=2 ** self.request.retries * 10) from e
+        raise self.retry(exc=e, countdown=2**self.request.retries * 10) from e
 
 
 async def _run_distillation_async(

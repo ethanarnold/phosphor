@@ -50,9 +50,7 @@ async def ingest_literature(
 
         # Fetch from Semantic Scholar
         if "semantic_scholar" in sources:
-            s2 = SemanticScholarClient(
-                http_client, api_key=settings.semantic_scholar_api_key
-            )
+            s2 = SemanticScholarClient(http_client, api_key=settings.semantic_scholar_api_key)
             s2_papers = await s2.search(
                 query=query,
                 field_of_study=field_of_study,

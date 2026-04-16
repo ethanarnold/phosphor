@@ -71,9 +71,7 @@ async def extract_opportunities(
     # Process papers in batches of 5
     for i in range(0, len(papers), 5):
         batch = papers[i : i + 5]
-        batch_opps = await _extract_batch(
-            session, lab_id, batch, i, settings
-        )
+        batch_opps = await _extract_batch(session, lab_id, batch, i, settings)
         all_opportunities.extend(batch_opps)
 
     # Generate embeddings for accepted opportunities (best-effort)
@@ -140,11 +138,7 @@ Output a JSON array of opportunities (or empty array if none found):"""
 
         # Map source_paper_indices back to actual paper IDs
         source_indices = raw_opp.get("source_paper_indices", [])
-        source_paper_ids = [
-            papers[idx].id
-            for idx in source_indices
-            if 0 <= idx < len(papers)
-        ]
+        source_paper_ids = [papers[idx].id for idx in source_indices if 0 <= idx < len(papers)]
         if not source_paper_ids:
             # Default to all papers in this batch
             source_paper_ids = [p.id for p in papers]
@@ -244,6 +238,5 @@ Output a JSON array of opportunities (or empty array if none found):"""
 
     # Apply quality filter
     return [
-        opp for opp in raw_opportunities
-        if opp.get("concreteness_score", 0.0) >= QUALITY_THRESHOLD
+        opp for opp in raw_opportunities if opp.get("concreteness_score", 0.0) >= QUALITY_THRESHOLD
     ]

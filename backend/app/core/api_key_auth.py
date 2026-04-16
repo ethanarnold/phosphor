@@ -25,9 +25,7 @@ def generate_api_key() -> tuple[str, str, str]:
     return raw_key, key_hash, key_prefix
 
 
-async def validate_api_key(
-    key: str, session: AsyncSession
-) -> ApiKey | None:
+async def validate_api_key(key: str, session: AsyncSession) -> ApiKey | None:
     """Validate an API key and return the ApiKey model if valid.
 
     Also updates last_used_at timestamp.
@@ -51,9 +49,7 @@ async def validate_api_key(
 
     # Update last_used_at
     await session.execute(
-        update(ApiKey)
-        .where(ApiKey.id == api_key.id)
-        .values(last_used_at=datetime.now(UTC))
+        update(ApiKey).where(ApiKey.id == api_key.id).values(last_used_at=datetime.now(UTC))
     )
 
     return api_key

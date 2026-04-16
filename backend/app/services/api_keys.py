@@ -44,16 +44,12 @@ async def list_api_keys(
 ) -> tuple[list[ApiKey], int]:
     """List all API keys for a lab."""
     count_result = await session.execute(
-        select(func.count())
-        .select_from(ApiKey)
-        .where(ApiKey.lab_id == lab_id)
+        select(func.count()).select_from(ApiKey).where(ApiKey.lab_id == lab_id)
     )
     total = count_result.scalar() or 0
 
     result = await session.execute(
-        select(ApiKey)
-        .where(ApiKey.lab_id == lab_id)
-        .order_by(ApiKey.created_at.desc())
+        select(ApiKey).where(ApiKey.lab_id == lab_id).order_by(ApiKey.created_at.desc())
     )
     keys = list(result.scalars().all())
 

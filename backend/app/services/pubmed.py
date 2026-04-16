@@ -170,10 +170,12 @@ class PubMedClient:
                 last = author_el.find("LastName")
                 first = author_el.find("ForeName")
                 if last is not None:
-                    authors.append({
-                        "last_name": last.text or "",
-                        "first_name": (first.text or "") if first is not None else "",
-                    })
+                    authors.append(
+                        {
+                            "last_name": last.text or "",
+                            "first_name": (first.text or "") if first is not None else "",
+                        }
+                    )
 
         # Journal
         journal_el = art.find("Journal/Title")

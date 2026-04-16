@@ -30,9 +30,7 @@ async def create_lab(
     organization, returns 409 Conflict.
     """
     # Check if lab already exists for this org
-    result = await session.execute(
-        select(Lab).where(Lab.clerk_org_id == user.org_id)
-    )
+    result = await session.execute(select(Lab).where(Lab.clerk_org_id == user.org_id))
     existing_lab = result.scalar_one_or_none()
 
     if existing_lab:
@@ -60,9 +58,7 @@ async def get_current_lab(
     user: CurrentUser,
 ) -> Lab:
     """Get the lab for the current organization."""
-    result = await session.execute(
-        select(Lab).where(Lab.clerk_org_id == user.org_id)
-    )
+    result = await session.execute(select(Lab).where(Lab.clerk_org_id == user.org_id))
     lab = result.scalar_one_or_none()
 
     if lab is None:

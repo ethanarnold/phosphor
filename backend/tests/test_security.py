@@ -200,6 +200,7 @@ class TestGetJWTValidator:
 
         # Reset global validator
         import app.core.security as security_module
+
         security_module._validator = None
 
         validator = get_jwt_validator(settings)

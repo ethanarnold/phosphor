@@ -32,15 +32,9 @@ class ApiKey(Base):
     key_prefix: Mapped[str] = mapped_column(String(8), nullable=False)
     scopes: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     created_by: Mapped[str] = mapped_column(String(255), nullable=False)
-    last_used_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
-    expires_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
-    is_active: Mapped[bool] = mapped_column(
-        Boolean, server_default=text("true"), nullable=False
-    )
+    last_used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, server_default=text("true"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=text("now()"),

@@ -33,14 +33,12 @@ def run_literature_scan(
         Dict with result information
     """
     try:
-        result = asyncio.run(
-            _run_scan_async(lab_id, scan_id, scan_params)
-        )
+        result = asyncio.run(_run_scan_async(lab_id, scan_id, scan_params))
         return result
     except Exception as e:
         # Mark scan as failed before retrying
         asyncio.run(_mark_scan_failed(scan_id, str(e)))
-        raise self.retry(exc=e, countdown=2 ** self.request.retries * 30) from e
+        raise self.retry(exc=e, countdown=2**self.request.retries * 30) from e
 
 
 async def _run_scan_async(
@@ -55,9 +53,7 @@ async def _run_scan_async(
     async with task_session() as session:
         # Update scan status to ingesting
         await session.execute(
-            update(LiteratureScan)
-            .where(LiteratureScan.id == scan_uuid)
-            .values(status="ingesting")
+            update(LiteratureScan).where(LiteratureScan.id == scan_uuid).values(status="ingesting")
         )
         await session.commit()
 
@@ -154,9 +150,7 @@ async def _run_scheduled_scans() -> dict[str, Any]:
     from app.models.lab import Lab
 
     async with task_session() as session:
-        result = await session.execute(
-            select(Lab).where(Lab.search_config.isnot(None))
-        )
+        result = await session.execute(select(Lab).where(Lab.search_config.isnot(None)))
         labs = result.scalars().all()
 
         queued = 0

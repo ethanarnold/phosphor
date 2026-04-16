@@ -29,12 +29,8 @@ class LiteratureScan(Base):
     )
     scan_type: Mapped[str] = mapped_column(String(20), nullable=False)
     query_params: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
-    papers_found: Mapped[int] = mapped_column(
-        Integer, server_default=text("0"), nullable=False
-    )
-    papers_new: Mapped[int] = mapped_column(
-        Integer, server_default=text("0"), nullable=False
-    )
+    papers_found: Mapped[int] = mapped_column(Integer, server_default=text("0"), nullable=False)
+    papers_new: Mapped[int] = mapped_column(Integer, server_default=text("0"), nullable=False)
     opportunities_extracted: Mapped[int] = mapped_column(
         Integer, server_default=text("0"), nullable=False
     )
@@ -45,9 +41,7 @@ class LiteratureScan(Base):
         server_default=text("now()"),
         nullable=False,
     )
-    completed_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     triggered_by: Mapped[str] = mapped_column(String(255), nullable=False)
 
     # Relationships

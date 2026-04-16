@@ -89,12 +89,8 @@ class LabStateData(BaseModel):
     expertise: list[Expertise] = Field(default_factory=list, max_length=30)
     organisms: list[Organism] = Field(default_factory=list, max_length=20)
     reagents: list[Reagent] = Field(default_factory=list, max_length=50)
-    experimental_history: list[ExperimentSummary] = Field(
-        default_factory=list, max_length=30
-    )
-    resource_constraints: ResourceConstraints = Field(
-        default_factory=ResourceConstraints
-    )
+    experimental_history: list[ExperimentSummary] = Field(default_factory=list, max_length=30)
+    resource_constraints: ResourceConstraints = Field(default_factory=ResourceConstraints)
 
     # Metadata
     signal_count: int = Field(default=0, ge=0)

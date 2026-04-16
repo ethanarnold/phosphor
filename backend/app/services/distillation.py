@@ -1,13 +1,15 @@
 """Distillation engine - compresses signals into lab state."""
 
+import contextlib
 import json
 import uuid
 from datetime import UTC, datetime
 from typing import Any
 
 import tiktoken
-from litellm import acompletion
+from litellm import acompletion, aembedding
 from sqlalchemy import select, update
+from sqlalchemy import text as sa_text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings, get_settings
@@ -62,6 +64,44 @@ def create_empty_state() -> dict[str, Any]:
     return LabStateData(signal_count=0).model_dump()
 
 
+def lab_state_summary_text(state: LabStateData) -> str:
+    """Build a short textual summary of a lab state for embedding.
+
+    Captures equipment, techniques, expertise, and organisms — the dimensions
+    the matching engine uses for topical alignment against opportunities.
+    """
+    lines: list[str] = []
+    if state.equipment:
+        lines.append("Equipment: " + "; ".join(e.name for e in state.equipment))
+    if state.techniques:
+        lines.append("Techniques: " + "; ".join(t.name for t in state.techniques))
+    if state.expertise:
+        lines.append("Expertise: " + "; ".join(e.domain for e in state.expertise))
+    if state.organisms:
+        lines.append("Organisms: " + "; ".join(o.name for o in state.organisms))
+    return "\n".join(lines) or "Empty lab state"
+
+
+async def _embed_and_store_lab_state(
+    session: AsyncSession,
+    lab_state_id: uuid.UUID,
+    state: LabStateData,
+    settings: Settings,
+) -> None:
+    """Generate an embedding for the lab state and store via raw SQL.
+
+    Best-effort: if embedding fails, the column stays NULL and the matching
+    engine falls back to a neutral alignment score.
+    """
+    summary = lab_state_summary_text(state)
+    response = await aembedding(model=settings.embedding_model, input=[summary])
+    embedding = response.data[0]["embedding"]
+    await session.execute(
+        sa_text("UPDATE lab_states SET embedding = :embedding WHERE id = :id"),
+        {"embedding": str(embedding), "id": lab_state_id},
+    )
+
+
 async def run_distillation(
     session: AsyncSession,
     lab_id: uuid.UUID,
@@ -87,10 +127,7 @@ async def run_distillation(
 
     # Get current state (or empty if none exists)
     current_state_result = await session.execute(
-        select(LabState)
-        .where(LabState.lab_id == lab_id)
-        .order_by(LabState.version.desc())
-        .limit(1)
+        select(LabState).where(LabState.lab_id == lab_id).order_by(LabState.version.desc()).limit(1)
     )
     current_state = current_state_result.scalar_one_or_none()
 
@@ -104,9 +141,7 @@ async def run_distillation(
         new_version = 1
 
     # Get signals to process
-    signals_result = await session.execute(
-        select(RawSignal).where(RawSignal.id.in_(signal_ids))
-    )
+    signals_result = await session.execute(select(RawSignal).where(RawSignal.id.in_(signal_ids)))
     signals = signals_result.scalars().all()
 
     if not signals:
@@ -166,9 +201,7 @@ Output the updated lab state JSON:"""
         validated_state = LabStateData.model_validate(new_state_data)
 
         # Update signal count
-        validated_state.signal_count = (
-            current_state_data.get("signal_count", 0) + len(signals)
-        )
+        validated_state.signal_count = current_state_data.get("signal_count", 0) + len(signals)
 
         # Count tokens
         state_json = validated_state.model_dump_json()
@@ -191,9 +224,7 @@ Output the updated lab state JSON:"""
 
         # Mark signals as processed
         await session.execute(
-            update(RawSignal)
-            .where(RawSignal.id.in_(signal_ids))
-            .values(processed=True)
+            update(RawSignal).where(RawSignal.id.in_(signal_ids)).values(processed=True)
         )
 
         # Update distillation run
@@ -201,6 +232,13 @@ Output the updated lab state JSON:"""
         distillation_run.completed_at = datetime.now(UTC)
 
         await session.flush()
+
+        # Embed the state so the matching engine can compute alignment.
+        # Non-fatal: if the provider hiccups, leave embedding NULL.
+        with contextlib.suppress(Exception):
+            await _embed_and_store_lab_state(
+                session, new_state.id, validated_state, settings
+            )
 
         return new_state
 

@@ -42,9 +42,7 @@ class TestSemanticScholarNormalization:
         assert result["source"] == "semantic_scholar"
         assert result["fields_of_study"] == ["Biology", "Medicine"]
 
-    def test_normalize_paper_without_abstract(
-        self, client: SemanticScholarClient
-    ) -> None:
+    def test_normalize_paper_without_abstract(self, client: SemanticScholarClient) -> None:
         """Papers without abstracts should be skipped (return None)."""
         raw = {
             "paperId": "xyz789",
@@ -55,9 +53,7 @@ class TestSemanticScholarNormalization:
         result = client._normalize_paper(raw)
         assert result is None
 
-    def test_normalize_paper_without_title(
-        self, client: SemanticScholarClient
-    ) -> None:
+    def test_normalize_paper_without_title(self, client: SemanticScholarClient) -> None:
         """Papers without titles should be skipped."""
         raw = {
             "paperId": "xyz789",
@@ -68,9 +64,7 @@ class TestSemanticScholarNormalization:
         result = client._normalize_paper(raw)
         assert result is None
 
-    def test_normalize_paper_no_external_ids(
-        self, client: SemanticScholarClient
-    ) -> None:
+    def test_normalize_paper_no_external_ids(self, client: SemanticScholarClient) -> None:
         """Papers without external IDs should still work."""
         raw = {
             "paperId": "abc123",
@@ -86,9 +80,7 @@ class TestSemanticScholarNormalization:
         assert result["pmid"] is None
         assert result["publication_date"] is None
 
-    def test_normalize_author_single_name(
-        self, client: SemanticScholarClient
-    ) -> None:
+    def test_normalize_author_single_name(self, client: SemanticScholarClient) -> None:
         """Authors with single names should be handled."""
         raw = {
             "paperId": "abc123",

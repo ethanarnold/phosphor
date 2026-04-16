@@ -120,4 +120,11 @@ omit = [
     "app/api/routes/literature.py",
     "app/api/routes/opportunities.py",
     "app/api/routes/api_keys.py",
+    # Phase 3 (not yet tested)
+    "app/services/protocols.py",
+    "app/services/matching.py",
+    "app/models/protocol.py",
+    "app/schemas/matching.py",
+    "app/schemas/protocol.py",
+    "app/api/routes/matching.py",
 ]

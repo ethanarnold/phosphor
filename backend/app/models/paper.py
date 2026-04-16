@@ -29,9 +29,7 @@ class Paper(Base):
     )
     doi: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
     pmid: Mapped[str | None] = mapped_column(String(20), nullable=True, index=True)
-    semantic_scholar_id: Mapped[str | None] = mapped_column(
-        String(50), nullable=True
-    )
+    semantic_scholar_id: Mapped[str | None] = mapped_column(String(50), nullable=True)
     title: Mapped[str] = mapped_column(Text, nullable=False)
     abstract: Mapped[str] = mapped_column(Text, nullable=False)
     authors: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)

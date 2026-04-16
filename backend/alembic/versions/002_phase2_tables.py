@@ -5,6 +5,7 @@ Revises: 001
 Create Date: 2024-01-15 00:00:00.000000
 
 """
+
 from collections.abc import Sequence
 
 import sqlalchemy as sa
@@ -145,12 +146,8 @@ def upgrade() -> None:
         sa.Column("lab_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("scan_type", sa.String(20), nullable=False),
         sa.Column("query_params", postgresql.JSONB(), nullable=False),
-        sa.Column(
-            "papers_found", sa.Integer(), server_default=sa.text("0"), nullable=False
-        ),
-        sa.Column(
-            "papers_new", sa.Integer(), server_default=sa.text("0"), nullable=False
-        ),
+        sa.Column("papers_found", sa.Integer(), server_default=sa.text("0"), nullable=False),
+        sa.Column("papers_new", sa.Integer(), server_default=sa.text("0"), nullable=False),
         sa.Column(
             "opportunities_extracted",
             sa.Integer(),

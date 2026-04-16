@@ -15,9 +15,7 @@ class LabState(Base):
     """Compressed representation of lab capabilities (~2K tokens)."""
 
     __tablename__ = "lab_states"
-    __table_args__ = (
-        UniqueConstraint("lab_id", "version", name="uq_lab_states_lab_version"),
-    )
+    __table_args__ = (UniqueConstraint("lab_id", "version", name="uq_lab_states_lab_version"),)
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),

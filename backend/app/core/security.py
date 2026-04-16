@@ -156,9 +156,7 @@ async def get_current_user(
             # Look up the lab to get org_id
             from sqlalchemy import select
 
-            lab_result = await session.execute(
-                select(Lab).where(Lab.id == api_key.lab_id)
-            )
+            lab_result = await session.execute(select(Lab).where(Lab.id == api_key.lab_id))
             lab = lab_result.scalar_one_or_none()
             if lab is None:
                 raise HTTPException(
