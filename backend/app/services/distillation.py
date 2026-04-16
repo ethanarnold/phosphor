@@ -236,9 +236,7 @@ Output the updated lab state JSON:"""
         # Embed the state so the matching engine can compute alignment.
         # Non-fatal: if the provider hiccups, leave embedding NULL.
         with contextlib.suppress(Exception):
-            await _embed_and_store_lab_state(
-                session, new_state.id, validated_state, settings
-            )
+            await _embed_and_store_lab_state(session, new_state.id, validated_state, settings)
 
         return new_state
 

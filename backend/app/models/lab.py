@@ -77,11 +77,6 @@ class Lab(Base):
         back_populates="lab",
         lazy="selectin",
     )
-    protocols: Mapped[list["Protocol"]] = relationship(
-        "Protocol",
-        back_populates="lab",
-        lazy="selectin",
-    )
 
 
 # Import for type hints (avoid circular imports)
@@ -91,5 +86,4 @@ from app.models.lab_state import LabState
 from app.models.literature_scan import LiteratureScan
 from app.models.opportunity import Opportunity
 from app.models.paper import Paper
-from app.models.protocol import Protocol
 from app.models.signal import RawSignal

@@ -14,7 +14,6 @@ from app.api.routes import (
     health,
     labs,
     literature,
-    matching,
     opportunities,
     signals,
     states,
@@ -136,11 +135,6 @@ app.include_router(
     opportunities.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["opportunities"],
-)
-app.include_router(
-    matching.router,
-    prefix=f"{settings.api_prefix}/labs",
-    tags=["matching"],
 )
 app.include_router(
     api_keys_routes.router,
