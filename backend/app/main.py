@@ -6,12 +6,15 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
-from app.api.routes import health, labs, signals, states
+from app.api.routes import api_keys as api_keys_routes
+from app.api.routes import health, labs, literature, opportunities, signals, states
 from app.core.audit import AuditLogMiddleware
 from app.core.config import get_settings
 from app.core.database import close_db, init_db
-from app.core.security import AuthenticatedUser, get_current_user
+from app.core.rate_limit import limiter
 
 settings = get_settings()
 
@@ -28,12 +31,16 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 app = FastAPI(
     title="Phosphor API",
-    description="AI research tool for labs - Lab State Compressor",
-    version="0.1.0",
+    description="AI research tool for labs - Lab State Compressor & Opportunity Extraction",
+    version="0.2.0",
     lifespan=lifespan,
     docs_url="/docs" if settings.environment != "production" else None,
     redoc_url="/redoc" if settings.environment != "production" else None,
 )
+
+# Rate limiting
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS middleware - locked to known origins
 app.add_middleware(
@@ -57,8 +64,6 @@ async def set_user_context(request: Request, call_next):
 
     try:
         # Try to extract user info from JWT
-        from fastapi.security import HTTPAuthorizationCredentials
-
         auth_header = request.headers.get("Authorization", "")
         if auth_header.startswith("Bearer "):
             token = auth_header[7:]
@@ -68,6 +73,11 @@ async def set_user_context(request: Request, call_next):
             claims = validator.validate_token(token)
             request.state.user_id = claims.get("sub", "anonymous")
             request.state.org_id = claims.get("org_id")
+        elif request.headers.get("X-API-Key"):
+            # API key auth - set basic context for audit logging
+            api_key_val = request.headers["X-API-Key"]
+            request.state.user_id = f"apikey:{api_key_val[:8]}"
+            request.state.org_id = None  # resolved later in auth dependency
     except Exception:
         request.state.user_id = "anonymous"
         request.state.org_id = None
@@ -108,4 +118,19 @@ app.include_router(
     states.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["states"],
+)
+app.include_router(
+    literature.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["literature"],
+)
+app.include_router(
+    opportunities.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["opportunities"],
+)
+app.include_router(
+    api_keys_routes.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["api-keys"],
 )

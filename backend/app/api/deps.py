@@ -7,10 +7,9 @@ from fastapi import Depends, HTTPException, Path, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import AsyncSessionLocal, get_db_with_tenant
+from app.core.database import get_db_with_tenant
 from app.core.security import AuthenticatedUser, get_current_user
 from app.models.lab import Lab
-
 
 # Type aliases for common dependencies
 CurrentUser = Annotated[AuthenticatedUser, Depends(get_current_user)]
