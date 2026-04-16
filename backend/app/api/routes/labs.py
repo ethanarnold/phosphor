@@ -2,10 +2,11 @@
 
 import uuid
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 
 from app.api.deps import CurrentUser, DbSession
+from app.core.security import AuthenticatedUser, require_role
 from app.models.lab import Lab
 from app.schemas.lab import LabCreate, LabResponse
 
@@ -21,6 +22,7 @@ async def create_lab(
     lab_in: LabCreate,
     session: DbSession,
     user: CurrentUser,
+    _admin: AuthenticatedUser = Depends(require_role(["admin"])),
 ) -> Lab:
     """Create a new lab for the current organization.
 

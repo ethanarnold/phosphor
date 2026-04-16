@@ -2,10 +2,11 @@
 
 import uuid
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy import func, select
 
 from app.api.deps import CurrentLab, CurrentUser, DbSession
+from app.core.security import AuthenticatedUser, require_role
 from app.models.signal import RawSignal
 from app.schemas.signal import SignalCreate, SignalListResponse, SignalResponse
 
@@ -23,6 +24,7 @@ async def create_signal(
     session: DbSession,
     user: CurrentUser,
     background_tasks: BackgroundTasks,
+    _writer: AuthenticatedUser = Depends(require_role(["admin", "researcher"])),
 ) -> RawSignal:
     """Ingest a new signal for distillation.
 
@@ -47,9 +49,10 @@ async def create_signal(
     session.add(signal)
     await session.flush()
 
-    # Trigger async distillation (imported here to avoid circular imports)
-    # In production, this would queue a Celery task
-    # background_tasks.add_task(trigger_distillation, lab.id)
+    # Queue distillation task
+    from app.tasks.distill import distill_lab_state
+
+    distill_lab_state.delay(str(lab.id), [str(signal.id)])
 
     return signal
 

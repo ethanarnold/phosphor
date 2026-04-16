@@ -3,7 +3,6 @@
 from dataclasses import dataclass
 from typing import Any
 
-import httpx
 import jwt
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -98,7 +97,9 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(security_scheme),
     validator: ClerkJWTValidator = Depends(get_jwt_validator),
 ) -> AuthenticatedUser:
-    """Extract and validate current user from JWT.
+    """Extract and validate current user from JWT or API key.
+
+    Checks Bearer token first, then falls back to X-API-Key header.
 
     Args:
         request: FastAPI request object
@@ -111,36 +112,80 @@ async def get_current_user(
     Raises:
         HTTPException: If not authenticated or invalid token
     """
-    if credentials is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated",
-            headers={"WWW-Authenticate": "Bearer"},
+    # Try Bearer token first
+    if credentials is not None:
+        claims = validator.validate_token(credentials.credentials)
+
+        user_id = claims.get("sub")
+        org_id = claims.get("org_id")
+
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token: missing user ID",
+            )
+
+        if not org_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Organization context required",
+            )
+
+        return AuthenticatedUser(
+            user_id=user_id,
+            org_id=org_id,
+            email=claims.get("email"),
+            roles=claims.get("org_role", []),
         )
 
-    claims = validator.validate_token(credentials.credentials)
+    # Fall back to X-API-Key header
+    api_key_header = request.headers.get("X-API-Key")
+    if api_key_header:
+        from app.core.api_key_auth import validate_api_key
+        from app.core.database import AsyncSessionLocal
+        from app.models.lab import Lab
 
-    # Extract user info from Clerk claims
-    user_id = claims.get("sub")
-    org_id = claims.get("org_id")
+        async with AsyncSessionLocal() as session:
+            api_key = await validate_api_key(api_key_header, session)
+            if api_key is None:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid or expired API key",
+                )
 
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token: missing user ID",
-        )
+            # Look up the lab to get org_id
+            from sqlalchemy import select
 
-    if not org_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Organization context required",
-        )
+            lab_result = await session.execute(
+                select(Lab).where(Lab.id == api_key.lab_id)
+            )
+            lab = lab_result.scalar_one_or_none()
+            if lab is None:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="API key lab not found",
+                )
 
-    return AuthenticatedUser(
-        user_id=user_id,
-        org_id=org_id,
-        email=claims.get("email"),
-        roles=claims.get("org_role", []),
+            await session.commit()
+
+            # Derive roles from scopes
+            roles = ["api_key"]
+            if api_key.scopes.get("admin"):
+                roles.append("admin")
+            if api_key.scopes.get("researcher") or api_key.scopes.get("literature:scan"):
+                roles.append("researcher")
+
+            return AuthenticatedUser(
+                user_id=f"apikey:{api_key.key_prefix}",
+                org_id=lab.clerk_org_id,
+                email=None,
+                roles=roles,
+            )
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Not authenticated",
+        headers={"WWW-Authenticate": "Bearer"},
     )
 
 
