@@ -1,0 +1,61 @@
+{
+  "name": "Edge cases: minimal lab state, full-match, zero-match",
+  "lab_state": {
+    "equipment": [
+      {"name": "Thermocycler", "capabilities": ["PCR"], "limitations": null},
+      {"name": "Nanodrop", "capabilities": ["DNA quantification"], "limitations": null}
+    ],
+    "techniques": [
+      {"name": "PCR", "proficiency": "expert", "notes": null},
+      {"name": "DNA extraction", "proficiency": "competent", "notes": null}
+    ],
+    "expertise": [
+      {"domain": "Molecular biology", "confidence": "medium"}
+    ],
+    "organisms": [],
+    "reagents": [],
+    "experimental_history": [],
+    "resource_constraints": {},
+    "signal_count": 3
+  },
+  "opportunities": [
+    {
+      "id": "opp_full_match",
+      "description": "PCR-based genotyping of DNA samples across a panel of markers",
+      "required_equipment": ["thermocycler"],
+      "required_techniques": ["PCR", "DNA extraction"],
+      "required_expertise": ["Molecular biology"],
+      "estimated_complexity": "low",
+      "quality_score": 0.85
+    },
+    {
+      "id": "opp_acquirable",
+      "description": "Quantitative PCR of housekeeping genes requiring a qPCR instrument",
+      "required_equipment": ["qPCR instrument"],
+      "required_techniques": ["PCR"],
+      "required_expertise": ["Molecular biology"],
+      "estimated_complexity": "low",
+      "quality_score": 0.8
+    },
+    {
+      "id": "opp_zero_match",
+      "description": "Cryo-electron tomography of cellular ultrastructure in frozen-hydrated sections",
+      "required_equipment": ["cryo-electron microscope", "vitrobot"],
+      "required_techniques": ["cryo-EM sample preparation", "tomographic reconstruction"],
+      "required_expertise": ["Cryo-electron microscopy", "Structural biology"],
+      "estimated_complexity": "high",
+      "quality_score": 0.9
+    }
+  ],
+  "expected_ranking": [
+    "opp_full_match",
+    "opp_acquirable",
+    "opp_zero_match"
+  ],
+  "known_gaps": {
+    "opp_zero_match": {
+      "missing_equipment": ["cryo-electron microscope", "vitrobot"],
+      "expertise_gaps": ["Cryo-electron microscopy", "Structural biology"]
+    }
+  }
+}

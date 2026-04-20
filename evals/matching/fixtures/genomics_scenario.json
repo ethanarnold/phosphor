@@ -1,0 +1,88 @@
+{
+  "name": "Genomics lab — CRISPR / sequencing focus",
+  "lab_state": {
+    "equipment": [
+      {"name": "Illumina MiSeq", "capabilities": ["targeted sequencing", "amplicon sequencing"], "limitations": "Max 15 Gb"},
+      {"name": "Bio-Rad CFX96 qPCR", "capabilities": ["real-time PCR", "gene expression"], "limitations": null},
+      {"name": "Nanodrop 2000", "capabilities": ["DNA quantification"], "limitations": null},
+      {"name": "Gel documentation system", "capabilities": ["DNA visualization"], "limitations": null}
+    ],
+    "techniques": [
+      {"name": "PCR", "proficiency": "expert", "notes": null},
+      {"name": "CRISPR-Cas9 gene editing", "proficiency": "competent", "notes": null},
+      {"name": "RNA extraction", "proficiency": "expert", "notes": null},
+      {"name": "Library preparation", "proficiency": "competent", "notes": "Illumina TruSeq"},
+      {"name": "Sanger sequencing", "proficiency": "expert", "notes": null}
+    ],
+    "expertise": [
+      {"domain": "Molecular biology", "confidence": "high"},
+      {"domain": "Genomics", "confidence": "high"},
+      {"domain": "Bioinformatics", "confidence": "medium"}
+    ],
+    "organisms": [
+      {"name": "E. coli", "strains": ["DH5\u03b1", "BL21"], "notes": null},
+      {"name": "HEK293T", "strains": [], "notes": null}
+    ],
+    "reagents": [
+      {"name": "Cas9 protein", "quantity": "sufficient", "notes": null},
+      {"name": "sgRNA synthesis kit", "quantity": "3 kits", "notes": null}
+    ],
+    "experimental_history": [],
+    "resource_constraints": {},
+    "signal_count": 20
+  },
+  "opportunities": [
+    {
+      "id": "opp_crispr_screen",
+      "description": "CRISPR knockout screen of DNA damage repair genes in HEK293T cells using Illumina sequencing readout",
+      "required_equipment": ["Illumina MiSeq", "qPCR"],
+      "required_techniques": ["CRISPR-Cas9 gene editing", "library preparation", "PCR"],
+      "required_expertise": ["Molecular biology", "Genomics"],
+      "estimated_complexity": "high",
+      "quality_score": 0.9
+    },
+    {
+      "id": "opp_qpcr_validation",
+      "description": "qPCR validation of differential gene expression in E. coli stress response",
+      "required_equipment": ["qPCR"],
+      "required_techniques": ["PCR", "RNA extraction"],
+      "required_expertise": ["Molecular biology"],
+      "estimated_complexity": "low",
+      "quality_score": 0.8
+    },
+    {
+      "id": "opp_cryo_em",
+      "description": "Cryo-electron microscopy structural characterization of membrane protein complexes",
+      "required_equipment": ["cryo-electron microscope", "vitrification system"],
+      "required_techniques": ["cryo-EM sample preparation", "single-particle analysis"],
+      "required_expertise": ["Structural biology"],
+      "estimated_complexity": "high",
+      "quality_score": 0.9
+    },
+    {
+      "id": "opp_synchrotron",
+      "description": "Synchrotron-based small-angle X-ray scattering of protein dynamics",
+      "required_equipment": ["synchrotron beamline"],
+      "required_techniques": ["SAXS data collection"],
+      "required_expertise": ["Biophysics"],
+      "estimated_complexity": "high",
+      "quality_score": 0.7
+    }
+  ],
+  "expected_ranking": [
+    "opp_qpcr_validation",
+    "opp_crispr_screen",
+    "opp_cryo_em",
+    "opp_synchrotron"
+  ],
+  "known_gaps": {
+    "opp_cryo_em": {
+      "missing_equipment": ["cryo-electron microscope", "vitrification system"],
+      "expertise_gaps": ["Structural biology"]
+    },
+    "opp_synchrotron": {
+      "missing_equipment": ["synchrotron beamline"],
+      "expertise_gaps": ["Biophysics"]
+    }
+  }
+}

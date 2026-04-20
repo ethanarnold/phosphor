@@ -14,6 +14,7 @@ from app.api.routes import (
     health,
     labs,
     literature,
+    matching,
     opportunities,
     signals,
     states,
@@ -39,7 +40,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 app = FastAPI(
     title="Phosphor API",
     description="AI research tool for labs - Lab State Compressor & Opportunity Extraction",
-    version="0.2.0",
+    version="0.3.0",
     lifespan=lifespan,
     docs_url="/docs" if settings.environment != "production" else None,
     redoc_url="/redoc" if settings.environment != "production" else None,
@@ -130,6 +131,15 @@ app.include_router(
     literature.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["literature"],
+)
+# `matching` must be registered before `opportunities`: both mount under
+# /api/v1/labs, and matching's `/{lab_id}/opportunities/ranked` would
+# otherwise be shadowed by opportunities' `/{lab_id}/opportunities/{opp_id:UUID}`
+# (FastAPI uses first-match, not longest-prefix, routing).
+app.include_router(
+    matching.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["matching"],
 )
 app.include_router(
     opportunities.router,

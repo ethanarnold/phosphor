@@ -23,12 +23,25 @@ from app.schemas.literature_scan import (
     ScanRequest,
     ScanResponse,
 )
+from app.schemas.matching import (
+    FeasibilityBreakdown,
+    GapAnalysis,
+    MatchScore,
+    RankedOpportunity,
+    RankedOpportunityList,
+)
 from app.schemas.opportunity import (
     OpportunityListResponse,
     OpportunityResponse,
     OpportunityStatusUpdate,
 )
 from app.schemas.paper import PaperListResponse, PaperResponse
+from app.schemas.protocol import (
+    ProtocolContent,
+    ProtocolListResponse,
+    ProtocolPhase,
+    ProtocolResponse,
+)
 from app.schemas.signal import (
     CorrectionContent,
     DocumentContent,
@@ -48,16 +61,25 @@ __all__ = [
     "ExperimentContent",
     "ExperimentSummary",
     "Expertise",
+    "FeasibilityBreakdown",
+    "GapAnalysis",
     "LabCreate",
     "LabResponse",
     "LabStateData",
     "LabStateResponse",
+    "MatchScore",
     "OpportunityListResponse",
     "OpportunityResponse",
     "OpportunityStatusUpdate",
     "Organism",
     "PaperListResponse",
     "PaperResponse",
+    "ProtocolContent",
+    "ProtocolListResponse",
+    "ProtocolPhase",
+    "ProtocolResponse",
+    "RankedOpportunity",
+    "RankedOpportunityList",
     "Reagent",
     "ResourceConstraints",
     "ScanListResponse",

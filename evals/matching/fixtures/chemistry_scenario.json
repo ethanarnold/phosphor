@@ -1,0 +1,86 @@
+{
+  "name": "Chemistry lab — synthesis + analytical chemistry",
+  "lab_state": {
+    "equipment": [
+      {"name": "NMR spectrometer 400 MHz", "capabilities": ["1H NMR", "13C NMR", "2D NMR"], "limitations": null},
+      {"name": "HPLC system", "capabilities": ["analytical separation", "preparative chromatography"], "limitations": null},
+      {"name": "Rotary evaporator", "capabilities": ["solvent removal"], "limitations": null},
+      {"name": "Schlenk line", "capabilities": ["inert atmosphere chemistry"], "limitations": null},
+      {"name": "Benchtop centrifuge", "capabilities": ["sample prep"], "limitations": null}
+    ],
+    "techniques": [
+      {"name": "organic synthesis", "proficiency": "expert", "notes": null},
+      {"name": "NMR spectroscopy", "proficiency": "expert", "notes": null},
+      {"name": "column chromatography", "proficiency": "expert", "notes": null},
+      {"name": "crystallization", "proficiency": "competent", "notes": null},
+      {"name": "mass spectrometry", "proficiency": "learning", "notes": "Contract service only"}
+    ],
+    "expertise": [
+      {"domain": "Organic chemistry", "confidence": "high"},
+      {"domain": "Catalysis", "confidence": "medium"},
+      {"domain": "Analytical chemistry", "confidence": "medium"}
+    ],
+    "organisms": [],
+    "reagents": [
+      {"name": "Pd catalysts", "quantity": "assorted", "notes": null},
+      {"name": "Deuterated solvents", "quantity": "sufficient", "notes": null}
+    ],
+    "experimental_history": [],
+    "resource_constraints": {},
+    "signal_count": 18
+  },
+  "opportunities": [
+    {
+      "id": "opp_suzuki_scope",
+      "description": "Scope study of Suzuki cross-coupling with sterically hindered boronic acids characterized by NMR and HPLC",
+      "required_equipment": ["NMR spectrometer", "HPLC system"],
+      "required_techniques": ["organic synthesis", "NMR spectroscopy", "column chromatography"],
+      "required_expertise": ["Organic chemistry", "Catalysis"],
+      "estimated_complexity": "medium",
+      "quality_score": 0.9
+    },
+    {
+      "id": "opp_new_catalyst",
+      "description": "Develop a new Pd-NHC catalyst for C-H activation; characterize by NMR and X-ray crystallography",
+      "required_equipment": ["NMR spectrometer", "Schlenk line"],
+      "required_techniques": ["organic synthesis", "NMR spectroscopy", "crystallization"],
+      "required_expertise": ["Organic chemistry", "Catalysis"],
+      "estimated_complexity": "high",
+      "quality_score": 0.85
+    },
+    {
+      "id": "opp_single_cell_seq",
+      "description": "Profile heterogeneous response to therapy via single-cell RNA sequencing in mouse tumors",
+      "required_equipment": ["single-cell sequencer", "flow cytometer"],
+      "required_techniques": ["single-cell RNA sequencing", "flow cytometry sorting"],
+      "required_expertise": ["Genomics", "Immunology"],
+      "estimated_complexity": "high",
+      "quality_score": 0.9
+    },
+    {
+      "id": "opp_proteomics",
+      "description": "Global proteomics profiling of enzyme inhibitor mechanisms via mass spectrometry",
+      "required_equipment": ["high-resolution mass spectrometer"],
+      "required_techniques": ["mass spectrometry", "proteomics sample preparation"],
+      "required_expertise": ["Proteomics", "Analytical chemistry"],
+      "estimated_complexity": "high",
+      "quality_score": 0.8
+    }
+  ],
+  "expected_ranking": [
+    "opp_suzuki_scope",
+    "opp_new_catalyst",
+    "opp_proteomics",
+    "opp_single_cell_seq"
+  ],
+  "known_gaps": {
+    "opp_single_cell_seq": {
+      "missing_equipment": ["single-cell sequencer", "flow cytometer"],
+      "expertise_gaps": ["Genomics", "Immunology"]
+    },
+    "opp_proteomics": {
+      "missing_equipment": ["high-resolution mass spectrometer"],
+      "expertise_gaps": ["Proteomics"]
+    }
+  }
+}

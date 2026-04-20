@@ -11,6 +11,7 @@ import {
   CreateOrganization,
 } from '@clerk/clerk-react'
 import { useEffect, useState } from 'react'
+import RankedOpportunities from './pages/RankedOpportunities'
 
 function TokenDisplay() {
   const { getToken } = useAuth()
@@ -75,17 +76,40 @@ function TokenDisplay() {
   )
 }
 
+type Tab = 'opportunities' | 'token'
+
 function OrganizationRequired() {
   const { organizationList, isLoaded } = useOrganizationList()
   const { organization } = useOrganization()
   const [showCreate, setShowCreate] = useState(false)
+  const [tab, setTab] = useState<Tab>('opportunities')
 
   if (!isLoaded) {
     return <div className="card">Loading...</div>
   }
 
   if (organization) {
-    return <TokenDisplay />
+    return (
+      <>
+        <div className="card">
+          <button
+            onClick={() => setTab('opportunities')}
+            style={{
+              background: tab === 'opportunities' ? '#4f46e5' : '#94a3b8',
+            }}
+          >
+            Ranked opportunities
+          </button>
+          <button
+            onClick={() => setTab('token')}
+            style={{ background: tab === 'token' ? '#4f46e5' : '#94a3b8' }}
+          >
+            JWT token
+          </button>
+        </div>
+        {tab === 'opportunities' ? <RankedOpportunities /> : <TokenDisplay />}
+      </>
+    )
   }
 
   if (showCreate) {
