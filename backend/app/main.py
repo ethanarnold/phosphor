@@ -11,11 +11,16 @@ from slowapi.errors import RateLimitExceeded
 
 from app.api.routes import api_keys as api_keys_routes
 from app.api.routes import (
+    documents,
+    experiments,
+    feedback,
     health,
     labs,
     literature,
     matching,
+    metrics,
     opportunities,
+    search,
     signals,
     states,
 )
@@ -121,6 +126,31 @@ app.include_router(
     signals.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["signals"],
+)
+app.include_router(
+    experiments.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["experiments"],
+)
+app.include_router(
+    documents.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["documents"],
+)
+app.include_router(
+    feedback.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["feedback"],
+)
+app.include_router(
+    search.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["search"],
+)
+app.include_router(
+    metrics.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["metrics"],
 )
 app.include_router(
     states.router,

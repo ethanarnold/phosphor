@@ -6,6 +6,13 @@ from app.schemas.api_key import (
     ApiKeyListResponse,
     ApiKeyResponse,
 )
+from app.schemas.experiment import (
+    BulkExperimentRequest,
+    BulkExperimentResponse,
+    ExperimentCreateResponse,
+    ExperimentEntry,
+    QuickLogRequest,
+)
 from app.schemas.lab import LabCreate, LabResponse
 from app.schemas.lab_state import (
     Equipment,
@@ -55,10 +62,14 @@ __all__ = [
     "ApiKeyCreateResponse",
     "ApiKeyListResponse",
     "ApiKeyResponse",
+    "BulkExperimentRequest",
+    "BulkExperimentResponse",
     "CorrectionContent",
     "DocumentContent",
     "Equipment",
     "ExperimentContent",
+    "ExperimentCreateResponse",
+    "ExperimentEntry",
     "ExperimentSummary",
     "Expertise",
     "FeasibilityBreakdown",
@@ -78,6 +89,7 @@ __all__ = [
     "ProtocolListResponse",
     "ProtocolPhase",
     "ProtocolResponse",
+    "QuickLogRequest",
     "RankedOpportunity",
     "RankedOpportunityList",
     "Reagent",
