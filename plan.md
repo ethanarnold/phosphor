@@ -143,41 +143,41 @@ These requirements apply to ALL phases. No feature is complete until its securit
 
 ---
 
-## Phase 3: Matching Engine + Protocol Generation
+## Phase 3: Matching Engine + Protocol Generation ✅
 
 **Goal:** Rank opportunities against lab state and generate actionable protocols.
 
 ### 3.1 Matching Algorithm
-- [ ] **Feasibility scoring:** Compare opportunity requirements against lab state capabilities
+- [x] **Feasibility scoring:** Compare opportunity requirements against lab state capabilities
   - Equipment match (have it / can acquire / cannot acquire)
   - Technique match (practiced / learnable / outside expertise)
   - Expertise alignment (strong / adjacent / gap)
-- [ ] **Alignment scoring:** Semantic similarity between opportunity and lab's research focus (embedding-based)
-- [ ] **Composite ranking:** Weighted combination, configurable per lab
+- [x] **Alignment scoring:** Semantic similarity between opportunity and lab's research focus (embedding-based)
+- [x] **Composite ranking:** Weighted combination, configurable per lab
 
 ### 3.2 Gap Analysis
-- [ ] For each opportunity, identify:
+- [x] For each opportunity, identify:
   - Missing equipment
   - Skill gaps requiring training or collaboration
   - Reagent/organism acquisition needs
-- [ ] Estimate effort to close gaps
+- [x] Estimate effort to close gaps
 
 ### 3.3 Protocol Generation
-- [ ] Given: matched opportunity + lab state
-- [ ] Generate: step-by-step experimental protocol grounded in lab's actual resources
-- [ ] Flag: where protocol relies on resources the lab doesn't have
-- [ ] Output: structured protocol with phases, materials, expected outcomes
+- [x] Given: matched opportunity + lab state
+- [x] Generate: step-by-step experimental protocol grounded in lab's actual resources
+- [x] Flag: where protocol relies on resources the lab doesn't have
+- [x] Output: structured protocol with phases, materials, expected outcomes
 
 ### 3.4 Matching Eval Harness
-- [ ] **Synthetic scenarios:** Known lab state + known opportunities with human-annotated rankings
-- [ ] **Ranking correlation:** Spearman/Kendall correlation between system and human rankings
-- [ ] **Protocol quality:** Domain expert review of generated protocols (manual, sampled)
+- [x] **Synthetic scenarios:** Known lab state + known opportunities with human-annotated rankings
+- [x] **Ranking correlation:** Spearman/Kendall correlation between system and human rankings
+- [x] **Protocol quality:** Domain expert review of generated protocols (manual, sampled)
 
 ### 3.5 Deliverables
-- [ ] `GET /labs/{lab_id}/opportunities/ranked` — opportunities ranked by match score
-- [ ] `GET /labs/{lab_id}/opportunities/{opp_id}/gaps` — gap analysis
-- [ ] `POST /labs/{lab_id}/opportunities/{opp_id}/protocol` — generate protocol
-- [ ] Eval suite: `pytest evals/matching/`
+- [x] `GET /labs/{lab_id}/opportunities/ranked` — opportunities ranked by match score
+- [x] `GET /labs/{lab_id}/opportunities/{opp_id}/gaps` — gap analysis
+- [x] `POST /labs/{lab_id}/opportunities/{opp_id}/protocol` — generate protocol
+- [x] Eval suite: `pytest evals/matching/`
 - [ ] Staging deployment
 
 ---

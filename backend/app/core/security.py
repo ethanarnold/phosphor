@@ -53,7 +53,8 @@ class ClerkJWTValidator:
             # Get signing key from JWKS
             signing_key = self.jwk_client.get_signing_key_from_jwt(token)
 
-            # Decode and validate
+            # Decode and validate. Leeway absorbs small clock skew between this
+            # host and Clerk's token issuer (±10s is standard for JWTs).
             claims = jwt.decode(
                 token,
                 signing_key.key,
@@ -63,6 +64,7 @@ class ClerkJWTValidator:
                     "verify_exp": True,
                     "verify_iat": True,
                 },
+                leeway=10,
             )
             return claims
 
@@ -131,11 +133,21 @@ async def get_current_user(
                 detail="Organization context required",
             )
 
+        # Clerk emits `org_role` as a single string like "org:admin".
+        # Normalize to a list and strip the "org:" prefix so role checks
+        # can match bare role names (e.g. "admin").
+        org_role = claims.get("org_role")
+        roles: list[str] = []
+        if isinstance(org_role, str) and org_role:
+            roles = [org_role.removeprefix("org:")]
+        elif isinstance(org_role, list):
+            roles = [r.removeprefix("org:") if isinstance(r, str) else r for r in org_role]
+
         return AuthenticatedUser(
             user_id=user_id,
             org_id=org_id,
             email=claims.get("email"),
-            roles=claims.get("org_role", []),
+            roles=roles,
         )
 
     # Fall back to X-API-Key header

@@ -1,5 +1,6 @@
 """Application configuration with Pydantic settings."""
 
+import os
 from functools import lru_cache
 from typing import Literal
 
@@ -65,4 +66,24 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     """Get cached settings instance."""
-    return Settings()
+    settings = Settings()
+    # Export secrets that third-party libraries read directly from the
+    # environment (LiteLLM reads `os.environ["ANTHROPIC_API_KEY"]` rather
+    # than our Settings object). Without this, processes like uvicorn that
+    # don't inherit the shell's exported env fail to authenticate with the
+    # LLM provider even though .env was loaded into Settings.
+    _export_env_for_third_party(settings)
+    return settings
+
+
+def _export_env_for_third_party(settings: "Settings") -> None:
+    """Copy Settings values into os.environ for libs that read env directly.
+
+    Only overwrites unset keys so an explicit shell export always wins.
+    """
+    pairs = {
+        "ANTHROPIC_API_KEY": settings.anthropic_api_key,
+    }
+    for key, value in pairs.items():
+        if value and not os.environ.get(key):
+            os.environ[key] = value

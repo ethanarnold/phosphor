@@ -77,13 +77,19 @@ class Lab(Base):
         back_populates="lab",
         lazy="selectin",
     )
+    protocols: Mapped[list["Protocol"]] = relationship(
+        "Protocol",
+        back_populates="lab",
+        lazy="selectin",
+    )
 
 
 # Import for type hints (avoid circular imports)
-from app.models.api_key import ApiKey
-from app.models.distillation import DistillationRun
-from app.models.lab_state import LabState
-from app.models.literature_scan import LiteratureScan
-from app.models.opportunity import Opportunity
-from app.models.paper import Paper
-from app.models.signal import RawSignal
+from app.models.api_key import ApiKey  # noqa: E402, F401
+from app.models.distillation import DistillationRun  # noqa: E402, F401
+from app.models.lab_state import LabState  # noqa: E402, F401
+from app.models.literature_scan import LiteratureScan  # noqa: E402, F401
+from app.models.opportunity import Opportunity  # noqa: E402, F401
+from app.models.paper import Paper  # noqa: E402, F401
+from app.models.protocol import Protocol  # noqa: E402, F401
+from app.models.signal import RawSignal  # noqa: E402, F401

@@ -11,10 +11,16 @@ from slowapi.errors import RateLimitExceeded
 
 from app.api.routes import api_keys as api_keys_routes
 from app.api.routes import (
+    documents,
+    experiments,
+    feedback,
     health,
     labs,
     literature,
+    matching,
+    metrics,
     opportunities,
+    search,
     signals,
     states,
 )
@@ -39,7 +45,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 app = FastAPI(
     title="Phosphor API",
     description="AI research tool for labs - Lab State Compressor & Opportunity Extraction",
-    version="0.2.0",
+    version="0.3.0",
     lifespan=lifespan,
     docs_url="/docs" if settings.environment != "production" else None,
     redoc_url="/redoc" if settings.environment != "production" else None,
@@ -122,6 +128,31 @@ app.include_router(
     tags=["signals"],
 )
 app.include_router(
+    experiments.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["experiments"],
+)
+app.include_router(
+    documents.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["documents"],
+)
+app.include_router(
+    feedback.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["feedback"],
+)
+app.include_router(
+    search.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["search"],
+)
+app.include_router(
+    metrics.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["metrics"],
+)
+app.include_router(
     states.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["states"],
@@ -130,6 +161,15 @@ app.include_router(
     literature.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["literature"],
+)
+# `matching` must be registered before `opportunities`: both mount under
+# /api/v1/labs, and matching's `/{lab_id}/opportunities/ranked` would
+# otherwise be shadowed by opportunities' `/{lab_id}/opportunities/{opp_id:UUID}`
+# (FastAPI uses first-match, not longest-prefix, routing).
+app.include_router(
+    matching.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["matching"],
 )
 app.include_router(
     opportunities.router,

@@ -20,9 +20,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["distillation", "extraction"]
+testpaths = ["distillation", "extraction", "matching"]
 markers = [
     "fidelity: marks tests as fidelity tests (may call LLM)",
     "compression: marks tests as compression ratio tests",
     "extraction: marks tests as opportunity extraction tests (calls LLM)",
+    "matching: marks tests as matching-engine tests (ranking, gaps, protocols)",
 ]

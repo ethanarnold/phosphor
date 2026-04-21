@@ -10,6 +10,7 @@ from app.core.config import Settings
 from app.core.security import (
     AuthenticatedUser,
     ClerkJWTValidator,
+    get_current_user,
     get_jwt_validator,
     require_role,
 )
@@ -184,6 +185,78 @@ class TestClerkJWTValidator:
 
             claims = validator.validate_token("valid_token")
             assert claims == expected_claims
+
+
+class TestGetCurrentUserRoleNormalization:
+    """Tests that Clerk's `org_role` claim is normalized for role checks."""
+
+    @staticmethod
+    def _make_credentials() -> MagicMock:
+        creds = MagicMock()
+        creds.credentials = "fake.jwt.token"
+        return creds
+
+    @staticmethod
+    def _make_validator(claims: dict) -> MagicMock:
+        validator = MagicMock()
+        validator.validate_token.return_value = claims
+        return validator
+
+    @pytest.mark.asyncio
+    async def test_org_role_string_is_normalized(self) -> None:
+        """Clerk emits `org_role` as 'org:admin'; must become ['admin']."""
+        validator = self._make_validator(
+            {"sub": "user_1", "org_id": "org_1", "org_role": "org:admin"}
+        )
+        user = await get_current_user(
+            request=MagicMock(),
+            credentials=self._make_credentials(),
+            validator=validator,
+        )
+        assert user.roles == ["admin"]
+
+    @pytest.mark.asyncio
+    async def test_org_role_normalized_role_passes_admin_check(self) -> None:
+        """End-to-end: an 'org:admin' token satisfies require_role(['admin'])."""
+        validator = self._make_validator(
+            {"sub": "user_1", "org_id": "org_1", "org_role": "org:admin"}
+        )
+        user = await get_current_user(
+            request=MagicMock(),
+            credentials=self._make_credentials(),
+            validator=validator,
+        )
+        role_checker = require_role(["admin"])
+        result = await role_checker(user=user)
+        assert result is user
+
+    @pytest.mark.asyncio
+    async def test_org_role_list_is_normalized(self) -> None:
+        """If `org_role` ever arrives as a list, strip prefix from each entry."""
+        validator = self._make_validator(
+            {
+                "sub": "user_1",
+                "org_id": "org_1",
+                "org_role": ["org:admin", "org:researcher"],
+            }
+        )
+        user = await get_current_user(
+            request=MagicMock(),
+            credentials=self._make_credentials(),
+            validator=validator,
+        )
+        assert user.roles == ["admin", "researcher"]
+
+    @pytest.mark.asyncio
+    async def test_missing_org_role_yields_empty_list(self) -> None:
+        """A token with no `org_role` claim yields an empty list, not None."""
+        validator = self._make_validator({"sub": "user_1", "org_id": "org_1"})
+        user = await get_current_user(
+            request=MagicMock(),
+            credentials=self._make_credentials(),
+            validator=validator,
+        )
+        assert user.roles == []
 
 
 class TestGetJWTValidator:
