@@ -3,7 +3,7 @@ version: "3.8"
 services:
   api:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -32,7 +32,7 @@ services:
 
   worker:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgresql+asyncpg://phosphor:phosphor@db:5432/phosphor
@@ -75,7 +75,7 @@ services:
 
   beat:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgresql+asyncpg://phosphor:phosphor@db:5432/phosphor
@@ -95,7 +95,7 @@ services:
   # Run migrations on startup
   migrate:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgresql+asyncpg://phosphor:phosphor@db:5432/phosphor
