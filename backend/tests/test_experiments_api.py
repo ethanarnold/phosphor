@@ -27,9 +27,8 @@ class _FakeSession:
     def add(self, obj: object) -> None:
         from app.models.signal import RawSignal
 
-        if isinstance(obj, RawSignal):
-            if obj.id is None:
-                obj.id = uuid.uuid4()
+        if isinstance(obj, RawSignal) and obj.id is None:
+            obj.id = uuid.uuid4()
         self.added.append(obj)
 
     async def flush(self) -> None:  # noqa: D401 — async stub
@@ -82,9 +81,7 @@ def test_create_experiment_structured(experiments_client) -> None:  # type: igno
 
 def test_quick_log_uses_llm_parse(experiments_client) -> None:  # type: ignore[no-untyped-def]
     client, lab, _ = experiments_client
-    parsed = ExperimentEntry(
-        technique="qPCR", outcome="partial", notes="some replicates noisy"
-    )
+    parsed = ExperimentEntry(technique="qPCR", outcome="partial", notes="some replicates noisy")
     with (
         patch(
             "app.api.routes.experiments.parse_quick_log",

@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import json
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from litellm import aembedding
-from sqlalchemy import String, cast, func, select
+from sqlalchemy import String, cast, select
 from sqlalchemy import text as sa_text
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -124,7 +124,7 @@ async def embedding_papers(
     )
     hits: list[SearchHit] = []
     for row in result.mappings():
-        created_at = row.get("created_at") or datetime.now(timezone.utc)
+        created_at = row.get("created_at") or datetime.now(UTC)
         hits.append(
             SearchHit(
                 kind="paper",
@@ -168,12 +168,8 @@ async def hybrid_search(
     limit: int = 20,
 ) -> list[SearchHit]:
     per_kind = max(5, limit)
-    kw_signals = await keyword_signals(
-        session=session, lab_id=lab_id, query=query, limit=per_kind
-    )
-    kw_papers = await keyword_papers(
-        session=session, lab_id=lab_id, query=query, limit=per_kind
-    )
+    kw_signals = await keyword_signals(session=session, lab_id=lab_id, query=query, limit=per_kind)
+    kw_papers = await keyword_papers(session=session, lab_id=lab_id, query=query, limit=per_kind)
 
     embedding = await _embed_query(query=query, settings=settings)
     emb_papers: list[SearchHit] = []

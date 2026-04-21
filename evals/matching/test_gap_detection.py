@@ -11,6 +11,10 @@ from typing import Any
 
 import pytest
 
+# Matching service imports sqlalchemy; skip entire module if the lightweight
+# evals venv doesn't have backend runtime deps installed.
+pytest.importorskip("sqlalchemy")
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "backend"))
 
 from app.schemas.lab_state import LabStateData  # noqa: E402

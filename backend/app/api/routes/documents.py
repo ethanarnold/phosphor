@@ -1,10 +1,12 @@
 """Document upload endpoints — Phase 4 input surfaces."""
 
+import contextlib
 import time
 import uuid
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import CurrentLab, CurrentUser, DbSession
 from app.core.config import get_settings
@@ -31,7 +33,7 @@ async def _handle_upload(
     file: UploadFile,
     lab_id: uuid.UUID,
     user_id: str,
-    session,
+    session: AsyncSession,
 ) -> Document:
     start = time.perf_counter()
     data = await file.read()
@@ -60,7 +62,8 @@ async def _handle_upload(
         _queue_distill(str(lab_id), str(doc.signal_id))
 
     duration_ms = int((time.perf_counter() - start) * 1000)
-    try:
+    # Metrics instrumentation must never break ingestion.
+    with contextlib.suppress(Exception):
         await record_event(
             session=session,
             lab_id=lab_id,
@@ -69,8 +72,6 @@ async def _handle_upload(
             duration_ms=duration_ms,
             meta={"byte_size": len(data), "status": doc.status},
         )
-    except Exception:  # noqa: BLE001 — metrics must not break ingestion
-        pass
     return doc
 
 
@@ -141,10 +142,14 @@ async def list_documents(
     ).scalar() or 0
 
     rows = (
-        await session.execute(
-            query.order_by(Document.created_at.desc()).offset(offset).limit(limit)
+        (
+            await session.execute(
+                query.order_by(Document.created_at.desc()).offset(offset).limit(limit)
+            )
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
 
     return DocumentListResponse(
         documents=[DocumentResponse.model_validate(d) for d in rows],

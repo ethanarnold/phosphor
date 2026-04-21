@@ -26,6 +26,4 @@ async def get_adoption_metrics(
     Useful for catching input-friction regressions and compressor
     starvation (input volume drops).
     """
-    return await aggregate_metrics(
-        session=session, lab_id=lab.id, window_days=window_days
-    )
+    return await aggregate_metrics(session=session, lab_id=lab.id, window_days=window_days)

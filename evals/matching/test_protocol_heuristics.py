@@ -14,6 +14,11 @@ from typing import Any
 
 import pytest
 
+# Protocol service imports fastapi + sqlalchemy; skip if lightweight evals
+# venv doesn't have backend runtime deps installed.
+pytest.importorskip("fastapi")
+pytest.importorskip("sqlalchemy")
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "backend"))
 
 from app.schemas.lab_state import LabStateData  # noqa: E402

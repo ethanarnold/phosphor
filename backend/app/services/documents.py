@@ -56,9 +56,7 @@ def chunk_text(text: str) -> list[str]:
     return chunks[:MAX_CHUNKS]
 
 
-async def classify_chunks(
-    *, chunks: list[str], settings: Settings
-) -> list[ClassifiedChunk]:
+async def classify_chunks(*, chunks: list[str], settings: Settings) -> list[ClassifiedChunk]:
     """LLM-classify each chunk. Falls back to 'other' on parse errors."""
     if not chunks:
         return []
@@ -87,9 +85,7 @@ async def classify_chunks(
     return out
 
 
-def _document_signal_content(
-    *, filename: str, chunks: list[ClassifiedChunk]
-) -> dict[str, Any]:
+def _document_signal_content(*, filename: str, chunks: list[ClassifiedChunk]) -> dict[str, Any]:
     """Build DocumentContent-shaped payload for signal ingestion."""
     texts = [c.text for c in chunks]
     equipment = [c.text for c in chunks if c.chunk_type == "equipment"]

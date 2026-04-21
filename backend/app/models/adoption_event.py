@@ -36,9 +36,7 @@ class AdoptionEvent(Base):
     user_id: Mapped[str] = mapped_column(String(255), nullable=False)
     # Avoid the `metadata` attribute name on SQLAlchemy models — conflicts with
     # Base.metadata. The DB column is still named `metadata` per migration.
-    meta: Mapped[dict[str, Any] | None] = mapped_column(
-        "metadata", JSONB, nullable=True
-    )
+    meta: Mapped[dict[str, Any] | None] = mapped_column("metadata", JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=text("now()"),

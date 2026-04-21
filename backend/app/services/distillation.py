@@ -149,7 +149,7 @@ async def run_distillation(
 
     # Format signals for prompt
     signals_text = "\n\n".join(
-        f"Signal {i+1} (type: {s.signal_type}):\n{json.dumps(s.content, indent=2)}"
+        f"Signal {i + 1} (type: {s.signal_type}):\n{json.dumps(s.content, indent=2)}"
         for i, s in enumerate(signals)
     )
 

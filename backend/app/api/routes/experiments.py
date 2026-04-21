@@ -1,8 +1,10 @@
 """Experiment entry endpoints — Phase 4 input surfaces."""
 
 import time
+import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import CurrentLab, CurrentUser, DbSession
 from app.core.config import get_settings
@@ -22,8 +24,8 @@ router = APIRouter()
 
 async def _record_adoption(
     *,
-    session,
-    lab_id,
+    session: AsyncSession,
+    lab_id: uuid.UUID,
     user_id: str,
     event_type: str,
     duration_ms: int | None,
@@ -157,9 +159,7 @@ async def bulk_create_experiments(
                 entry=entry,
             )
             signal_ids.append(str(signal.id))
-            created.append(
-                ExperimentCreateResponse(signal_id=signal.id, experiment=entry)
-            )
+            created.append(ExperimentCreateResponse(signal_id=signal.id, experiment=entry))
         except Exception as exc:  # noqa: BLE001 — per-row failure shouldn't abort batch
             failed.append({"index": str(idx), "error": str(exc)})
 

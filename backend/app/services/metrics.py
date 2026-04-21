@@ -7,7 +7,7 @@ metrics endpoint aggregates over a rolling window.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from sqlalchemy import func, select
@@ -61,7 +61,7 @@ async def aggregate_metrics(
     lab_id: uuid.UUID,
     window_days: int = 30,
 ) -> AdoptionMetricsResponse:
-    since = datetime.now(timezone.utc) - timedelta(days=window_days)
+    since = datetime.now(UTC) - timedelta(days=window_days)
     rows = (
         await session.execute(
             select(
@@ -91,9 +91,7 @@ async def aggregate_metrics(
         EventTypeStats(
             event_type=event_type,
             count=len(durations),
-            avg_duration_ms=(
-                sum(durations) / len(durations) if durations else None
-            ),
+            avg_duration_ms=(sum(durations) / len(durations) if durations else None),
             p95_duration_ms=_percentile(durations, 0.95),
         )
         for event_type, durations in sorted(buckets.items())

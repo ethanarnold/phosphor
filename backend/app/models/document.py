@@ -35,12 +35,8 @@ class Document(Base):
         server_default=text("'pending'"),
         nullable=False,
     )  # pending | parsed | failed
-    chunk_count: Mapped[int] = mapped_column(
-        Integer, server_default=text("0"), nullable=False
-    )
-    signal_id: Mapped[uuid.UUID | None] = mapped_column(
-        UUID(as_uuid=True), nullable=True
-    )
+    chunk_count: Mapped[int] = mapped_column(Integer, server_default=text("0"), nullable=False)
+    signal_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     parse_error: Mapped[str | None] = mapped_column(String(2000), nullable=True)
     created_by: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(

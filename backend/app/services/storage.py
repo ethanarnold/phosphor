@@ -6,6 +6,7 @@ match the same interface later without touching callers.
 
 from __future__ import annotations
 
+import tempfile
 import uuid
 from pathlib import Path
 from typing import Protocol
@@ -41,5 +42,6 @@ def get_file_store(base_dir: str | Path | None = None) -> FileStore:
     """Return a singleton file store. Callers may pass a test dir."""
     global _default_store
     if _default_store is None or base_dir is not None:
-        _default_store = LocalFileStore(base_dir or "/tmp/phosphor-documents")
+        resolved = base_dir or Path(tempfile.gettempdir()) / "phosphor-documents"
+        _default_store = LocalFileStore(resolved)
     return _default_store
