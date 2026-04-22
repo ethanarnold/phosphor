@@ -34,18 +34,17 @@ function NoLabYet({ orgName }: { orgName: string }) {
   }
 
   return (
-    <div style={{ maxWidth: 480, margin: '4rem auto' }}>
-      <div className="card">
-        <h2>Create your lab</h2>
-        <p className="muted">
-          Each Clerk organization maps to one Phosphor lab. We&apos;ll seed it
-          using your organization name; you can rename later.
-        </p>
-        {error && <div className="error" style={{ marginBottom: 8 }}>{error}</div>}
-        <button onClick={createLab} disabled={creating}>
-          {creating ? 'Creating…' : `Create lab "${orgName}"`}
-        </button>
-      </div>
+    <div style={{ maxWidth: 480, margin: '96px auto', padding: 24 }}>
+      <div className="kicker">Setup</div>
+      <h1 style={{ marginBottom: 16 }}>Create your lab</h1>
+      <p className="muted" style={{ marginBottom: 24, lineHeight: 1.55 }}>
+        Each Clerk organization maps to one Phosphor lab. We&apos;ll seed it
+        using your organization name; you can rename later.
+      </p>
+      {error && <div className="error" style={{ marginBottom: 16 }}>{error}</div>}
+      <button onClick={createLab} disabled={creating}>
+        {creating ? 'Creating…' : `Create lab "${orgName}"`}
+      </button>
     </div>
   )
 }
@@ -63,30 +62,29 @@ function OrgRequired({ children }: { children: ReactNode }) {
 
   return (
     <Centered>
-      <div className="card">
-        <h2>Organization required</h2>
-        <p className="muted">
-          Phosphor is multi-tenant. Each organization is one lab — pick or
-          create one to continue.
-        </p>
-        {userMemberships?.data && userMemberships.data.length > 0 && !showCreate ? (
-          <>
-            <p>Switch to an existing organization:</p>
-            <OrganizationSwitcher hidePersonal />
-            <p style={{ marginTop: '1rem' }}>Or:</p>
-            <button onClick={() => setShowCreate(true)}>Create new organization</button>
-          </>
-        ) : showCreate ? (
-          <>
-            <CreateOrganization afterCreateOrganizationUrl="/" />
-            <button className="ghost" onClick={() => setShowCreate(false)} style={{ marginTop: 8 }}>
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button onClick={() => setShowCreate(true)}>Create organization</button>
-        )}
-      </div>
+      <div className="kicker">Setup</div>
+      <h1 style={{ marginBottom: 16 }}>Organization required</h1>
+      <p className="muted" style={{ marginBottom: 24, lineHeight: 1.55 }}>
+        Phosphor is multi-tenant. Each organization is one lab — pick or
+        create one to continue.
+      </p>
+      {userMemberships?.data && userMemberships.data.length > 0 && !showCreate ? (
+        <>
+          <p style={{ marginBottom: 8 }}>Switch to an existing organization:</p>
+          <OrganizationSwitcher hidePersonal />
+          <p style={{ marginTop: 24, marginBottom: 8 }}>Or:</p>
+          <button onClick={() => setShowCreate(true)}>Create new organization</button>
+        </>
+      ) : showCreate ? (
+        <>
+          <CreateOrganization afterCreateOrganizationUrl="/" />
+          <button className="ghost" onClick={() => setShowCreate(false)} style={{ marginTop: 12 }}>
+            Cancel
+          </button>
+        </>
+      ) : (
+        <button onClick={() => setShowCreate(true)}>Create organization</button>
+      )}
     </Centered>
   )
 }
@@ -107,9 +105,7 @@ function LabRequired({ children }: { children: ReactNode }) {
     const err = error as { detail?: string }
     return (
       <Centered>
-        <div className="card">
-          <div className="error">{err.detail ?? 'Failed to load lab'}</div>
-        </div>
+        <div className="error">{err.detail ?? 'Failed to load lab'}</div>
       </Centered>
     )
   }
@@ -121,8 +117,8 @@ function LabRequired({ children }: { children: ReactNode }) {
 
 function Centered({ children }: { children: ReactNode }) {
   return (
-    <div style={{ maxWidth: 480, margin: '4rem auto' }}>
-      {typeof children === 'string' ? <div className="card">{children}</div> : children}
+    <div style={{ maxWidth: 480, margin: '96px auto', padding: 24 }}>
+      {typeof children === 'string' ? <p className="muted">{children}</p> : children}
     </div>
   )
 }
@@ -132,17 +128,18 @@ export default function AuthGate({ children }: { children: ReactNode }) {
     <>
       <SignedOut>
         <Centered>
-          <div className="card">
-            <h2>Phosphor</h2>
-            <p className="muted">Sign in to access your lab.</p>
-            <div className="row">
-              <SignInButton mode="modal">
-                <button>Sign in</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="ghost">Sign up</button>
-              </SignUpButton>
-            </div>
+          <div className="kicker">Lab research tool</div>
+          <h1 style={{ marginBottom: 16 }}>Phosphor</h1>
+          <p className="muted" style={{ marginBottom: 24, lineHeight: 1.55 }}>
+            Sign in to access your lab.
+          </p>
+          <div className="row">
+            <SignInButton mode="modal">
+              <button>Sign in</button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button className="ghost">Sign up</button>
+            </SignUpButton>
           </div>
         </Centered>
       </SignedOut>

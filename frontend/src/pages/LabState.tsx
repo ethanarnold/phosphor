@@ -29,7 +29,10 @@ function CorrectionDialog({
 }) {
   const [reason, setReason] = useState('')
   return (
-    <div className="card" style={{ background: '#fefce8', borderColor: '#fde68a' }}>
+    <div
+      className="card"
+      style={{ borderLeft: '2px solid var(--warn)', background: 'var(--surface)' }}
+    >
       <h3>
         Correct {draft.field}: {draft.item_name}
       </h3>
@@ -128,15 +131,18 @@ export default function LabStatePage() {
 
   if (!lab) return null
 
-  if (isLoading) return <div className="card">Loading state…</div>
+  if (isLoading) return <p className="muted">Loading state…</p>
 
   if (!state) {
     return (
       <>
-        <header><h1>Lab state</h1></header>
-        <div className="card">
-          <p className="muted">No state yet — log experiments or upload documents to seed the compressor.</p>
-        </div>
+        <header>
+          <div>
+            <div className="kicker">Compressed capability</div>
+            <h1>Lab state</h1>
+          </div>
+        </header>
+        <p className="muted">No state yet — log experiments or upload documents to seed the compressor.</p>
       </>
     )
   }
@@ -166,14 +172,14 @@ export default function LabStatePage() {
     <>
       <header>
         <div>
-          <h1>Lab state</h1>
-          <div className="muted">
+          <div className="kicker">
             v{state.version} · {state.token_count ?? '—'} tokens · {s.signal_count} signals
           </div>
+          <h1>Lab state</h1>
         </div>
       </header>
 
-      <p className="muted" style={{ marginBottom: 12 }}>
+      <p className="muted" style={{ marginBottom: 24, maxWidth: '62ch' }}>
         Inline corrections become signals — they merge into the next distillation
         pass rather than overwriting state directly.
       </p>
@@ -301,8 +307,8 @@ export default function LabStatePage() {
             {s.experimental_history.map((h, i) => (
               <li key={i}>
                 <strong>{h.technique}</strong> — <span style={{ color:
-                  h.outcome === 'success' ? 'var(--success)' :
-                  h.outcome === 'partial' ? 'var(--warning)' : 'var(--danger)' }}>{h.outcome}</span>: {h.insight}
+                  h.outcome === 'success' ? 'var(--ok)' :
+                  h.outcome === 'partial' ? 'var(--warn)' : 'var(--danger)' }}>{h.outcome}</span>: {h.insight}
               </li>
             ))}
           </ul>

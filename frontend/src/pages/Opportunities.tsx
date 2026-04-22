@@ -37,37 +37,36 @@ export default function Opportunities() {
   return (
     <>
       <header>
-        <h1>Opportunities</h1>
+        <div>
+          <div className="kicker">Research opportunities</div>
+          <h1>Ranked by composite match</h1>
+        </div>
         <Link to="/literature"><button className="ghost">Run scan</button></Link>
       </header>
 
-      <div className="card">
-        <div className="row">
-          <label style={{ margin: 0 }}>Complexity</label>
-          <select
-            value={complexity}
-            onChange={(e) => setComplexity(e.target.value as Complexity)}
-            style={{ width: 160 }}
-          >
-            <option value="">All</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <div className="muted" style={{ marginLeft: 'auto' }}>
-            Ranked by composite match · Click a row to inspect
-          </div>
+      <div className="controls">
+        <label>Complexity</label>
+        <select
+          value={complexity}
+          onChange={(e) => setComplexity(e.target.value as Complexity)}
+          style={{ width: 160 }}
+        >
+          <option value="">All</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <div className="muted" style={{ marginLeft: 'auto' }}>
+          {filtered.length} {filtered.length === 1 ? 'opportunity' : 'opportunities'} · click a row to inspect
         </div>
       </div>
 
       {error ? (
-        <div className="card">
-          <div className="error">
-            {(error as { detail?: string }).detail ?? 'Failed to load opportunities'}
-          </div>
+        <div className="error">
+          {(error as { detail?: string }).detail ?? 'Failed to load opportunities'}
         </div>
       ) : isLoading ? (
-        <div className="card">Loading…</div>
+        <p className="muted">Loading…</p>
       ) : filtered.length === 0 ? (
         <Empty
           title="No opportunities yet"
@@ -75,38 +74,30 @@ export default function Opportunities() {
           cta={<Link to="/literature"><button>Run literature scan</button></Link>}
         />
       ) : (
-        <div className="card">
-          <table>
-            <thead>
-              <tr>
-                <th style={{ width: 32 }}>#</th>
-                <th>Opportunity</th>
-                <th style={{ width: 110 }}>Complexity</th>
-                <th style={{ width: 80 }}>Status</th>
-                <th style={{ width: 220 }}>Composite</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={r.opportunity.id} className="clickable">
-                  <td>{i + 1}</td>
-                  <td>
-                    <Link to={`/opportunities/${r.opportunity.id}`}>
-                      {r.opportunity.description.slice(0, 180)}
-                      {r.opportunity.description.length > 180 ? '…' : ''}
-                    </Link>
-                  </td>
-                  <td>
-                    <span className={`tag complexity-${r.opportunity.estimated_complexity}`}>
-                      {r.opportunity.estimated_complexity}
-                    </span>
-                  </td>
-                  <td><span className="tag">{r.opportunity.status}</span></td>
-                  <td><ScoreBar value={r.score.composite} label="composite" /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="list">
+          {filtered.map((r, i) => (
+            <Link
+              key={r.opportunity.id}
+              to={`/opportunities/${r.opportunity.id}`}
+              className="row-item"
+              style={{ gridTemplateColumns: '32px 1fr 110px 80px 240px' }}
+            >
+              <div className="idx">{String(i + 1).padStart(2, '0')}</div>
+              <div className="title">
+                {r.opportunity.description.slice(0, 180)}
+                {r.opportunity.description.length > 180 ? '…' : ''}
+              </div>
+              <div>
+                <span className={`tag complexity-${r.opportunity.estimated_complexity}`}>
+                  {r.opportunity.estimated_complexity}
+                </span>
+              </div>
+              <div>
+                <span className="tag">{r.opportunity.status}</span>
+              </div>
+              <ScoreBar value={r.score.composite} label="Composite" />
+            </Link>
+          ))}
         </div>
       )}
     </>

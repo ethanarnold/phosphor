@@ -90,30 +90,39 @@ export default function Documents() {
   return (
     <>
       <header>
-        <h1>Documents</h1>
+        <div>
+          <div className="kicker">Knowledge ingestion</div>
+          <h1>Documents</h1>
+        </div>
       </header>
 
-      <div className="card">
-        <div
-          {...getRootProps()}
-          className={`dropzone${isDragActive ? ' active' : ''}`}
-          aria-label="Upload documents"
-        >
-          <input {...getInputProps()} />
-          {isDragActive
-            ? 'Drop files to upload…'
-            : 'Drag & drop PDFs, papers, protocols, or notes — or click to choose. Max 25 MB each.'}
-        </div>
-        {uploading.length > 0 && (
-          <div className="muted" style={{ marginTop: 8 }}>
-            Uploading: {uploading.join(', ')}…
-          </div>
-        )}
-        {error && <div className="error" style={{ marginTop: 8 }}>{error}</div>}
+      <div
+        {...getRootProps()}
+        className={`dropzone${isDragActive ? ' active' : ''}`}
+        aria-label="Upload documents"
+        style={{ marginBottom: 24 }}
+      >
+        <input {...getInputProps()} />
+        {isDragActive
+          ? 'Drop files to upload…'
+          : 'Drag & drop PDFs, papers, protocols, or notes — or click to choose. Max 25 MB each.'}
       </div>
+      {uploading.length > 0 && (
+        <div className="muted" style={{ marginBottom: 16 }}>
+          Uploading: {uploading.join(', ')}…
+        </div>
+      )}
+      {error && <div className="error" style={{ marginBottom: 16 }}>{error}</div>}
 
-      <div className="card">
-        <h2>Library</h2>
+      <section className="section">
+        <div className="section-head">
+          <div className="label">Library</div>
+          {data && data.documents.length > 0 && (
+            <span className="muted">
+              {data.documents.length} {data.documents.length === 1 ? 'document' : 'documents'}
+            </span>
+          )}
+        </div>
         {isLoading ? (
           <p className="muted">Loading…</p>
         ) : !data || data.documents.length === 0 ? (
@@ -135,7 +144,7 @@ export default function Documents() {
                   <td>
                     {d.filename}
                     {d.parse_error && (
-                      <div className="muted" style={{ color: 'var(--danger)' }}>
+                      <div style={{ color: 'var(--danger)', fontSize: 12, marginTop: 4 }}>
                         {d.parse_error}
                       </div>
                     )}
@@ -151,7 +160,7 @@ export default function Documents() {
             </tbody>
           </table>
         )}
-      </div>
+      </section>
     </>
   )
 }
