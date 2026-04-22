@@ -35,7 +35,7 @@ def _canned_response(text: str) -> SimpleNamespace:
 
 def _settings() -> SimpleNamespace:
     return SimpleNamespace(
-        llm_model="claude-sonnet-4-20250514",
+        llm_model="claude-sonnet-4-6",
         embedding_model="text-embedding-3-small",
     )
 

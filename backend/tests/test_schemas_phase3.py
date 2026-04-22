@@ -171,7 +171,7 @@ class TestProtocolResponse:
                 expected_outcomes=["result"],
             ),
             lab_state_version=3,
-            llm_model="claude-sonnet-4-20250514",
+            llm_model="claude-sonnet-4-6",
             prompt_version="v1.0.0",
             status="generated",
             created_at=datetime.now(),
