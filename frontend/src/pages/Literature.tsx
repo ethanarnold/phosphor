@@ -74,10 +74,18 @@ export default function Literature() {
 
   return (
     <>
-      <header><h1>Literature scans</h1></header>
+      <header>
+        <div>
+          <div className="kicker">PubMed + Semantic Scholar</div>
+          <h1>Literature scans</h1>
+        </div>
+      </header>
 
-      <form className="card stack" onSubmit={submit}>
-        <h2>Run a scan</h2>
+      <section className="section">
+        <div className="section-head">
+          <div className="label">Run a scan</div>
+        </div>
+      <form className="stack" onSubmit={submit} style={{ gap: 16 }}>
         <div>
           <label>Query terms (comma-separated)</label>
           <input
@@ -120,9 +128,12 @@ export default function Literature() {
           </div>
         )}
       </form>
+      </section>
 
-      <div className="card">
-        <h2>Recent scans</h2>
+      <section className="section">
+        <div className="section-head">
+          <div className="label">Recent scans</div>
+        </div>
         {isLoading ? (
           <p className="muted">Loading…</p>
         ) : !data || data.scans.length === 0 ? (
@@ -151,7 +162,7 @@ export default function Literature() {
                     <td>
                       <StatusTag status={s.status} />
                       {s.error_message && (
-                        <div className="muted" style={{ color: 'var(--danger)' }}>
+                        <div style={{ color: 'var(--danger)', fontSize: 12, marginTop: 4 }}>
                           {s.error_message}
                         </div>
                       )}
@@ -168,7 +179,7 @@ export default function Literature() {
             </tbody>
           </table>
         )}
-      </div>
+      </section>
     </>
   )
 }

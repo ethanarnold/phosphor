@@ -32,10 +32,16 @@ export default function Search() {
 
   return (
     <>
-      <header><h1>Search</h1></header>
-      <form className="card" onSubmit={submit}>
-        <p className="muted">
-          Hybrid keyword + embedding search over your signals and ingested papers.
+      <header>
+        <div>
+          <div className="kicker">Hybrid keyword + embedding</div>
+          <h1>Search</h1>
+        </div>
+      </header>
+
+      <form onSubmit={submit} style={{ marginBottom: 32 }}>
+        <p className="muted" style={{ marginBottom: 12, maxWidth: '62ch' }}>
+          Search across your signals and ingested papers.
         </p>
         <div className="row">
           <input
@@ -43,46 +49,54 @@ export default function Search() {
             onChange={(e) => setQ(e.target.value)}
             placeholder="e.g. CRISPR knockout failures in HEK293"
             autoFocus
+            style={{ flex: 1 }}
           />
           <button type="submit" disabled={busy || !q.trim()}>
             {busy ? 'Searching…' : 'Search'}
           </button>
         </div>
-        {error && <div className="error" style={{ marginTop: 8 }}>{error}</div>}
+        {error && <div className="error" style={{ marginTop: 12 }}>{error}</div>}
       </form>
 
       {results && (
-        <div className="card">
-          <h2>{results.total} result{results.total === 1 ? '' : 's'}</h2>
+        <section className="section">
+          <div className="section-head">
+            <div className="label">
+              {results.total} result{results.total === 1 ? '' : 's'}
+            </div>
+          </div>
           {results.hits.length === 0 ? (
             <p className="muted">Nothing matched. Try different terms.</p>
           ) : (
-            <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
+            <div className="list">
               {results.hits.map((h) => (
-                <li
+                <div
                   key={`${h.kind}-${h.id}`}
-                  style={{
-                    padding: '0.5rem 0',
-                    borderBottom: '1px solid var(--border)',
-                  }}
+                  className="row-item"
+                  style={{ gridTemplateColumns: '1fr', alignItems: 'start' }}
                 >
-                  <div className="row" style={{ justifyContent: 'space-between' }}>
-                    <strong>
-                      {h.title ?? `${h.kind}${h.signal_type ? `: ${h.signal_type}` : ''}`}
-                    </strong>
-                    <span className="muted">
-                      {h.kind} · {h.matched_by} · {h.score.toFixed(2)}
-                    </span>
+                  <div>
+                    <div
+                      className="row"
+                      style={{ justifyContent: 'space-between', marginBottom: 4 }}
+                    >
+                      <strong style={{ fontSize: 14 }}>
+                        {h.title ?? `${h.kind}${h.signal_type ? `: ${h.signal_type}` : ''}`}
+                      </strong>
+                      <span className="mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
+                        {h.kind} · {h.matched_by} · {h.score.toFixed(2)}
+                      </span>
+                    </div>
+                    <div style={{ color: 'var(--ink-2)', marginBottom: 4 }}>{h.snippet}</div>
+                    <div className="mono" style={{ fontSize: 11, color: 'var(--ink-3)' }}>
+                      {new Date(h.created_at).toLocaleString()}
+                    </div>
                   </div>
-                  <div>{h.snippet}</div>
-                  <div className="muted" style={{ fontSize: 11 }}>
-                    {new Date(h.created_at).toLocaleString()}
-                  </div>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
-        </div>
+        </section>
       )}
     </>
   )

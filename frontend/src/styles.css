@@ -771,6 +771,127 @@ tr.clickable:hover {
   }
 }
 
+/* ---- Segmented control ---- */
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-2);
+  padding: 2px;
+  background: var(--surface);
+  gap: 0;
+}
+
+.segmented button {
+  background: transparent;
+  border: none;
+  color: var(--ink-2);
+  padding: 6px 12px;
+  border-radius: var(--r-1);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 120ms ease-out, color 120ms ease-out;
+}
+
+.segmented button:hover:not(:disabled):not([aria-pressed='true']) {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+/* ---- Outcome button (tri-state semantic) ---- */
+
+.outcome-group {
+  display: inline-flex;
+  gap: var(--s-2);
+}
+
+.outcome-btn {
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--r-2);
+  cursor: pointer;
+  border: 1px solid currentColor;
+  transition: background 120ms ease-out, color 120ms ease-out;
+}
+
+.outcome-btn.ok { color: var(--ok); }
+.outcome-btn.warn { color: var(--warn); }
+.outcome-btn.danger { color: var(--danger); }
+
+.outcome-btn:hover:not(:disabled):not([aria-checked='true']) {
+  background: var(--surface-2);
+}
+
+.outcome-btn[aria-checked='true'].ok {
+  background: var(--ok);
+  color: var(--paper);
+  border-color: var(--ok);
+}
+
+.outcome-btn[aria-checked='true'].warn {
+  background: var(--warn);
+  color: var(--paper);
+  border-color: var(--warn);
+}
+
+.outcome-btn[aria-checked='true'].danger {
+  background: var(--danger);
+  color: var(--paper);
+  border-color: var(--danger);
+}
+
+/* ---- Chip (removable tag) ---- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 4px 3px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-2);
+  color: var(--ink-2);
+  background: transparent;
+  margin-right: var(--s-1);
+  margin-bottom: var(--s-1);
+}
+
+.chip button {
+  background: transparent;
+  border: none;
+  padding: 0 4px;
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 120ms ease-out, background 120ms ease-out;
+}
+
+.chip button:hover {
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
+/* ---- Mono textarea (CSV import) ---- */
+
+textarea.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
 /* ---- Editorial protocol body (Fraunces phase headings) ---- */
 
 .protocol h4 {

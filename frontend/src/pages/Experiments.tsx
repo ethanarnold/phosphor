@@ -12,6 +12,18 @@ import { useLab } from '../lib/queries'
 
 type Mode = 'quick' | 'structured' | 'bulk'
 
+const OUTCOME_TONE: Record<Outcome, 'ok' | 'warn' | 'danger'> = {
+  success: 'ok',
+  partial: 'warn',
+  failed: 'danger',
+}
+
+const OUTCOME_LABEL: Record<Outcome, string> = {
+  success: 'Worked',
+  partial: 'Partial',
+  failed: 'Failed',
+}
+
 function OutcomeButtons({
   value,
   onChange,
@@ -19,13 +31,8 @@ function OutcomeButtons({
   value: Outcome | null
   onChange: (o: Outcome) => void
 }) {
-  const colors: Record<Outcome, string> = {
-    success: '#16a34a',
-    partial: '#d97706',
-    failed: '#dc2626',
-  }
   return (
-    <div className="row" role="radiogroup" aria-label="Outcome">
+    <div className="outcome-group" role="radiogroup" aria-label="Outcome">
       {(['success', 'partial', 'failed'] as Outcome[]).map((o) => {
         const active = value === o
         return (
@@ -35,14 +42,9 @@ function OutcomeButtons({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o)}
-            style={{
-              background: active ? colors[o] : 'transparent',
-              color: active ? 'white' : colors[o],
-              border: `1px solid ${colors[o]}`,
-              textTransform: 'capitalize',
-            }}
+            className={`outcome-btn ${OUTCOME_TONE[o]}`}
           >
-            {o === 'success' ? 'worked' : o}
+            {OUTCOME_LABEL[o]}
           </button>
         )
       })}
@@ -88,20 +90,14 @@ function ChipInput({
         </button>
       </div>
       {values.length > 0 && (
-        <div style={{ marginTop: 4 }}>
+        <div style={{ marginTop: 8 }}>
           {values.map((v) => (
-            <span key={v} className="tag">
-              {v}{' '}
+            <span key={v} className="chip">
+              {v}
               <button
                 type="button"
                 aria-label={`Remove ${v}`}
                 onClick={() => onChange(values.filter((x) => x !== v))}
-                style={{
-                  background: 'transparent',
-                  color: 'inherit',
-                  padding: 0,
-                  marginLeft: 4,
-                }}
               >
                 ×
               </button>
@@ -150,23 +146,25 @@ function QuickLog({ labId }: { labId: string }) {
   }
 
   return (
-    <form className="card" onSubmit={submit}>
-      <h2>Quick log</h2>
-      <p className="muted">
-        Single text field — LLM parses technique, equipment, and outcome.
-      </p>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Tried Western blot for HSP90 in HEK293, no signal. Probably bad antibody — switching vendor next time."
-        rows={4}
-        autoFocus
-      />
-      <div style={{ marginTop: 8 }}>
+    <form onSubmit={submit} className="stack" style={{ gap: 16 }}>
+      <div>
+        <label>Description</label>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Tried Western blot for HSP90 in HEK293, no signal. Probably bad antibody — switching vendor next time."
+          rows={4}
+          autoFocus
+        />
+        <p className="muted" style={{ marginTop: 4 }}>
+          Single text field — LLM parses technique, equipment, and outcome.
+        </p>
+      </div>
+      <div>
         <label>Outcome hint (optional)</label>
         <OutcomeButtons value={hint} onChange={setHint} />
       </div>
-      <div className="row" style={{ marginTop: 12 }}>
+      <div className="row">
         <button type="submit" disabled={busy || !text.trim()}>
           {busy ? 'Logging…' : 'Log experiment'}
         </button>
@@ -176,7 +174,7 @@ function QuickLog({ labId }: { labId: string }) {
           </span>
         )}
       </div>
-      {error && <div className="error" style={{ marginTop: 8 }}>{error}</div>}
+      {error && <div className="error">{error}</div>}
     </form>
   )
 }
@@ -224,8 +222,7 @@ function StructuredEntry({ labId }: { labId: string }) {
   }
 
   return (
-    <form className="card stack" onSubmit={submit}>
-      <h2>Structured entry</h2>
+    <form className="stack" onSubmit={submit} style={{ gap: 16 }}>
       <div>
         <label>Technique</label>
         <input
@@ -377,16 +374,16 @@ function BulkImport({ labId }: { labId: string }) {
   }
 
   return (
-    <div className="card stack">
-      <h2>Bulk import</h2>
+    <div className="stack" style={{ gap: 16 }}>
       <p className="muted">
         CSV header: <code>technique,outcome,notes,equipment_used,organisms_used,reagents_used</code>.{' '}
         Multi-value columns use <code>;</code> as separator. Up to 500 rows per import.
       </p>
       <textarea
+        className="mono"
         value={csv}
         onChange={(e) => setCsv(e.target.value)}
-        rows={6}
+        rows={8}
         placeholder={`technique,outcome,notes,equipment_used,organisms_used,reagents_used\nWestern blot,success,Detected HSP90 cleanly,BioRad imager,HEK293,anti-HSP90`}
       />
       <div className="row">
@@ -436,6 +433,12 @@ function BulkImport({ labId }: { labId: string }) {
   )
 }
 
+const MODE_LABEL: Record<Mode, string> = {
+  quick: 'Quick log',
+  structured: 'Structured',
+  bulk: 'Bulk import',
+}
+
 export default function Experiments() {
   const { data: lab } = useLab()
   const [mode, setMode] = useState<Mode>('quick')
@@ -445,21 +448,25 @@ export default function Experiments() {
   return (
     <>
       <header>
-        <h1>Log experiment</h1>
-      </header>
-      <div className="card">
-        <div className="row">
+        <div>
+          <div className="kicker">Experiment entry</div>
+          <h1>Log experiment</h1>
+        </div>
+        <div className="segmented" role="tablist" aria-label="Entry mode">
           {(['quick', 'structured', 'bulk'] as Mode[]).map((m) => (
             <button
               key={m}
-              className={mode === m ? '' : 'ghost'}
+              role="tab"
+              aria-pressed={mode === m}
+              aria-selected={mode === m}
               onClick={() => setMode(m)}
             >
-              {m === 'quick' ? 'Quick log' : m === 'structured' ? 'Structured' : 'Bulk import'}
+              {MODE_LABEL[m]}
             </button>
           ))}
         </div>
-      </div>
+      </header>
+
       {mode === 'quick' && <QuickLog labId={lab.id} />}
       {mode === 'structured' && <StructuredEntry labId={lab.id} />}
       {mode === 'bulk' && <BulkImport labId={lab.id} />}
