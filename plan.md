@@ -98,7 +98,7 @@ These requirements apply to ALL phases. No feature is complete until its securit
 - [x] `GET /labs/{lab_id}/state` — retrieve current compressed state
 - [x] `GET /labs/{lab_id}/state/history` — audit trail of state versions
 - [x] Eval suite: `pytest evals/distillation/` with CI integration
-- [ ] Staging deployment on Cloud Run (Terraform defined, not yet deployed)
+- [x] Staging deployment (Railway `phosphor-staging`, api + worker auto-deploy from main)
 
 ---
 
@@ -139,7 +139,7 @@ These requirements apply to ALL phases. No feature is complete until its securit
 - [x] `POST /labs/{lab_id}/literature/scan` — trigger manual scan
 - [x] `GET /labs/{lab_id}/opportunities` — list extracted opportunities
 - [x] Eval suite: `pytest evals/extraction/`
-- [ ] Staging deployment
+- [x] Staging deployment (Railway)
 
 ---
 
@@ -178,7 +178,7 @@ These requirements apply to ALL phases. No feature is complete until its securit
 - [x] `GET /labs/{lab_id}/opportunities/{opp_id}/gaps` — gap analysis
 - [x] `POST /labs/{lab_id}/opportunities/{opp_id}/protocol` — generate protocol
 - [x] Eval suite: `pytest evals/matching/`
-- [ ] Staging deployment
+- [x] Staging deployment (Railway)
 
 ---
 
@@ -189,35 +189,35 @@ These requirements apply to ALL phases. No feature is complete until its securit
 **Critical constraint:** The compressor is worthless if starved of data. If data entry takes more than 30 seconds, adoption will fail. Every design decision optimizes for minimal friction.
 
 ### 4.1 Experiment Entry — Designed for Speed
-- [ ] **Minimal required fields:** Date auto-filled, outcome (3 buttons: worked/partial/failed), free-text notes
+- [x] **Minimal required fields:** Date auto-filled, outcome (3 buttons: worked/partial/failed), free-text notes
 - [ ] **Smart defaults:** Pre-populate technique/equipment based on recent entries
-- [ ] **Quick-log mode:** Single-field entry that LLM parses into structured format
-- [ ] **Bulk entry:** Paste spreadsheet data, import from CSV
+- [x] **Quick-log mode:** Single-field entry that LLM parses into structured format
+- [x] **Bulk entry:** Paste spreadsheet data, import from CSV
 - [ ] **Voice notes:** Audio upload → transcription → structured signal (stretch goal)
 - [ ] **Templates:** Lab-specific templates for common experiment types (PCR, Western, transfection, etc.)
-- [ ] Parse to signal format, feed to distillation engine
+- [x] Parse to signal format, feed to distillation engine
 
 ### 4.2 Document Ingestion — Zero-Effort Capture
-- [ ] **Drag-and-drop upload** for PDFs, protocols, papers
-- [ ] **Bulk upload:** Folder upload, zip archives
+- [x] **Drag-and-drop upload** for PDFs, protocols, papers
+- [x] **Bulk upload:** Folder upload, zip archives
 - [ ] **Cloud integrations:** Google Drive, Dropbox, Box folder sync (auto-ingest new files)
 - [ ] **ELN integrations:** Benchling, LabArchives, Notion API connectors (where available)
 - [ ] **Email forwarding:** Forward papers/protocols to lab-specific email address for ingestion
-- [ ] Unstructured.io parsing to extract text chunks
-- [ ] Classify chunks by type (methods, results, equipment mentions)
-- [ ] Feed classified chunks as signals to distillation engine
+- [x] Unstructured.io parsing to extract text chunks
+- [x] Classify chunks by type (methods, results, equipment mentions)
+- [x] Feed classified chunks as signals to distillation engine
 - [ ] **Progress visibility:** Show what was extracted, let user correct misclassifications
 
 ### 4.3 User Feedback Loop — One-Click Corrections
-- [ ] Accept/reject buttons on suggested opportunities (single click)
-- [ ] **Inline corrections:** Click on lab state item → edit directly
+- [x] Accept/reject buttons on suggested opportunities (single click)
+- [x] **Inline corrections:** Click on lab state item → edit directly
 - [ ] Quick-add: "We have X" / "We don't have Y" buttons
-- [ ] Feedback signals feed back into distillation engine
-- [ ] Track feedback for prompt refinement
+- [x] Feedback signals feed back into distillation engine
+- [x] Track feedback for prompt refinement
 - [ ] **Feedback impact visibility:** Show user how their correction changed the lab state
 
 ### 4.4 Search Over Past Work
-- [ ] Hybrid search: keyword + embedding similarity over raw document chunks
+- [x] Hybrid search: keyword + embedding similarity over raw document chunks
 - [ ] Filter by date, experiment type, outcome
 - [ ] Results augmented with relevant lab state context
 
@@ -227,21 +227,21 @@ These requirements apply to ALL phases. No feature is complete until its securit
 - [ ] Works on phone browser, no app install required
 
 ### 4.6 Adoption Metrics
-- [ ] Track time-to-complete for each input type
+- [x] Track time-to-complete for each input type
 - [ ] Monitor drop-off rates on forms
 - [ ] A/B test form variations
 - [ ] Alert if input volume drops (compressor starvation warning)
 
 ### 4.7 Deliverables
-- [ ] `POST /labs/{lab_id}/experiments` — structured experiment entry
-- [ ] `POST /labs/{lab_id}/experiments/quick` — single-field quick log
-- [ ] `POST /labs/{lab_id}/experiments/bulk` — bulk import
-- [ ] `POST /labs/{lab_id}/documents` — document upload
-- [ ] `POST /labs/{lab_id}/documents/bulk` — bulk document upload
-- [ ] `POST /labs/{lab_id}/feedback` — user corrections
-- [ ] `GET /labs/{lab_id}/search` — search past work
+- [x] `POST /labs/{lab_id}/experiments` — structured experiment entry
+- [x] `POST /labs/{lab_id}/experiments/quick` — single-field quick log
+- [x] `POST /labs/{lab_id}/experiments/bulk` — bulk import
+- [x] `POST /labs/{lab_id}/documents` — document upload
+- [x] `POST /labs/{lab_id}/documents/bulk` — bulk document upload
+- [x] `POST /labs/{lab_id}/feedback` — user corrections (split into `/feedback/state` and `/feedback/opportunities/{opp_id}`)
+- [x] `GET /labs/{lab_id}/search` — search past work
 - [ ] Cloud connector configurations
-- [ ] Staging deployment
+- [x] Staging deployment (Railway `phosphor-staging`, main branch auto-deploys)
 
 ---
 
@@ -250,21 +250,21 @@ These requirements apply to ALL phases. No feature is complete until its securit
 **Goal:** Build the user-facing application. (Auth already implemented in Phase 1.)
 
 ### 5.1 Core UI
-- [ ] Dashboard: lab state summary, recent opportunities, pending actions
-- [ ] Experiment entry forms with validation
-- [ ] Document upload with progress
-- [ ] Opportunity browser with filters and ranking explanation
-- [ ] Protocol viewer with export (PDF, Markdown)
-- [ ] Lab state editor for manual corrections
+- [x] Dashboard: lab state summary, recent opportunities, pending actions
+- [x] Experiment entry forms with validation
+- [x] Document upload with progress
+- [x] Opportunity browser with filters and ranking explanation
+- [x] Protocol viewer (export to PDF/Markdown not yet implemented)
+- [x] Lab state editor for manual corrections
 
 ### 5.2 Notifications
 - [ ] Email/in-app alerts for new high-match opportunities
 - [ ] Weekly digest of literature scans
 
 ### 5.3 Deliverables
-- [ ] React 18 + TypeScript + Vite app
-- [ ] Responsive design for desktop (lab use case)
-- [ ] Deployed frontend on staging
+- [x] React 18 + TypeScript + Vite app
+- [x] Responsive design for desktop (lab use case)
+- [x] Deployed frontend on staging
 
 ---
 
@@ -275,7 +275,7 @@ These requirements apply to ALL phases. No feature is complete until its securit
 | Local dev environment | 1.1 | ✅ `docker-compose up` runs full stack |
 | **Security foundation** | 1.1.1 | ✅ Auth, RLS, audit logging, input validation operational |
 | CI/CD pipeline | 1.1 | ✅ PRs blocked on lint + test + 80% coverage + SAST + dependency scan |
-| Staging deployment | 1.5 | ⏳ Terraform defined, not yet deployed |
+| Staging deployment | 1.5 | ✅ Railway `phosphor-staging`, api + worker + frontend auto-deploy from main |
 | Eval harness framework | 1.4 | ✅ Evals run in CI, results logged |
 | **Security review gate** | Each phase | ⏳ Phase not complete until security review passes |
 | Production readiness | 5.3 | ⏳ Monitoring, backups, rate limiting, incident response plan, penetration test |
@@ -287,8 +287,8 @@ These requirements apply to ALL phases. No feature is complete until its securit
 Each core component has dedicated evals:
 
 1. **Distillation evals** — ✅ Compression ratio, fidelity tests, regression detection
-2. **Extraction evals** — ⏳ Precision/recall on annotated abstracts, quality scoring
-3. **Matching evals** — ⏳ Ranking correlation with human judgments
+2. **Extraction evals** — ✅ Precision/recall on annotated abstracts, quality scoring
+3. **Matching evals** — ✅ Ranking correlation with human judgments
 
 Evals run on every PR. Prompt changes require eval approval before merge.
 
