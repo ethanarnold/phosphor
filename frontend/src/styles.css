@@ -596,7 +596,6 @@ tr.clickable:hover {
   align-items: center;
   padding: var(--s-4) var(--s-2);
   border-bottom: 1px solid var(--rule);
-  cursor: pointer;
   transition: background 120ms ease-out;
 }
 
@@ -604,8 +603,206 @@ tr.clickable:hover {
   border-top: 1px solid var(--rule);
 }
 
-.list .row-item:hover {
+.list .row-item.clickable,
+.list a.row-item {
+  cursor: pointer;
+}
+
+.list .row-item.clickable:hover,
+.list a.row-item:hover {
   background: var(--surface-2);
+}
+
+.list a.row-item {
+  color: inherit;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+}
+
+.list a.row-item:hover {
+  border-bottom-color: var(--rule);
+}
+
+.list .idx {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.list .title {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.list .title em {
+  color: var(--ink-3);
+  font-style: normal;
+}
+
+/* ---- Section labels (mono kicker + Fraunces h2) ---- */
+
+.section {
+  padding: var(--s-6) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section:last-child {
+  border-bottom: 0;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  margin-bottom: var(--s-4);
+}
+
+.section-head .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+/* ---- Control bar (slim filter row, no card) ---- */
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s-4);
+}
+
+.controls label {
+  margin: 0;
+}
+
+/* ---- Editorial layout (OpportunityDetail) ---- */
+
+.editorial {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: var(--s-7);
+  padding-top: var(--s-5);
+}
+
+.editorial article {
+  max-width: 62ch;
+}
+
+.editorial article .kicker {
+  margin-bottom: var(--s-3);
+}
+
+.editorial h1 {
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--s-4);
+}
+
+.editorial article p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 0 0 var(--s-4);
+}
+
+.editorial aside {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-3);
+  position: sticky;
+  top: var(--s-5);
+  align-self: start;
+}
+
+.meta-list {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+}
+
+.meta-list > div {
+  display: grid;
+  gap: 4px;
+}
+
+.meta-list dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.meta-list dd {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.meta-list dd .big {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.meta-list dd .big.high {
+  color: var(--signal);
+}
+
+@media (max-width: 880px) {
+  .editorial {
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  .editorial aside {
+    position: static;
+  }
+}
+
+/* ---- Editorial protocol body (Fraunces phase headings) ---- */
+
+.protocol h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  font-variation-settings: 'opsz' 48;
+  margin-top: var(--s-5);
+  margin-bottom: var(--s-2);
+  color: var(--ink);
+}
+
+.protocol ol,
+.protocol ul {
+  margin: 0 0 var(--s-3);
+  padding-left: var(--s-4);
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.protocol li {
+  margin-bottom: var(--s-1);
+}
+
+.protocol .outcomes li,
+.protocol .citations li {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 14;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
 }
 
 /* ---- Mobile ---- */
