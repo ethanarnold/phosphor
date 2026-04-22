@@ -790,6 +790,7 @@ tr.clickable:hover {
   border-radius: var(--r-1);
   font-size: 13px;
   font-weight: 500;
+  white-space: nowrap;
   transition: background 120ms ease-out, color 120ms ease-out;
 }
 

@@ -26,10 +26,15 @@ export default function App() {
           <Route
             path="*"
             element={
-              <div className="card">
-                <h2>Not found</h2>
+              <>
+                <header>
+                  <div>
+                    <div className="kicker">404</div>
+                    <h1>Not found</h1>
+                  </div>
+                </header>
                 <p className="muted">The page you requested doesn&apos;t exist.</p>
-              </div>
+              </>
             }
           />
         </Route>
