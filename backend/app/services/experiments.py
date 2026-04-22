@@ -1,6 +1,7 @@
 """Experiment service — structured entry + LLM-parsed quick-log."""
 
 import json
+import re
 import uuid
 from datetime import UTC, datetime
 from typing import Any
@@ -11,6 +12,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import Settings
 from app.models.signal import RawSignal
 from app.schemas.experiment import ExperimentEntry
+
+_FENCE_RE = re.compile(r"^\s*```(?:json)?\s*\n(.*?)\n?\s*```\s*$", re.DOTALL)
+
+
+def _strip_code_fence(raw: str) -> str:
+    # Sonnet 4.6 often wraps JSON in ```json ... ``` despite the "ONLY valid JSON" instruction.
+    m = _FENCE_RE.match(raw)
+    return m.group(1) if m else raw
 
 QUICK_LOG_PROMPT = """You parse free-text experiment notes into structured form.
 
@@ -71,6 +80,6 @@ async def parse_quick_log(
         max_tokens=800,
     )
     raw = response.choices[0].message.content or "{}"
-    data: dict[str, Any] = json.loads(raw)
+    data: dict[str, Any] = json.loads(_strip_code_fence(raw))
     data.setdefault("notes", text)
     return ExperimentEntry.model_validate(data)
