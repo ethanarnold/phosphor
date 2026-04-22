@@ -2,9 +2,9 @@
 
 import os
 from functools import lru_cache
-from typing import Literal
+from typing import Any, Literal
 
-from pydantic import Field, PostgresDsn, RedisDsn
+from pydantic import Field, PostgresDsn, RedisDsn, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -36,6 +36,19 @@ class Settings(BaseSettings):
     # Redis
     redis_url: RedisDsn
 
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def _force_asyncpg_driver(cls, v: Any) -> Any:
+        # Railway/Heroku-style URLs come as `postgresql://` or `postgres://`.
+        # The async engine needs the `+asyncpg` driver tag; Alembic strips it
+        # via `database_url_sync`, so forcing it here is safe for both paths.
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = "postgresql://" + v[len("postgres://") :]
+            if v.startswith("postgresql://"):
+                v = "postgresql+asyncpg://" + v[len("postgresql://") :]
+        return v
+
     # Clerk
     clerk_secret_key: str
     clerk_jwks_url: str = "https://api.clerk.com/v1/jwks"
@@ -43,7 +56,7 @@ class Settings(BaseSettings):
 
     # Anthropic (via LiteLLM)
     anthropic_api_key: str
-    llm_model: str = "claude-sonnet-4-20250514"
+    llm_model: str = "claude-sonnet-4-6"
 
     # Distillation
     max_state_tokens: int = 2000
