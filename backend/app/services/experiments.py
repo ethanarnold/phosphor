@@ -21,6 +21,7 @@ def _strip_code_fence(raw: str) -> str:
     m = _FENCE_RE.match(raw)
     return m.group(1) if m else raw
 
+
 QUICK_LOG_PROMPT = """You parse free-text experiment notes into structured form.
 
 Output ONLY valid JSON matching this schema:

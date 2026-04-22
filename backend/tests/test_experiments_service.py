@@ -10,16 +10,16 @@ import pytest
 from app.services.experiments import _strip_code_fence, parse_quick_log
 
 FENCED_JSON = (
-    '```json\n'
-    '{\n'
+    "```json\n"
+    "{\n"
     '  "technique": "Western blot",\n'
     '  "outcome": "partial",\n'
     '  "notes": "faint bands",\n'
     '  "equipment_used": [],\n'
     '  "organisms_used": ["HeLa"],\n'
     '  "reagents_used": []\n'
-    '}\n'
-    '```'
+    "}\n"
+    "```"
 )
 BARE_JSON = '{"technique": "qPCR", "outcome": "success", "notes": "clean amplification"}'
 
