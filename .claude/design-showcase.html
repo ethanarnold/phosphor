@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phosphor — design showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+  />
+  <style>
+    :root {
+      /* Surfaces */
+      --paper: #FAFAF7;
+      --surface: #FFFFFF;
+      --surface-2: #F2F0E8;
+
+      /* Ink */
+      --ink: #0A0A0A;
+      --ink-2: #3D3D3A;
+      --ink-3: #6B6B66;
+
+      /* Rules */
+      --rule: #E4E2DA;
+      --rule-strong: #CAC7BB;
+
+      /* Functional */
+      --accent: #2B2A28;        /* primary action — warm near-black */
+      --focus: #8B8680;         /* focus ring — warm neutral */
+      --signal: #C8441F;        /* oxidized red — reserved for scored-high numerals */
+
+      /* Status (muted earth tones, used as TEXT not fill) */
+      --ok: #4C6B3C;
+      --warn: #A67A2E;
+      --danger: #8B2420;
+
+      /* Radii */
+      --r-1: 2px;
+      --r-2: 4px;
+      --r-3: 6px;
+
+      /* Spacing scale (4px base) */
+      --s-1: 4px;
+      --s-2: 8px;
+      --s-3: 12px;
+      --s-4: 16px;
+      --s-5: 24px;
+      --s-6: 32px;
+      --s-7: 48px;
+      --s-8: 64px;
+      --s-9: 96px;
+
+      --shadow-pop: 0 1px 2px rgba(10, 10, 10, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+
+    body {
+      font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      font-feature-settings: 'ss01', 'cv11';
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .display, h1, h2, h3 {
+      font-family: 'Fraunces', ui-serif, Georgia, serif;
+      font-variation-settings: 'opsz' 144;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      font-feature-settings: 'zero';
+    }
+
+    /* Page frame */
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-6) var(--s-9);
+    }
+
+    /* ---------------- Header ---------------- */
+    .masthead {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-bottom: var(--s-5);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead .brand {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .masthead .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ---------------- Hero ---------------- */
+    .hero {
+      padding: var(--s-8) 0 var(--s-7);
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero h1 {
+      font-size: clamp(44px, 6vw, 72px);
+      line-height: 1.02;
+      font-weight: 400;
+      font-variation-settings: 'opsz' 144;
+    }
+    .hero .kicker {
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 11px;
+      color: var(--ink-3);
+      margin-bottom: var(--s-4);
+    }
+    .hero .lede {
+      max-width: 62ch;
+      margin-top: var(--s-5);
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink-2);
+    }
+    .hero .lede em {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* ---------------- Section ---------------- */
+    section {
+      padding: var(--s-7) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    section:last-of-type { border-bottom: 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--s-6);
+      margin-bottom: var(--s-6);
+      align-items: baseline;
+    }
+    .section-head .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-3);
+    }
+    .section-head h2 {
+      font-size: 28px;
+      font-weight: 400;
+      font-variation-settings: 'opsz' 144;
+    }
+
+    /* ---------------- Palette ---------------- */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--s-3);
+    }
+    .swatch {
+      border: 1px solid var(--rule);
+      border-radius: var(--r-3);
+      padding: var(--s-3);
+      background: var(--surface);
+    }
+    .swatch .chip {
+      height: 72px;
+      border-radius: var(--r-2);
+      border: 1px solid var(--rule);
+      margin-bottom: var(--s-3);
+    }
+    .swatch .name {
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .swatch .hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      letter-spacing: 0.02em;
+    }
+    .swatch .role {
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-top: var(--s-1);
+    }
+
+    /* ---------------- Type specimen ---------------- */
+    .type-grid {
+      display: grid;
+      gap: var(--s-5);
+    }
+    .type-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: var(--s-5);
+      align-items: baseline;
+      padding-bottom: var(--s-4);
+      border-bottom: 1px solid var(--rule);
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .t-display {
+      font-family: 'Fraunces', serif;
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 400;
+      font-variation-settings: 'opsz' 144;
+    }
+    .t-h1 { font-family: 'Fraunces', serif; font-size: 32px; line-height: 1.1; font-weight: 400; letter-spacing: -0.015em; font-variation-settings: 'opsz' 72; }
+    .t-h2 { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.2; font-weight: 500; letter-spacing: -0.01em; font-variation-settings: 'opsz' 48; }
+    .t-body { font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
+    .t-ui { font-size: 14px; line-height: 1.5; }
+    .t-meta { font-size: 12px; color: var(--ink-3); }
+    .t-micro { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); }
+    .t-mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); }
+
+    /* ---------------- Components ---------------- */
+    .cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+      align-items: center;
+    }
+    button, .btn {
+      font: inherit;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.005em;
+      padding: 8px 14px;
+      border-radius: var(--r-2);
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: var(--paper);
+      cursor: pointer;
+      transition: transform 120ms ease-out, background 120ms ease-out, border-color 120ms ease-out;
+    }
+    button:hover { background: #000; border-color: #000; }
+    button:active { transform: translateY(0.5px); }
+    .btn.ghost {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--rule-strong);
+    }
+    .btn.ghost:hover { background: var(--surface-2); border-color: var(--ink-3); }
+    .btn.danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+    .btn.danger:hover { background: var(--danger); color: var(--paper); }
+
+    input[type="text"], input[type="search"] {
+      font: inherit;
+      padding: 8px 12px;
+      border: 1px solid var(--rule-strong);
+      border-radius: var(--r-2);
+      background: var(--surface);
+      color: var(--ink);
+      min-width: 240px;
+    }
+    input:focus { outline: 2px solid var(--focus); outline-offset: -1px; border-color: transparent; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid var(--rule-strong);
+      border-radius: var(--r-2);
+      color: var(--ink-2);
+      background: transparent;
+    }
+    .tag.ok { color: var(--ok); border-color: color-mix(in oklab, var(--ok) 35%, var(--rule)); }
+    .tag.warn { color: var(--warn); border-color: color-mix(in oklab, var(--warn) 35%, var(--rule)); }
+    .tag.danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 35%, var(--rule)); }
+
+    /* Score bar — Linear-style hairline */
+    .score {
+      display: grid;
+      grid-template-columns: 56px 1fr 40px;
+      gap: var(--s-3);
+      align-items: center;
+      min-width: 260px;
+    }
+    .score .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+    .score .track { height: 2px; background: var(--rule); border-radius: 1px; overflow: hidden; }
+    .score .fill { height: 100%; background: var(--ink); }
+    .score .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      color: var(--ink);
+    }
+    .score.high .num { color: var(--signal); }
+
+    /* ---------------- Editorial opportunity layout ---------------- */
+    .edito {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: var(--s-7);
+      padding-top: var(--s-5);
+    }
+    @media (max-width: 760px) {
+      .edito { grid-template-columns: 1fr; }
+      .section-head { grid-template-columns: 1fr; gap: var(--s-2); }
+    }
+    .edito .kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-3);
+      margin-bottom: var(--s-3);
+    }
+    .edito h2 {
+      font-size: 36px;
+      line-height: 1.1;
+      font-weight: 400;
+      font-variation-settings: 'opsz' 96;
+      margin-bottom: var(--s-5);
+    }
+    .edito p {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      max-width: 58ch;
+      margin: 0 0 var(--s-4);
+    }
+    .edito aside {
+      border-top: 1px solid var(--rule);
+      padding-top: var(--s-3);
+    }
+    .meta-list { display: grid; gap: var(--s-3); }
+    .meta-list dt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+    .meta-list dd { margin: 0; font-size: 14px; color: var(--ink); }
+
+    /* ---------------- Hairline list (Linear) ---------------- */
+    .list { display: grid; }
+    .list .row {
+      display: grid;
+      grid-template-columns: 28px 1fr 90px 260px;
+      gap: var(--s-4);
+      align-items: center;
+      padding: var(--s-4) 0;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      transition: background 120ms ease-out;
+    }
+    .list .row:first-child { border-top: 1px solid var(--rule); }
+    .list .row:hover { background: var(--surface-2); }
+    .list .row .idx {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      font-variant-numeric: tabular-nums;
+    }
+    .list .row .title { font-size: 14px; color: var(--ink); }
+    .list .row .title em { color: var(--ink-3); }
+
+    /* ---------------- Footer note ---------------- */
+    footer {
+      margin-top: var(--s-8);
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--rule);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="masthead">
+      <div class="brand">Phosphor</div>
+      <div class="meta">Design · v0.1 · 2026-04-21</div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="kicker">A design direction for a lab research tool</div>
+      <h1>Ink on paper.<br/>One signal at a time.</h1>
+      <p class="lede">
+        Confidence through typography and restraint, not color. Fraunces sets the voice;
+        Inter Tight carries the interface; JetBrains Mono handles <em>data, metadata, and scale</em>.
+        Hairline rules structure the page. Nothing is decorative.
+      </p>
+    </div>
+
+    <!-- PALETTE -->
+    <section>
+      <div class="section-head">
+        <div class="label">01 / Palette</div>
+        <h2>Four surfaces, three inks, one signal.</h2>
+      </div>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <div class="chip" style="background: var(--paper);"></div>
+          <div class="name">Paper</div>
+          <div class="hex">#FAFAF7</div>
+          <div class="role">App background</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--surface);"></div>
+          <div class="name">Surface</div>
+          <div class="hex">#FFFFFF</div>
+          <div class="role">Cards, dialogs</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--surface-2);"></div>
+          <div class="name">Surface 2</div>
+          <div class="hex">#F2F0E8</div>
+          <div class="role">Hover, inset</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--rule);"></div>
+          <div class="name">Rule</div>
+          <div class="hex">#E4E2DA</div>
+          <div class="role">Hairline borders</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--ink);"></div>
+          <div class="name">Ink</div>
+          <div class="hex">#0A0A0A</div>
+          <div class="role">Primary text</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--ink-2);"></div>
+          <div class="name">Ink 2</div>
+          <div class="hex">#3D3D3A</div>
+          <div class="role">Secondary text</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--ink-3);"></div>
+          <div class="name">Ink 3</div>
+          <div class="hex">#6B6B66</div>
+          <div class="role">Muted, metadata</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--accent);"></div>
+          <div class="name">Accent</div>
+          <div class="hex">#2B2A28</div>
+          <div class="role">Primary CTAs</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--focus);"></div>
+          <div class="name">Focus</div>
+          <div class="hex">#8B8680</div>
+          <div class="role">Focus ring only</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--signal);"></div>
+          <div class="name">Signal</div>
+          <div class="hex">#C8441F</div>
+          <div class="role">High-score numeral only</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--ok);"></div>
+          <div class="name">OK</div>
+          <div class="hex">#4C6B3C</div>
+          <div class="role">Success text</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--warn);"></div>
+          <div class="name">Warn</div>
+          <div class="hex">#A67A2E</div>
+          <div class="role">Warning text</div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--danger);"></div>
+          <div class="name">Danger</div>
+          <div class="hex">#8B2420</div>
+          <div class="role">Error text</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPE -->
+    <section>
+      <div class="section-head">
+        <div class="label">02 / Typography</div>
+        <h2>Fraunces for voice. Inter Tight for interface. JetBrains Mono for data.</h2>
+      </div>
+      <div class="type-grid">
+        <div class="type-row">
+          <div class="tag">Display · Fraunces 56</div>
+          <div class="t-display">The lab remembers.</div>
+        </div>
+        <div class="type-row">
+          <div class="tag">H1 · Fraunces 32</div>
+          <div class="t-h1">Ranked opportunities, scored against your lab state</div>
+        </div>
+        <div class="type-row">
+          <div class="tag">H2 · Fraunces 22</div>
+          <div class="t-h2">Recent experiments</div>
+        </div>
+        <div class="type-row">
+          <div class="tag">Reading · Inter Tight 16/1.6</div>
+          <div class="t-body">
+            Lab state compresses your equipment, techniques, expertise, organisms, reagents, and
+            experimental history into a representation an LLM can reason over. Opportunities come
+            from PubMed and Semantic Scholar, and are ranked by how well they align with what your
+            lab can actually execute.
+          </div>
+        </div>
+        <div class="type-row">
+          <div class="tag">UI · Inter Tight 14</div>
+          <div class="t-ui">Log experiment · Structured entry · Bulk import</div>
+        </div>
+        <div class="type-row">
+          <div class="tag">Metadata · 12</div>
+          <div class="t-meta">Updated 14 min ago · v8 · 1,847 tokens</div>
+        </div>
+        <div class="type-row">
+          <div class="tag">Micro · Mono 11 caps</div>
+          <div class="t-micro">Composite match score</div>
+        </div>
+        <div class="type-row">
+          <div class="tag">Data · JetBrains Mono 13</div>
+          <div class="t-mono">HEK293 · anti-HSP90 · 1:1000 · 14.7°C · n=3</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTS -->
+    <section>
+      <div class="section-head">
+        <div class="label">03 / Components</div>
+        <h2>Primitives, no decoration.</h2>
+      </div>
+
+      <div style="display: grid; gap: var(--s-5);">
+        <div>
+          <div class="t-micro" style="margin-bottom: var(--s-3);">Buttons</div>
+          <div class="cluster">
+            <button>Log experiment</button>
+            <button class="btn ghost">Run scan</button>
+            <button class="btn danger">Delete</button>
+            <button disabled style="opacity: 0.4;">Disabled</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="t-micro" style="margin-bottom: var(--s-3);">Input</div>
+          <div class="cluster">
+            <input type="search" placeholder="Search equipment, techniques, organisms…" />
+            <button class="btn ghost">Filter</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="t-micro" style="margin-bottom: var(--s-3);">Tags · outlined, mono</div>
+          <div class="cluster">
+            <span class="tag">Western blot</span>
+            <span class="tag">HEK293</span>
+            <span class="tag ok">Low complexity</span>
+            <span class="tag warn">Medium complexity</span>
+            <span class="tag danger">High complexity</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="t-micro" style="margin-bottom: var(--s-3);">Score — hairline, tabular</div>
+          <div style="display: grid; gap: var(--s-3);">
+            <div class="score high">
+              <div class="lbl">Composite</div>
+              <div class="track"><div class="fill" style="width: 92%; background: var(--signal);"></div></div>
+              <div class="num">0.92</div>
+            </div>
+            <div class="score">
+              <div class="lbl">Feasibility</div>
+              <div class="track"><div class="fill" style="width: 78%;"></div></div>
+              <div class="num">0.78</div>
+            </div>
+            <div class="score">
+              <div class="lbl">Alignment</div>
+              <div class="track"><div class="fill" style="width: 64%;"></div></div>
+              <div class="num">0.64</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITORIAL OPPORTUNITY -->
+    <section>
+      <div class="section-head">
+        <div class="label">04 / Opportunity · editorial layout</div>
+        <h2>Reading surfaces earn breathing room.</h2>
+      </div>
+      <div class="edito">
+        <article>
+          <div class="kicker">Opportunity · Ranked #3 of 47</div>
+          <h2>Quantify HSP90 client protein dissociation under pharmacological inhibition in HEK293 cells</h2>
+          <p>
+            Western blot pipelines already in use can be extended to a time-course dissociation assay
+            with only a second primary antibody and a published inhibitor. The assay would fill a
+            measurable gap in your current experimental history.
+          </p>
+          <p>
+            <em>From:</em> <span class="mono">10.1016/j.cell.2025.03.014</span> — a 2025
+            <em>Cell</em> review noting that client-release kinetics in human cell lines remain
+            under-characterised despite the availability of validated inhibitors.
+          </p>
+          <div class="cluster" style="margin-top: var(--s-5);">
+            <button>Generate protocol</button>
+            <button class="btn ghost">View source paper</button>
+          </div>
+        </article>
+        <aside>
+          <dl class="meta-list">
+            <div>
+              <dt>Composite</dt>
+              <dd><span class="mono" style="color: var(--signal); font-size: 22px;">0.92</span></dd>
+            </div>
+            <div>
+              <dt>Feasibility</dt>
+              <dd><span class="mono">0.88</span></dd>
+            </div>
+            <div>
+              <dt>Alignment</dt>
+              <dd><span class="mono">0.81</span></dd>
+            </div>
+            <div>
+              <dt>Complexity</dt>
+              <dd><span class="tag ok">Low</span></dd>
+            </div>
+            <div>
+              <dt>Est. time</dt>
+              <dd>6–10 days</dd>
+            </div>
+            <div>
+              <dt>Required reagents</dt>
+              <dd>2 new · 6 on hand</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- HAIRLINE LIST -->
+    <section>
+      <div class="section-head">
+        <div class="label">05 / Ranked list · no cards</div>
+        <h2>Hairline rules structure the data.</h2>
+      </div>
+      <div class="list">
+        <div class="row">
+          <div class="idx">01</div>
+          <div class="title">Quantify HSP90 client protein dissociation in HEK293 <em>— extends current Western blot pipeline</em></div>
+          <div><span class="tag ok">Low</span></div>
+          <div class="score high">
+            <div class="lbl">Composite</div>
+            <div class="track"><div class="fill" style="width: 92%; background: var(--signal);"></div></div>
+            <div class="num">0.92</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="idx">02</div>
+          <div class="title">Cross-reactivity panel for phospho-specific antibodies on stressed cultures</div>
+          <div><span class="tag warn">Medium</span></div>
+          <div class="score">
+            <div class="lbl">Composite</div>
+            <div class="track"><div class="fill" style="width: 81%;"></div></div>
+            <div class="num">0.81</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="idx">03</div>
+          <div class="title">Time-resolved chaperone binding via proximity labelling <em>— requires TurboID, not on hand</em></div>
+          <div><span class="tag danger">High</span></div>
+          <div class="score">
+            <div class="lbl">Composite</div>
+            <div class="track"><div class="fill" style="width: 63%;"></div></div>
+            <div class="num">0.63</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="idx">04</div>
+          <div class="title">Re-validation of archived lysates against current commercial HSP90 antibody batch</div>
+          <div><span class="tag ok">Low</span></div>
+          <div class="score">
+            <div class="lbl">Composite</div>
+            <div class="track"><div class="fill" style="width: 58%;"></div></div>
+            <div class="num">0.58</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>Fraunces · Inter Tight · JetBrains Mono — all Google Fonts, free</div>
+      <div>Design tokens · v0.1</div>
+    </footer>
+  </div>
+</body>
+</html>
