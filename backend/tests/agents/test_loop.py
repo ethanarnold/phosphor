@@ -34,9 +34,7 @@ def _assistant_response(
 ) -> SimpleNamespace:
     return SimpleNamespace(
         choices=[
-            SimpleNamespace(
-                message=SimpleNamespace(content=content, tool_calls=tool_calls or None)
-            )
+            SimpleNamespace(message=SimpleNamespace(content=content, tool_calls=tool_calls or None))
         ]
     )
 
@@ -124,9 +122,7 @@ async def test_loop_dispatches_two_tool_calls_then_terminates() -> None:
             ),
             _assistant_response(
                 content=None,
-                tool_calls=[
-                    _fn_call("search_experiments", {"query": "CRISPR"}, "call_2")
-                ],
+                tool_calls=[_fn_call("search_experiments", {"query": "CRISPR"}, "call_2")],
             ),
             _assistant_response(content="Final critique: grounded answer."),
         ]
@@ -162,9 +158,7 @@ async def test_loop_injects_tool_results_into_message_history() -> None:
 
     completion = _scripted_completion(
         [
-            _assistant_response(
-                tool_calls=[_fn_call("get_lab_state", {}, "call_A")]
-            ),
+            _assistant_response(tool_calls=[_fn_call("get_lab_state", {}, "call_A")]),
             _assistant_response(content="done"),
         ]
     )
@@ -193,9 +187,7 @@ async def test_loop_surfaces_tool_errors_to_the_model_not_the_caller() -> None:
 
     completion = _scripted_completion(
         [
-            _assistant_response(
-                tool_calls=[_fn_call("explode", {}, "call_X")]
-            ),
+            _assistant_response(tool_calls=[_fn_call("explode", {}, "call_X")]),
             _assistant_response(content="recovered"),
         ]
     )
@@ -221,9 +213,7 @@ async def test_loop_handles_unknown_tool_by_reporting_back() -> None:
     registry = _registry_with([])
     completion = _scripted_completion(
         [
-            _assistant_response(
-                tool_calls=[_fn_call("nope", {}, "call_Z")]
-            ),
+            _assistant_response(tool_calls=[_fn_call("nope", {}, "call_Z")]),
             _assistant_response(content="ok"),
         ]
     )
@@ -245,9 +235,7 @@ async def test_loop_terminates_at_max_turns_when_model_wont_stop() -> None:
 
     # Every response keeps issuing a tool call — loop must cap.
     responses = [
-        _assistant_response(
-            tool_calls=[_fn_call("get_lab_state", {}, f"call_{i}")]
-        )
+        _assistant_response(tool_calls=[_fn_call("get_lab_state", {}, f"call_{i}")])
         for i in range(MAX_TURNS + 2)
     ]
     completion = _scripted_completion(responses)

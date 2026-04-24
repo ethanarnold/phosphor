@@ -49,9 +49,7 @@ class ToolRegistry:
 
     def schemas(self) -> list[dict[str, Any]]:
         """Return the `tools=[...]` list as LiteLLM expects it."""
-        return [
-            {"type": "function", "function": s.schema} for s in self._specs.values()
-        ]
+        return [{"type": "function", "function": s.schema} for s in self._specs.values()]
 
     def has(self, name: str) -> bool:
         return name in self._specs
@@ -65,15 +63,10 @@ class ToolRegistry:
 # ---------- Tool implementations ----------
 
 
-async def _get_lab_state_impl(
-    *, session: AsyncSession, lab_id: uuid.UUID
-) -> dict[str, Any]:
+async def _get_lab_state_impl(*, session: AsyncSession, lab_id: uuid.UUID) -> dict[str, Any]:
     """Return the latest compressed lab state, or an explicit empty-state marker."""
     result = await session.execute(
-        select(LabState)
-        .where(LabState.lab_id == lab_id)
-        .order_by(LabState.version.desc())
-        .limit(1)
+        select(LabState).where(LabState.lab_id == lab_id).order_by(LabState.version.desc()).limit(1)
     )
     state = result.scalar_one_or_none()
     if state is None:
@@ -164,10 +157,7 @@ async def _list_capabilities_impl(
         }
 
     result = await session.execute(
-        select(LabState)
-        .where(LabState.lab_id == lab_id)
-        .order_by(LabState.version.desc())
-        .limit(1)
+        select(LabState).where(LabState.lab_id == lab_id).order_by(LabState.version.desc()).limit(1)
     )
     state = result.scalar_one_or_none()
     if state is None:
@@ -284,18 +274,12 @@ def build_default_registry(
         category = str(args.get("category", "")).strip()
         if not category:
             return {"error": "category is required"}
-        return await _list_capabilities_impl(
-            session=session, lab_id=lab_id, category=category
-        )
+        return await _list_capabilities_impl(session=session, lab_id=lab_id, category=category)
 
     return ToolRegistry(
         [
             ToolSpec("get_lab_state", _GET_LAB_STATE_SCHEMA, get_lab_state),
-            ToolSpec(
-                "search_experiments", _SEARCH_EXPERIMENTS_SCHEMA, search_experiments
-            ),
-            ToolSpec(
-                "list_capabilities", _LIST_CAPABILITIES_SCHEMA, list_capabilities
-            ),
+            ToolSpec("search_experiments", _SEARCH_EXPERIMENTS_SCHEMA, search_experiments),
+            ToolSpec("list_capabilities", _LIST_CAPABILITIES_SCHEMA, list_capabilities),
         ]
     )

@@ -7,6 +7,9 @@ or when MAX_TURNS is reached.
 
 v1 is non-streaming and single-shot. A session that has not concluded in
 MAX_TURNS turns has failed — surface to the caller rather than running on.
+
+The loop is pure (no DB access). Persistence is plugged in via the `recorder`
+callback — see `persistence.DbRecorder` for the concrete implementation.
 """
 
 from __future__ import annotations
@@ -14,7 +17,7 @@ from __future__ import annotations
 import json
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol
 
 from litellm import acompletion
 
@@ -23,6 +26,33 @@ from app.agents.tools import ToolRegistry
 MAX_TURNS: int = 8
 
 Completion = Callable[..., Awaitable[Any]]
+
+
+class MessageRecorder(Protocol):
+    """Hook called at each turn so a caller can persist messages.
+
+    Implementations MUST NOT raise — log and swallow. The pure loop treats
+    persistence as best-effort telemetry, not control flow.
+    """
+
+    async def on_user(self, content: str) -> None: ...
+
+    async def on_system(self, content: str) -> None: ...
+
+    async def on_assistant_tool_calls(
+        self, content: str | None, tool_calls: list[dict[str, Any]]
+    ) -> None: ...
+
+    async def on_tool_result(
+        self,
+        *,
+        tool_name: str,
+        arguments: dict[str, Any],
+        result: Any,
+        error: str | None,
+    ) -> None: ...
+
+    async def on_final_assistant(self, content: str | None) -> None: ...
 
 
 @dataclass
@@ -97,10 +127,13 @@ async def run_agent(
     max_turns: int = MAX_TURNS,
     temperature: float = 0.2,
     completion: Completion | None = None,
+    recorder: MessageRecorder | None = None,
 ) -> AgentResult:
     """Run the tool-calling loop against `registry`, returning when complete.
 
     `completion` defaults to `litellm.acompletion`; tests inject a stub.
+    If `recorder` is supplied, its hooks fire in message-order so a caller
+    can persist the full transcript as it's produced.
     """
     call = completion or acompletion
 
@@ -108,6 +141,9 @@ async def run_agent(
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_message},
     ]
+    if recorder is not None:
+        await _safe_record(recorder.on_system(system_prompt))
+        await _safe_record(recorder.on_user(user_message))
     tool_calls_made: list[ToolCallRecord] = []
 
     for turn in range(1, max_turns + 1):
@@ -145,6 +181,8 @@ async def run_agent(
         if not calls:
             final = _content_from_message(message)
             messages.append({"role": "assistant", "content": final or ""})
+            if recorder is not None:
+                await _safe_record(recorder.on_final_assistant(final))
             return AgentResult(
                 final_answer=final,
                 tool_calls=tool_calls_made,
@@ -155,22 +193,28 @@ async def run_agent(
 
         # Persist the assistant turn (including the tool_calls payload) so the
         # follow-up `role=tool` messages have the `tool_call_id` to reference.
+        tool_call_entries = [
+            {
+                "id": getattr(c, "id", None) or (isinstance(c, dict) and c.get("id")) or "",
+                "type": "function",
+                "function": {
+                    "name": _call_name(c),
+                    "arguments": _call_raw_arguments(c),
+                },
+            }
+            for c in calls
+        ]
+        assistant_content = _content_from_message(message) or ""
         assistant_entry: dict[str, Any] = {
             "role": "assistant",
-            "content": _content_from_message(message) or "",
-            "tool_calls": [
-                {
-                    "id": getattr(c, "id", None) or (isinstance(c, dict) and c.get("id")) or "",
-                    "type": "function",
-                    "function": {
-                        "name": _call_name(c),
-                        "arguments": _call_raw_arguments(c),
-                    },
-                }
-                for c in calls
-            ],
+            "content": assistant_content,
+            "tool_calls": tool_call_entries,
         }
         messages.append(assistant_entry)
+        if recorder is not None:
+            await _safe_record(
+                recorder.on_assistant_tool_calls(assistant_content, tool_call_entries)
+            )
 
         for call_obj in calls:
             name = _call_name(call_obj)
@@ -201,9 +245,7 @@ async def run_agent(
                         result = {"error": error}
 
             tool_calls_made.append(
-                ToolCallRecord(
-                    tool_name=name, arguments=args, result=result, error=error
-                )
+                ToolCallRecord(tool_name=name, arguments=args, result=result, error=error)
             )
             messages.append(
                 {
@@ -213,6 +255,15 @@ async def run_agent(
                     "content": _to_tool_content(result),
                 }
             )
+            if recorder is not None:
+                await _safe_record(
+                    recorder.on_tool_result(
+                        tool_name=name,
+                        arguments=args,
+                        result=result,
+                        error=error,
+                    )
+                )
 
     return AgentResult(
         final_answer=None,
@@ -254,3 +305,15 @@ def _to_tool_content(result: Any) -> str:
         return json.dumps(result, default=str)
     except (TypeError, ValueError):
         return str(result)
+
+
+async def _safe_record(awaitable: Awaitable[Any]) -> None:
+    """Run a recorder hook; swallow exceptions so persistence can't break the loop.
+
+    Persistence is best-effort telemetry — the caller's recorder implementation
+    is expected to log its own failures.
+    """
+    import contextlib
+
+    with contextlib.suppress(Exception):
+        await awaitable

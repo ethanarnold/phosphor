@@ -29,9 +29,7 @@ def _fake_session() -> Any:
 def _fake_settings() -> Any:
     from types import SimpleNamespace
 
-    return SimpleNamespace(
-        llm_model="claude-sonnet-4-6", embedding_model="text-embedding-3-small"
-    )
+    return SimpleNamespace(llm_model="claude-sonnet-4-6", embedding_model="text-embedding-3-small")
 
 
 def test_registry_schemas_shape() -> None:
