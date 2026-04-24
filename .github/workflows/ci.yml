@@ -205,6 +205,16 @@ jobs:
         working-directory: evals
         run: poetry run pytest -m compression -v
 
+      # Reviewer harness unit tests — run every eval job, no LLM required.
+      - name: Run reviewer harness tests
+        working-directory: evals
+        env:
+          DATABASE_URL: postgresql+asyncpg://ignored:ignored@localhost/ignored
+          REDIS_URL: redis://localhost:6379/0
+          CLERK_SECRET_KEY: ignored
+          ANTHROPIC_API_KEY: ignored
+        run: poetry run pytest reviewer/test_harness.py -v
+
       # Fidelity tests require API key - run only with secret available
       - name: Run fidelity tests
         if: env.ANTHROPIC_API_KEY != ''
@@ -212,6 +222,17 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: poetry run pytest -m fidelity -v
+
+      # Full reviewer eval — real LLM, only when the secret is available.
+      - name: Run reviewer agent evals
+        if: env.ANTHROPIC_API_KEY != ''
+        working-directory: evals
+        env:
+          DATABASE_URL: postgresql+asyncpg://ignored:ignored@localhost/ignored
+          REDIS_URL: redis://localhost:6379/0
+          CLERK_SECRET_KEY: ignored
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: poetry run pytest reviewer/test_reviewer_eval.py -v
 
   docker-build:
     name: Docker Build
