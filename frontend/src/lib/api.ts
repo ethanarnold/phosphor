@@ -414,6 +414,40 @@ export interface ScanList {
   total: number
 }
 
+// ---------- Reviewer agent ----------
+
+export type AgentStatus = 'queued' | 'running' | 'complete' | 'error'
+export type AgentMessageRole = 'system' | 'user' | 'assistant' | 'tool'
+
+export interface AgentMessageView {
+  id: string
+  seq: number
+  role: AgentMessageRole
+  content: string | null
+  tool_name: string | null
+  tool_args_json: Record<string, unknown> | null
+  tool_result_json: Record<string, unknown> | null
+  created_at: string
+}
+
+export interface ReviewerCreateResponse {
+  session_id: string
+  status: AgentStatus
+}
+
+export interface ReviewerDetail {
+  session_id: string
+  status: AgentStatus
+  input_text: string
+  final_answer: string | null
+  error: string | null
+  turn_count: number
+  model: string | null
+  messages: AgentMessageView[]
+  created_at: string
+  completed_at: string | null
+}
+
 // ---------- Metrics ----------
 
 export interface EventTypeStats {
