@@ -974,3 +974,235 @@ textarea.mono {
     border: none;
   }
 }
+
+/* ---- Landing page (public / signed-out) ---- */
+
+.landing {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--s-5) var(--s-6) var(--s-8);
+}
+
+.landing-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s-8);
+}
+
+.landing-top .brand {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+.landing-nav a {
+  font-size: 13px;
+  color: var(--ink-3);
+  border-bottom: none;
+  transition: color 120ms ease-out;
+}
+
+.landing-nav a:hover {
+  color: var(--ink);
+}
+
+.landing-hero {
+  padding: var(--s-7) 0 var(--s-9);
+  border-bottom: 1px solid var(--rule);
+}
+
+.landing-hero .kicker {
+  margin-bottom: var(--s-4);
+}
+
+.landing-hero h1 {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-weight: 400;
+  font-size: clamp(44px, 7vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0 0 var(--s-5);
+  max-width: 18ch;
+}
+
+.landing-hero .lede {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 62ch;
+  margin: 0 0 var(--s-6);
+}
+
+.landing-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.landing-cta .muted {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-left: var(--s-2);
+}
+
+.landing-three {
+  padding: var(--s-8) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.three-col article {
+  padding: var(--s-5) var(--s-5) var(--s-5) 0;
+  border-right: 1px solid var(--rule);
+}
+
+.three-col article:first-child {
+  padding-left: 0;
+}
+
+.three-col article:last-child {
+  border-right: none;
+  padding-right: 0;
+  padding-left: var(--s-5);
+}
+
+.three-col article:nth-child(2) {
+  padding-left: var(--s-5);
+}
+
+.three-col article .kicker {
+  margin-bottom: var(--s-3);
+}
+
+.three-col article h3 {
+  margin-bottom: var(--s-3);
+}
+
+.three-col article p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0 0 var(--s-3);
+  max-width: 34ch;
+}
+
+.three-col article p.muted {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 0;
+}
+
+.landing-why {
+  padding: var(--s-8) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.landing-why .section-head {
+  margin-bottom: var(--s-5);
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--s-7);
+  align-items: start;
+}
+
+.why-grid .lede {
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 24;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  max-width: 42ch;
+  margin: 0;
+}
+
+.why-facts {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-4);
+}
+
+.why-facts dt {
+  font-size: 11px;
+}
+
+.why-facts dd {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.landing-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  padding-top: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.landing-foot .muted {
+  max-width: 48ch;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+  .landing {
+    padding: var(--s-4) var(--s-4) var(--s-7);
+  }
+  .landing-top {
+    margin-bottom: var(--s-6);
+  }
+  .landing-nav {
+    gap: var(--s-3);
+  }
+  .landing-nav a {
+    display: none;
+  }
+  .landing-hero {
+    padding: var(--s-5) 0 var(--s-7);
+  }
+  .three-col {
+    grid-template-columns: 1fr;
+  }
+  .three-col article {
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding: var(--s-5) 0;
+  }
+  .three-col article:first-child {
+    padding-top: 0;
+  }
+  .three-col article:last-child {
+    border-bottom: none;
+    padding: var(--s-5) 0 0;
+  }
+  .three-col article:nth-child(2) {
+    padding-left: 0;
+  }
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+}

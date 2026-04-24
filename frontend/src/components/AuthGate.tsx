@@ -1,8 +1,6 @@
 import {
   CreateOrganization,
   OrganizationSwitcher,
-  SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   useOrganization,
@@ -12,6 +10,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useApi } from '../lib/api'
 import { useLab } from '../lib/queries'
+import Landing from './Landing'
 
 function NoLabYet({ orgName }: { orgName: string }) {
   const api = useApi()
@@ -127,21 +126,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   return (
     <>
       <SignedOut>
-        <Centered>
-          <div className="kicker">Lab research tool</div>
-          <h1 style={{ marginBottom: 16 }}>Phosphor</h1>
-          <p className="muted" style={{ marginBottom: 24, lineHeight: 1.55 }}>
-            Sign in to access your lab.
-          </p>
-          <div className="row">
-            <SignInButton mode="modal">
-              <button>Sign in</button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <button className="ghost">Sign up</button>
-            </SignUpButton>
-          </div>
-        </Centered>
+        <Landing />
       </SignedOut>
       <SignedIn>
         <OrgRequired>
