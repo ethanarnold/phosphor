@@ -206,7 +206,9 @@ jobs:
 
       - name: Run pip-audit (dependency audit)
         working-directory: backend
-        run: poetry run pip-audit
+        # CVE-2026-3219 affects pip itself (the runner's pip, not a project dep) and has no
+        # fixed version yet — ignore until upstream ships a release. Revisit periodically.
+        run: poetry run pip-audit --ignore-vuln CVE-2026-3219
 
   evals:
     name: Eval Harness
