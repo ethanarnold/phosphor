@@ -246,7 +246,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: poetry run pytest -m fidelity -v
 
-  docker-build:
+  docker-images:
     name: Docker Build (${{ matrix.image.name }})
     runs-on: ubuntu-latest
     strategy:
@@ -276,3 +276,19 @@ jobs:
           tags: ${{ matrix.image.tag }}
           cache-from: type=gha,scope=${{ matrix.image.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image.name }}
+
+  # Aggregate status check — keeps the existing "Docker Build" required check
+  # green even though the actual builds run in a matrix. Branch protection
+  # references this exact name; do not rename without updating protection rules.
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: docker-images
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Verify matrix builds passed
+        run: |
+          if [ "${{ needs.docker-images.result }}" != "success" ]; then
+            echo "Matrix build status: ${{ needs.docker-images.result }}"
+            exit 1
+          fi
