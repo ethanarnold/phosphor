@@ -62,7 +62,10 @@ def upgrade() -> None:
     )
 
     # Row-level security — an agent session inherits the tenancy of its lab.
+    # FORCE applies the policy to table owners too; without it, the migration
+    # role (which owns the table) silently bypasses RLS.
     op.execute("ALTER TABLE agent_sessions ENABLE ROW LEVEL SECURITY")
+    op.execute("ALTER TABLE agent_sessions FORCE ROW LEVEL SECURITY")
     op.execute("""
         CREATE POLICY agent_sessions_isolation ON agent_sessions
         USING (lab_id IN (
@@ -98,8 +101,10 @@ def upgrade() -> None:
     )
     op.create_index("ix_agent_messages_session_id", "agent_messages", ["session_id"])
 
-    # Messages inherit their session's lab tenancy via the join.
+    # Messages inherit their session's lab tenancy via the join. FORCE for the
+    # same reason as above — owner-bypass would silently leak across tenants.
     op.execute("ALTER TABLE agent_messages ENABLE ROW LEVEL SECURITY")
+    op.execute("ALTER TABLE agent_messages FORCE ROW LEVEL SECURITY")
     op.execute("""
         CREATE POLICY agent_messages_isolation ON agent_messages
         USING (session_id IN (

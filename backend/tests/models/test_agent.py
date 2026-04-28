@@ -294,13 +294,29 @@ async def rls_db() -> Any:
     if not await _db_available():
         pytest.skip("Postgres not available; RLS test requires a live DB.")
 
+    # Set up DDL with a superuser engine, then build a separate session-only
+    # engine that connects as a constrained role. Postgres bypasses RLS for
+    # SUPERUSER and any role with BYPASSRLS, which is the dev/CI default —
+    # without a non-bypass role, the policies are silently inert.
+    admin_engine = create_async_engine(
+        TEST_DB_URL, pool_pre_ping=True, isolation_level="AUTOCOMMIT"
+    )
+    async with admin_engine.connect() as conn:
+        await conn.execute(text("DROP ROLE IF EXISTS phosphor_rls_test"))
+        await conn.execute(
+            text("CREATE ROLE phosphor_rls_test NOSUPERUSER NOBYPASSRLS LOGIN PASSWORD 'rls_test'")
+        )
+    await admin_engine.dispose()
+
     engine = create_async_engine(TEST_DB_URL, pool_pre_ping=True)
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
         await conn.execute(text("ALTER TABLE agent_sessions ENABLE ROW LEVEL SECURITY"))
+        await conn.execute(text("ALTER TABLE agent_sessions FORCE ROW LEVEL SECURITY"))
         await conn.execute(text("ALTER TABLE agent_messages ENABLE ROW LEVEL SECURITY"))
+        await conn.execute(text("ALTER TABLE agent_messages FORCE ROW LEVEL SECURITY"))
         await conn.execute(
             text(
                 """CREATE POLICY agent_sessions_isolation ON agent_sessions
@@ -320,14 +336,30 @@ async def rls_db() -> Any:
                 ))"""
             )
         )
+        await conn.execute(
+            text(
+                "GRANT SELECT, INSERT, UPDATE, DELETE ON labs, agent_sessions, agent_messages TO phosphor_rls_test"
+            )
+        )
 
-    Session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    await engine.dispose()  # drop pooled connections established as superuser
+
+    # Now build the session engine that connects directly as the constrained
+    # role. Every connection in this engine's pool runs under it from the start.
+    rls_url = TEST_DB_URL.replace("phosphor:phosphor", "phosphor_rls_test:rls_test")
+    rls_engine = create_async_engine(rls_url, pool_pre_ping=True)
+    Session = sessionmaker(rls_engine, class_=AsyncSession, expire_on_commit=False)
     try:
         yield Session
     finally:
-        async with engine.begin() as conn:
+        await rls_engine.dispose()
+        cleanup_engine = create_async_engine(TEST_DB_URL, pool_pre_ping=True)
+        async with cleanup_engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
-        await engine.dispose()
+        async with cleanup_engine.connect() as conn:
+            await conn.execute(text("COMMIT"))
+            await conn.execute(text("DROP ROLE IF EXISTS phosphor_rls_test"))
+        await cleanup_engine.dispose()
 
 
 @pytest.mark.asyncio
