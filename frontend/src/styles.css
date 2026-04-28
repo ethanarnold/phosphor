@@ -267,18 +267,43 @@ pre {
   padding: var(--s-6) var(--s-5) var(--s-4);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--s-4);
 }
 
-.sidebar .brand {
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--rule);
+}
+
+.sidebar-top .brand {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 22px;
   letter-spacing: -0.01em;
-  padding: 0 0 var(--s-4);
-  margin-bottom: var(--s-4);
-  border-bottom: 1px solid var(--rule);
   color: var(--ink);
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-top .menu-toggle {
+  display: none;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.sidebar-top .sidebar-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .sidebar a.nav {
@@ -301,15 +326,6 @@ pre {
 .sidebar a.nav.active {
   background: var(--surface-2);
   color: var(--ink);
-}
-
-.sidebar .footer {
-  margin-top: auto;
-  padding-top: var(--s-4);
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
 }
 
 .main {
@@ -934,30 +950,29 @@ textarea.mono {
     grid-template-columns: 1fr;
   }
   .sidebar {
-    flex-direction: row;
-    overflow-x: auto;
     border-right: none;
     border-bottom: 1px solid var(--rule);
-    padding: var(--s-2) var(--s-3);
-    gap: var(--s-2);
-    align-items: center;
+    padding: var(--s-3) var(--s-4);
+    gap: 0;
   }
-  .sidebar .brand {
-    padding: 0 var(--s-2) 0 0;
-    margin-bottom: 0;
+  .sidebar-top {
+    padding-bottom: 0;
     border-bottom: none;
+  }
+  .sidebar-top .brand {
     font-size: 18px;
   }
-  .sidebar a.nav {
-    white-space: nowrap;
-    margin: 0;
+  .sidebar-top .menu-toggle {
+    display: inline-flex;
   }
-  .sidebar .footer {
-    margin-top: 0;
-    margin-left: auto;
-    border-top: none;
-    padding-top: 0;
-    flex-direction: row;
+  .nav-list {
+    display: none;
+    margin-top: var(--s-3);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--rule);
+  }
+  .nav-list.open {
+    display: flex;
   }
   .main {
     padding: var(--s-5) var(--s-4) var(--s-8);
