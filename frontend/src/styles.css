@@ -943,6 +943,63 @@ textarea.mono {
   color: var(--ink-2);
 }
 
+/* ---- Review page (reviewer agent) ---- */
+
+.review-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-7);
+  padding-top: var(--s-5);
+  align-items: start;
+}
+
+.review-result {
+  border-left: 1px solid var(--rule);
+  padding-left: var(--s-5);
+  min-height: 200px;
+}
+
+.tool-trace {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-3);
+}
+
+.tool-trace summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--ink-3);
+}
+
+.tool-trace summary::-webkit-details-marker {
+  display: none;
+}
+
+.tool-trace summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 10px;
+  color: var(--ink-3);
+  transition: transform 120ms ease-out;
+}
+
+.tool-trace[open] summary::before {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 900px) {
+  .review-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  .review-result {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding-left: 0;
+    padding-top: var(--s-5);
+  }
+}
+
 /* ---- Mobile ---- */
 
 @media (max-width: 720px) {

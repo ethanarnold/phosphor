@@ -1,6 +1,7 @@
 """Database models."""
 
 from app.models.adoption_event import AdoptionEvent
+from app.models.agent import AgentMessage, AgentSession
 from app.models.api_key import ApiKey
 from app.models.audit import AuditLog
 from app.models.distillation import DistillationRun
@@ -15,6 +16,8 @@ from app.models.signal import RawSignal
 
 __all__ = [
     "AdoptionEvent",
+    "AgentMessage",
+    "AgentSession",
     "ApiKey",
     "AuditLog",
     "DistillationRun",
