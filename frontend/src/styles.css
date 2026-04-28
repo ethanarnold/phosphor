@@ -1,3 +1,55 @@
+/* Self-hosted variable fonts. font-display: block tells the browser to keep
+   text invisible until the woff2 loads (FOIT) instead of painting in the
+   fallback first (FOUT) — eliminates the swap-time layout shift entirely. */
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Inter Tight Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2-variations');
+}
+
+/* Metric-matched fallbacks: kept as backstop if a glyph isn't covered by the
+   latin subsets above, so unsupported chars still render with matched metrics. */
+@font-face {
+  font-family: 'Inter Tight Fallback';
+  src: local('Arial');
+  size-adjust: 107.64%;
+  ascent-override: 90%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Fraunces Fallback';
+  src: local('Georgia');
+  size-adjust: 100%;
+  ascent-override: 98%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Menlo'), local('Courier New');
+  size-adjust: 100%;
+  ascent-override: 102%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
 :root {
   /* Surfaces */
   --paper: #FAFAF7;
@@ -42,10 +94,10 @@
   --shadow-pop: 0 1px 2px rgba(10, 10, 10, 0.04);
   --sidebar-w: 240px;
 
-  /* Font families */
-  --font-display: 'Fraunces', ui-serif, Georgia, serif;
-  --font-ui: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  /* Font families — webfont, then metric-matched fallback, then system. */
+  --font-display: 'Fraunces Variable', 'Fraunces Fallback', ui-serif, Georgia, serif;
+  --font-ui: 'Inter Tight Variable', 'Inter Tight Fallback', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono Fallback', ui-monospace, Menlo, monospace;
 }
 
 * {
