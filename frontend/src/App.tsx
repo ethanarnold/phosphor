@@ -8,8 +8,10 @@ import LabStatePage from './pages/LabState'
 import Literature from './pages/Literature'
 import OpportunityDetail from './pages/OpportunityDetail'
 import Opportunities from './pages/Opportunities'
+import Directions from './pages/Directions'
 import Review from './pages/Review'
 import Search from './pages/Search'
+import Strengthen from './pages/Strengthen'
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
           <Route path="opportunities" element={<Opportunities />} />
           <Route path="opportunities/:opportunityId" element={<OpportunityDetail />} />
           <Route path="review" element={<Review />} />
+          <Route path="directions" element={<Directions />} />
+          <Route path="strengthen" element={<Strengthen />} />
           <Route path="state" element={<LabStatePage />} />
           <Route path="search" element={<Search />} />
           <Route path="literature" element={<Literature />} />

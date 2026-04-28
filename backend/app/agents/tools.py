@@ -126,6 +126,50 @@ async def _search_experiments_impl(
     }
 
 
+async def _search_literature_impl(
+    *,
+    session: AsyncSession,
+    settings: Settings,
+    lab_id: uuid.UUID,
+    query: str,
+    limit: int = 10,
+) -> dict[str, Any]:
+    """Search the lab's ingested literature corpus (papers, abstracts) for a query.
+
+    Mirrors `search_experiments` but filters to `kind="paper"` hits — keyword
+    ILIKE on titles/abstracts plus embedding similarity. Returns the top
+    matches so the model can cite specific papers when proposing a direction
+    or strengthening an in-progress project.
+    """
+    limit = max(1, min(limit, 25))
+    hits = await hybrid_search(
+        session=session,
+        settings=settings,
+        lab_id=lab_id,
+        query=query,
+        limit=limit,
+    )
+    paper_hits: list[dict[str, Any]] = []
+    for h in hits:
+        if h.kind != "paper":
+            continue
+        paper_hits.append(
+            {
+                "id": str(h.id),
+                "title": h.title,
+                "snippet": h.snippet,
+                "score": round(h.score, 3),
+                "matched_by": h.matched_by,
+                "created_at": h.created_at.isoformat() if h.created_at else None,
+            }
+        )
+
+    return {
+        "query": query,
+        "matches": paper_hits,
+    }
+
+
 _CATEGORY_ATTRS: dict[str, str] = {
     "equipment": "equipment",
     "techniques": "techniques",
@@ -218,6 +262,33 @@ _SEARCH_EXPERIMENTS_SCHEMA: dict[str, Any] = {
     },
 }
 
+_SEARCH_LITERATURE_SCHEMA: dict[str, Any] = {
+    "name": "search_literature",
+    "description": (
+        "Search the lab's ingested literature corpus (PubMed / Semantic "
+        "Scholar abstracts the lab has bookmarked or imported) for a topic, "
+        "method, or target. Use this to surface what's emerging in the "
+        "field and cite specific papers when proposing a direction."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "Topic or short phrase, e.g. 'spatial transcriptomics microglia', 'TREM2 cleavage'.",
+            },
+            "limit": {
+                "type": "integer",
+                "description": "Max results (default 10, max 25).",
+                "minimum": 1,
+                "maximum": 25,
+            },
+        },
+        "required": ["query"],
+        "additionalProperties": False,
+    },
+}
+
 _LIST_CAPABILITIES_SCHEMA: dict[str, Any] = {
     "name": "list_capabilities",
     "description": (
@@ -270,6 +341,19 @@ def build_default_registry(
             limit=limit,
         )
 
+    async def search_literature(args: dict[str, Any]) -> Any:
+        query = str(args.get("query", "")).strip()
+        if not query:
+            return {"error": "query is required"}
+        limit = int(args.get("limit", 10))
+        return await _search_literature_impl(
+            session=session,
+            settings=settings,
+            lab_id=lab_id,
+            query=query,
+            limit=limit,
+        )
+
     async def list_capabilities(args: dict[str, Any]) -> Any:
         category = str(args.get("category", "")).strip()
         if not category:
@@ -280,6 +364,7 @@ def build_default_registry(
         [
             ToolSpec("get_lab_state", _GET_LAB_STATE_SCHEMA, get_lab_state),
             ToolSpec("search_experiments", _SEARCH_EXPERIMENTS_SCHEMA, search_experiments),
+            ToolSpec("search_literature", _SEARCH_LITERATURE_SCHEMA, search_literature),
             ToolSpec("list_capabilities", _LIST_CAPABILITIES_SCHEMA, list_capabilities),
         ]
     )

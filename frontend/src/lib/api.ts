@@ -414,7 +414,7 @@ export interface ScanList {
   total: number
 }
 
-// ---------- Reviewer agent ----------
+// ---------- Agents (reviewer / directions / strengthen) ----------
 
 export type AgentStatus = 'queued' | 'running' | 'complete' | 'error'
 export type AgentMessageRole = 'system' | 'user' | 'assistant' | 'tool'
@@ -430,12 +430,12 @@ export interface AgentMessageView {
   created_at: string
 }
 
-export interface ReviewerCreateResponse {
+export interface AgentCreateResponse {
   session_id: string
   status: AgentStatus
 }
 
-export interface ReviewerDetail {
+export interface AgentDetail {
   session_id: string
   status: AgentStatus
   input_text: string
@@ -447,6 +447,10 @@ export interface ReviewerDetail {
   created_at: string
   completed_at: string | null
 }
+
+// Backward-compat aliases — Review.tsx imports these names.
+export type ReviewerCreateResponse = AgentCreateResponse
+export type ReviewerDetail = AgentDetail
 
 // ---------- Metrics ----------
 

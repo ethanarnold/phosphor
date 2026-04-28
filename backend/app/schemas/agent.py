@@ -1,4 +1,4 @@
-"""Pydantic schemas for the reviewer agent API."""
+"""Pydantic schemas for the agent API (reviewer, directions, strengthen)."""
 
 from __future__ import annotations
 
@@ -19,6 +19,42 @@ class ReviewerCreateRequest(BaseModel):
         min_length=20,
         max_length=4000,
         description="Draft aim, abstract, or paragraph to critique.",
+    )
+
+
+class DirectionsCreateRequest(BaseModel):
+    """POST body — optional focus area to scope the directions search.
+
+    Empty input is allowed — the agent will draw the focus from the lab
+    state's strongest themes when no constraint is given.
+    """
+
+    model_config = ConfigDict(strict=True)
+
+    input_text: str = Field(
+        default="",
+        max_length=2000,
+        description=(
+            "Optional focus area, theme, or constraint (e.g. "
+            "'neurodegeneration', 'within-budget translational targets'). "
+            "Leave empty to let the agent infer from the lab state."
+        ),
+    )
+
+
+class StrengthenCreateRequest(BaseModel):
+    """POST body — a description of the in-progress project to strengthen."""
+
+    model_config = ConfigDict(strict=True)
+
+    input_text: str = Field(
+        ...,
+        min_length=40,
+        max_length=4000,
+        description=(
+            "Project description: the goal, the current state, what's "
+            "stuck. The more concrete, the more grounded the next steps."
+        ),
     )
 
 
@@ -61,3 +97,10 @@ class ReviewerDetailResponse(BaseModel):
     messages: list[AgentMessageView] = Field(default_factory=list)
     created_at: datetime
     completed_at: datetime | None = None
+
+
+# The directions and strengthen responses are structurally identical to the
+# reviewer's — same status enum, same trace shape. Aliases keep route signatures
+# self-documenting without duplicating the schema.
+AgentCreateResponse = ReviewerCreateResponse
+AgentDetailResponse = ReviewerDetailResponse

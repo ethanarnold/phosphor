@@ -8,6 +8,8 @@ const NAV: { to: string; label: string }[] = [
   { to: '/documents', label: 'Documents' },
   { to: '/opportunities', label: 'Opportunities' },
   { to: '/review', label: 'Review' },
+  { to: '/directions', label: 'Directions' },
+  { to: '/strengthen', label: 'Strengthen' },
   { to: '/state', label: 'Lab state' },
   { to: '/search', label: 'Search' },
   { to: '/literature', label: 'Literature' },
