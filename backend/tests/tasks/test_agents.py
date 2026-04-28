@@ -26,7 +26,7 @@ from app.models.agent import (
     AgentMessage,
     AgentSession,
 )
-from app.tasks.agents import _run_reviewer_async
+from app.tasks.agents import _run_agent_async
 
 
 class _FakeSession:
@@ -97,7 +97,7 @@ async def test_task_marks_running_runs_agent_and_finalizes() -> None:
         patch("app.tasks.agents.build_default_registry", return_value=SimpleNamespace()),
         patch("app.tasks.agents.load_prompt", return_value="SYS"),
     ):
-        result = await _run_reviewer_async(str(sid))
+        result = await _run_agent_async(str(sid), purpose="reviewer")
 
     assert result["status"] == AGENT_STATUS_COMPLETE
     assert result["turn_count"] == 3
@@ -127,7 +127,7 @@ async def test_task_records_error_when_loop_crashes() -> None:
         patch("app.tasks.agents.build_default_registry", return_value=SimpleNamespace()),
         patch("app.tasks.agents.load_prompt", return_value="SYS"),
     ):
-        result = await _run_reviewer_async(str(sid))
+        result = await _run_agent_async(str(sid), purpose="reviewer")
 
     assert result["status"] == "error"
     assert row.status == AGENT_STATUS_ERROR
@@ -144,8 +144,80 @@ async def test_task_short_circuits_on_missing_session() -> None:
         yield fake_db
 
     with patch("app.tasks.agents.task_session", fake_task_session):
-        result = await _run_reviewer_async(str(uuid.uuid4()))
+        result = await _run_agent_async(str(uuid.uuid4()), purpose="reviewer")
     assert result["status"] == "not_found"
+
+
+@pytest.mark.asyncio
+async def test_task_loads_correct_prompt_for_purpose() -> None:
+    """The generic task selects its prompt by purpose. A row created with
+    purpose=directions must load the directions prompt, not reviewer."""
+    sid = uuid.uuid4()
+    row = AgentSession(
+        id=sid,
+        lab_id=uuid.uuid4(),
+        user_id="u",
+        purpose="directions",
+        input_text="",
+        status=AGENT_STATUS_QUEUED,
+        turn_count=0,
+    )
+    fake_db = _FakeSession(row)
+
+    @asynccontextmanager
+    async def fake_task_session():
+        yield fake_db
+
+    load_prompt_mock = AsyncMock(return_value="DIRECTIONS-SYS")  # noqa: F841 — sanity unused
+    with (
+        patch("app.tasks.agents.task_session", fake_task_session),
+        patch(
+            "app.tasks.agents.run_agent",
+            new=AsyncMock(
+                return_value=AgentResult(
+                    final_answer="1. Direction one ...",
+                    tool_calls=[],
+                    messages=[],
+                    turn_count=4,
+                    stop_reason="complete",
+                )
+            ),
+        ),
+        patch("app.tasks.agents.build_default_registry", return_value=SimpleNamespace()),
+        patch("app.tasks.agents.load_prompt") as load_prompt_patch,
+    ):
+        load_prompt_patch.return_value = "DIRECTIONS-SYS"
+        result = await _run_agent_async(str(sid), purpose="directions")
+
+    assert result["status"] == AGENT_STATUS_COMPLETE
+    load_prompt_patch.assert_called_once_with("directions")
+
+
+@pytest.mark.asyncio
+async def test_task_rejects_purpose_mismatch() -> None:
+    """If the row's purpose != task's purpose, the task short-circuits
+    rather than running the wrong prompt against the wrong intent."""
+    sid = uuid.uuid4()
+    row = AgentSession(
+        id=sid,
+        lab_id=uuid.uuid4(),
+        user_id="u",
+        purpose=AGENT_PURPOSE_REVIEWER,  # row says reviewer
+        input_text="x" * 40,
+        status=AGENT_STATUS_QUEUED,
+        turn_count=0,
+    )
+    fake_db = _FakeSession(row)
+
+    @asynccontextmanager
+    async def fake_task_session():
+        yield fake_db
+
+    with patch("app.tasks.agents.task_session", fake_task_session):
+        result = await _run_agent_async(str(sid), purpose="directions")
+
+    assert result["status"] == "error"
+    assert "purpose mismatch" in result["error"]
 
 
 @pytest.mark.asyncio
@@ -176,7 +248,7 @@ async def test_task_marks_error_on_max_turns() -> None:
         patch("app.tasks.agents.build_default_registry", return_value=SimpleNamespace()),
         patch("app.tasks.agents.load_prompt", return_value="SYS"),
     ):
-        result = await _run_reviewer_async(str(sid))
+        result = await _run_agent_async(str(sid), purpose="reviewer")
 
     assert result["stop_reason"] == "max_turns"
     assert row.status == AGENT_STATUS_ERROR

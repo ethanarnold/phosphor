@@ -1,4 +1,9 @@
-"""Celery task that drives the reviewer agent end-to-end."""
+"""Celery tasks that drive agent runs end-to-end.
+
+One task per agent purpose so Celery routes / retry policy / monitoring
+can be tuned per-agent if needed. All tasks share `_run_agent_async`,
+which loads the prompt by purpose and runs the same loop.
+"""
 
 from __future__ import annotations
 
@@ -18,28 +23,66 @@ from app.agents import (
 from app.agents.prompts import load_prompt
 from app.core.config import get_settings
 from app.core.database import task_session
-from app.models.agent import AGENT_STATUS_ERROR, AgentSession
+from app.models.agent import (
+    AGENT_PURPOSE_DIRECTIONS,
+    AGENT_PURPOSE_REVIEWER,
+    AGENT_PURPOSE_STRENGTHEN,
+    AGENT_STATUS_ERROR,
+    AgentSession,
+)
 from app.tasks import celery_app
 
 
 @celery_app.task(bind=True, max_retries=0)  # type: ignore[untyped-decorator]
 def run_reviewer_agent(self: Any, session_id: str) -> dict[str, Any]:
-    """Drive a reviewer agent run from a queued `agent_sessions` row.
+    """Drive a reviewer agent run from a queued `agent_sessions` row."""
+    return asyncio.run(_run_agent_async(session_id, purpose=AGENT_PURPOSE_REVIEWER))
 
-    No retries: an agent that fails should surface to the user, not re-run
-    silently with partial state.
+
+@celery_app.task(bind=True, max_retries=0)  # type: ignore[untyped-decorator]
+def run_directions_agent(self: Any, session_id: str) -> dict[str, Any]:
+    """Drive a directions agent run from a queued `agent_sessions` row."""
+    return asyncio.run(_run_agent_async(session_id, purpose=AGENT_PURPOSE_DIRECTIONS))
+
+
+@celery_app.task(bind=True, max_retries=0)  # type: ignore[untyped-decorator]
+def run_strengthen_agent(self: Any, session_id: str) -> dict[str, Any]:
+    """Drive a strengthen agent run from a queued `agent_sessions` row."""
+    return asyncio.run(_run_agent_async(session_id, purpose=AGENT_PURPOSE_STRENGTHEN))
+
+
+# Maps purpose → prompt-template basename. Kept here (not on the model)
+# because the prompt directory is a runtime concern, not a schema one.
+_PROMPT_BY_PURPOSE: dict[str, str] = {
+    AGENT_PURPOSE_REVIEWER: "reviewer",
+    AGENT_PURPOSE_DIRECTIONS: "directions",
+    AGENT_PURPOSE_STRENGTHEN: "strengthen",
+}
+
+
+async def _run_agent_async(session_id: str, *, purpose: str) -> dict[str, Any]:
+    """Generic agent-run driver. Single retry policy: none.
+
+    A failed run should surface to the user, not silently re-attempt with
+    half-built state. The task records the error on the session row so
+    the polling client sees it.
     """
-    return asyncio.run(_run_reviewer_async(session_id))
-
-
-async def _run_reviewer_async(session_id: str) -> dict[str, Any]:
     sid = uuid.UUID(session_id)
     settings = get_settings()
+    prompt_name = _PROMPT_BY_PURPOSE[purpose]
 
     async with task_session() as session:
         agent_session = await _load_session(session, sid)
         if agent_session is None:
             return {"status": "not_found", "session_id": session_id}
+        if agent_session.purpose != purpose:
+            return {
+                "status": "error",
+                "error": (
+                    f"purpose mismatch: row has {agent_session.purpose!r}, "
+                    f"task expected {purpose!r}"
+                ),
+            }
 
         try:
             await mark_running(session, agent_session, model=settings.llm_model)
@@ -51,7 +94,7 @@ async def _run_reviewer_async(session_id: str) -> dict[str, Any]:
             session=session, settings=settings, lab_id=agent_session.lab_id
         )
         recorder = DbRecorder(session=session, agent_session_id=agent_session.id)
-        system_prompt = load_prompt("reviewer")
+        system_prompt = load_prompt(prompt_name)
 
         try:
             result = await run_agent(

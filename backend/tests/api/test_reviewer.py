@@ -147,7 +147,7 @@ def reviewer_client(client: TestClient, fake_lab: Lab):  # type: ignore[no-untyp
     app.dependency_overrides[get_db_session] = override_db
     app.dependency_overrides[get_current_lab] = override_lab
     try:
-        with patch("app.api.routes.agents._enqueue"):
+        with patch("app.api.routes.agents._enqueue_reviewer"):
             yield client, fake_lab, store
     finally:
         app.dependency_overrides.pop(get_db_session, None)
@@ -159,7 +159,7 @@ def reviewer_client(client: TestClient, fake_lab: Lab):  # type: ignore[no-untyp
 
 def test_post_creates_queued_session_and_enqueues_task(reviewer_client) -> None:  # type: ignore[no-untyped-def]
     client, lab, store = reviewer_client
-    with patch("app.api.routes.agents._enqueue") as enqueue:
+    with patch("app.api.routes.agents._enqueue_reviewer") as enqueue:
         resp = client.post(
             f"/api/v1/labs/{lab.id}/reviewer",
             json={"input_text": "x" * 40},

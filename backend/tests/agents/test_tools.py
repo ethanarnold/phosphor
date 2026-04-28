@@ -40,6 +40,7 @@ def test_registry_schemas_shape() -> None:
     assert {s["function"]["name"] for s in schemas} == {
         "get_lab_state",
         "search_experiments",
+        "search_literature",
         "list_capabilities",
     }
     # OpenAI-tools envelope
@@ -59,6 +60,7 @@ def test_registry_has_and_names() -> None:
     assert set(registry.names()) == {
         "get_lab_state",
         "search_experiments",
+        "search_literature",
         "list_capabilities",
     }
 
@@ -100,6 +102,61 @@ async def test_search_experiments_rejects_empty_query() -> None:
     )
     result = await registry.dispatch("search_experiments", {"query": ""})
     assert result == {"error": "query is required"}
+
+
+@pytest.mark.asyncio
+async def test_search_literature_rejects_empty_query() -> None:
+    registry = build_default_registry(
+        session=_fake_session(), settings=_fake_settings(), lab_id=uuid.uuid4()
+    )
+    result = await registry.dispatch("search_literature", {"query": ""})
+    assert result == {"error": "query is required"}
+
+
+@pytest.mark.asyncio
+async def test_search_literature_filters_to_paper_kind() -> None:
+    """The tool wraps hybrid_search but must drop signal/experiment hits."""
+    from datetime import UTC, datetime
+
+    from app.services.search import SearchHit
+
+    fake_session = _fake_session()
+    settings = _fake_settings()
+    lab_id = uuid.uuid4()
+
+    paper_id = uuid.uuid4()
+    sig_id = uuid.uuid4()
+    paper_hit = SearchHit(
+        kind="paper",
+        id=paper_id,
+        score=0.91,
+        snippet="A relevant abstract.",
+        matched_by="embedding",
+        title="Spatial transcriptomics in microglia",
+        created_at=datetime(2026, 4, 1, tzinfo=UTC),
+    )
+    signal_hit = SearchHit(
+        kind="signal",
+        id=sig_id,
+        score=0.7,
+        snippet="An experiment row.",
+        matched_by="keyword",
+        signal_type="experiment",
+        created_at=datetime(2026, 4, 1, tzinfo=UTC),
+    )
+
+    async def fake_hybrid(**_kwargs: Any) -> list[SearchHit]:
+        return [paper_hit, signal_hit]
+
+    with patch("app.agents.tools.hybrid_search", side_effect=fake_hybrid):
+        registry = build_default_registry(session=fake_session, settings=settings, lab_id=lab_id)
+        result = await registry.dispatch("search_literature", {"query": "microglia"})
+
+    assert result["query"] == "microglia"
+    assert len(result["matches"]) == 1
+    match = result["matches"][0]
+    assert match["title"] == "Spatial transcriptomics in microglia"
+    assert match["score"] == 0.91
 
 
 @pytest.mark.asyncio

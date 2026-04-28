@@ -31,6 +31,12 @@ AGENT_STATUS_ERROR = "error"
 # Purpose values. New agents add to this enum but don't need a migration —
 # Postgres stores as VARCHAR, validation lives at the app layer.
 AGENT_PURPOSE_REVIEWER = "reviewer"
+AGENT_PURPOSE_DIRECTIONS = "directions"
+AGENT_PURPOSE_STRENGTHEN = "strengthen"
+
+AGENT_PURPOSES = frozenset(
+    {AGENT_PURPOSE_REVIEWER, AGENT_PURPOSE_DIRECTIONS, AGENT_PURPOSE_STRENGTHEN}
+)
 
 # Role values for agent_messages.role
 MESSAGE_ROLE_SYSTEM = "system"
