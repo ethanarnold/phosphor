@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phosphor — boxed P exploration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+  />
+  <style>
+    :root {
+      --paper: #FAFAF7;
+      --surface: #FFFFFF;
+      --surface-2: #F2F0E8;
+      --ink: #0A0A0A;
+      --ink-2: #3D3D3A;
+      --ink-3: #6B6B66;
+      --rule: #E4E2DA;
+      --rule-strong: #CAC7BB;
+      --signal: #C8441F;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+    body {
+      font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 {
+      font-family: 'Fraunces', ui-serif, Georgia, serif;
+      font-variation-settings: 'opsz' 144;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin: 0;
+      color: var(--ink);
+    }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-feature-settings: 'zero'; }
+    .page { max-width: 1180px; margin: 0 auto; padding: 64px 32px 96px; }
+
+    .masthead {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead .brand {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .masthead .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .intro {
+      padding: 48px 0 56px;
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 64px;
+      align-items: end;
+    }
+    .intro h1 {
+      font-size: clamp(36px, 4.4vw, 52px);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+    }
+    .intro p {
+      color: var(--ink-2);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 46ch;
+    }
+
+    section { padding: 56px 0 16px; border-bottom: 1px solid var(--rule); }
+    section:last-of-type { border-bottom: none; }
+    .section-head {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-top: 6px;
+    }
+    .section-head h2 { font-size: 28px; letter-spacing: -0.02em; }
+    .section-head p { color: var(--ink-2); margin: 8px 0 0; max-width: 60ch; }
+
+    /* Variants grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .variant {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .variant-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 10px;
+    }
+    .variant-head .name {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .variant-head .id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--ink-3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      min-height: 160px;
+    }
+    .note {
+      font-size: 13px;
+      color: var(--ink-2);
+      line-height: 1.5;
+    }
+    .note strong { color: var(--ink), font-weight: 500; }
+
+    /* ====================================================
+       The wordmark — overlay box approach.
+
+       The word "Phosphor" renders as normal flowing text.
+       The leading P is wrapped in <span class="p-glyph">.
+       That span has position: relative and an absolutely-
+       positioned ::before that draws the box around the P
+       *without* affecting layout. The P-to-h spacing stays
+       at the natural Fraunces advance width.
+       ==================================================== */
+    .ph {
+      font-family: 'Fraunces', serif;
+      font-variation-settings: 'opsz' 144;
+      font-weight: 500;
+      font-size: 64px;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--ink);
+      white-space: nowrap;
+      /* Stacking context root for the wordmark.
+         Putting isolation here (not on .p-glyph) means the absolute-
+         positioned box with z-index:-1 drops behind ALL content of
+         the wordmark — including the "hosphor" text that follows. */
+      position: relative;
+      isolation: isolate;
+    }
+
+    .ph .p-glyph {
+      /* inline-block so we have a stable bounding box for the absolute box.
+         Fraunces P-to-h has effectively no kerning pair, so the visual
+         spacing is indistinguishable from inline.
+         No stacking context here — we want the box (z-index:-1) to drop
+         past .p-glyph and land at the back of .ph's context. */
+      position: relative;
+      display: inline-block;
+    }
+
+    /* The box — absolute square, doesn't affect layout */
+    .ph .p-glyph::before {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      /* Square box (0.84em × 0.84em), centered horizontally on the P glyph.
+         Tuned for Fraunces 500: cap-center sits ~0.46em below em-box top,
+         glyph horizontal center sits ~0.31em from em-box left. */
+      top: 0.04em;
+      left: -0.11em;
+      width: 0.84em;
+      height: 0.84em;
+      border: 1.5px solid var(--signal);
+      border-radius: 1px;
+      z-index: -1;
+    }
+
+    /* ----------- Variant 1: plain box ----------- */
+    /* default — nothing else */
+
+    /* ----------- Variant 2: + atomic number ----------- */
+    .ph.v2 .p-glyph::after {
+      content: '15';
+      position: absolute;
+      pointer-events: none;
+      /* Top-left interior of the square box (which starts at -0.11em, 0.04em). */
+      top: 0.07em;
+      left: -0.08em;
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      font-feature-settings: 'zero';
+      font-weight: 500;
+      font-size: 0.16em;
+      line-height: 1;
+      color: var(--signal);
+      letter-spacing: 0.04em;
+    }
+
+    /* ----------- Variant 3: + atomic number + mass ----------- */
+    .ph.v3 .p-glyph::after {
+      content: '15';
+      position: absolute;
+      pointer-events: none;
+      top: 0.07em;
+      left: -0.08em;
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      font-feature-settings: 'zero';
+      font-weight: 500;
+      font-size: 0.15em;
+      line-height: 1;
+      color: var(--signal);
+      letter-spacing: 0.04em;
+    }
+    .ph.v3 .p-glyph .mass {
+      position: absolute;
+      pointer-events: none;
+      /* Bottom-right interior of the square box.
+         Box right edge ≈ 0.13em past .p-glyph right edge (advance ~0.6em). */
+      bottom: 0.14em;
+      right: -0.10em;
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      font-feature-settings: 'zero';
+      font-size: 0.12em;
+      line-height: 1;
+      color: var(--ink-3);
+      letter-spacing: 0.02em;
+    }
+
+    /* ----------- Variant 4: filled red box, knockout P ----------- */
+    .ph.v4 .p-glyph { color: var(--paper); }
+    .ph.v4 .p-glyph::before {
+      background: var(--signal);
+      border-color: var(--signal);
+    }
+
+    /* ----------- Variant 5: hairline box + red P ----------- */
+    .ph.v5 .p-glyph { color: var(--signal); }
+
+    /* ----------- Variant 6: tight box (less padding, still square) ----------- */
+    .ph.v6 .p-glyph::before {
+      top: 0.11em;
+      left: -0.07em;
+      width: 0.72em;
+      height: 0.72em;
+      border-width: 1.25px;
+    }
+
+    /* ====================================================
+       Scale demos — applied
+       ==================================================== */
+    .scale-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .scale-row:last-child { border-bottom: none; }
+    .scale-row .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-3);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.5;
+    }
+    .scale-row .meta strong { color: var(--ink-2); font-weight: 500; }
+
+    .ph.size-hero { font-size: 88px; }
+    .ph.size-h2   { font-size: 36px; }
+    .ph.size-side { font-size: 22px; }
+    .ph.size-tab  { font-size: 17px; }
+
+    /* At smaller sizes, thin the border so it stays crisp */
+    .ph.size-side .p-glyph::before,
+    .ph.size-tab  .p-glyph::before { border-width: 1px; }
+
+    /* Sidebar mock */
+    .sidebar-mock {
+      width: 240px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 20px;
+    }
+    .sidebar-mock .top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 16px;
+    }
+    .sidebar-mock .top .ph { flex: 1; min-width: 0; }
+    .sidebar-mock .nav-item {
+      display: block;
+      padding: 6px 0;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+    .sidebar-mock .nav-item.active { color: var(--ink); font-weight: 500; }
+
+    /* Favicon mock */
+    .favi-row {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      padding: 12px 0;
+    }
+    .favi {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .favi.large { width: 64px; height: 64px; }
+    .favi-pbox {
+      border: 1.5px solid var(--signal);
+      border-radius: 1px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-variation-settings: 'opsz' 144;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .favi.large .favi-pbox {
+      width: 38px;
+      height: 38px;
+      font-size: 26px;
+      border-width: 2px;
+    }
+    .favi-fill {
+      background: var(--signal);
+      border: none;
+      color: var(--paper);
+    }
+
+    /* Recommendation card */
+    .reco {
+      padding: 36px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .reco h3 { font-size: 24px; margin-bottom: 12px; }
+    .reco p { color: var(--ink-2); margin: 0 0 12px; }
+    .reco-stage {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 56px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 880px) {
+      .grid, .reco, .intro { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <div class="brand">Phosphor</div>
+      <div class="meta">Branding · v2 · boxed P (overlay)</div>
+    </header>
+
+    <section class="intro">
+      <h1>The word is&nbsp;<span class="ph v2" style="font-size: inherit;"><span class="p-glyph">P</span>hosphor</span>.</h1>
+      <p>
+        Fix from v1: the wordmark is now plain flowing text. The P sits at its natural advance width next to the h. The red box is an absolute-positioned overlay on the P — pure decoration, zero impact on layout. Six variants below show what can hang off that single move.
+      </p>
+    </section>
+
+    <!-- Variants -->
+    <section>
+      <div class="section-head">
+        <div class="section-num">01 · Variants</div>
+        <div>
+          <h2>Six treatments. P and h spaced normally.</h2>
+          <p>All boxes use <span class="mono">--signal</span> (<span class="mono">#C8441F</span>) — the color of red phosphorus. Hover any of the words and you'll see the P/h spacing matches normal Fraunces.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- v1 -->
+        <div class="variant">
+          <div class="variant-head">
+            <div class="name">Hairline box</div>
+            <div class="id">v1 · plain</div>
+          </div>
+          <div class="stage">
+            <div class="ph v1"><span class="p-glyph">P</span>hosphor</div>
+          </div>
+          <div class="note"><strong>The minimum.</strong> Red hairline frames the P, nothing else. Quietest version. Reads more as &ldquo;tag&rdquo; than &ldquo;periodic-table card.&rdquo;</div>
+        </div>
+
+        <!-- v2 -->
+        <div class="variant">
+          <div class="variant-head">
+            <div class="name">Hairline box + 15</div>
+            <div class="id">v2 · element</div>
+          </div>
+          <div class="stage">
+            <div class="ph v2"><span class="p-glyph">P</span>hosphor</div>
+          </div>
+          <div class="note"><strong>Recommended.</strong> Atomic number tucked into the top-left corner of the box — the single detail that turns &ldquo;boxed letter&rdquo; into &ldquo;periodic-table card.&rdquo;</div>
+        </div>
+
+        <!-- v3 -->
+        <div class="variant">
+          <div class="variant-head">
+            <div class="name">Full metadata</div>
+            <div class="id">v3 · maximal</div>
+          </div>
+          <div class="stage">
+            <div class="ph v3"><span class="p-glyph">P<span class="mass">30.97</span></span>hosphor</div>
+          </div>
+          <div class="note"><strong>Full element card.</strong> 15 top-left, atomic mass bottom-right. Most explicit. Risks looking busy below ~36px.</div>
+        </div>
+
+        <!-- v4 -->
+        <div class="variant">
+          <div class="variant-head">
+            <div class="name">Filled, knockout P</div>
+            <div class="id">v4 · solid</div>
+          </div>
+          <div class="stage">
+            <div class="ph v4"><span class="p-glyph">P</span>hosphor</div>
+          </div>
+          <div class="note"><strong>Loud.</strong> Solid red box, P knocked out in paper. Most legible at favicon size; closest to a sticker rather than a card.</div>
+        </div>
+
+        <!-- v5 -->
+        <div class="variant">
+          <div class="variant-head">
+            <div class="name">Box + red P</div>
+            <div class="id">v5 · monochrome</div>
+          </div>
+          <div class="stage">
+            <div class="ph v5"><span class="p-glyph">P</span>hosphor</div>
+          </div>
+          <div class="note"><strong>All-red mark.</strong> Border and glyph share the oxidized red. Brighter than v1 but harder to defend against rule #11 (color encodes meaning).</div>
+        </div>
+
+        <!-- v6 -->
+        <div class="variant">
+          <div class="variant-head">
+            <div class="name">Tight box</div>
+            <div class="id">v6 · snug</div>
+          </div>
+          <div class="stage">
+            <div class="ph v6"><span class="p-glyph">P</span>hosphor</div>
+          </div>
+          <div class="note"><strong>Box hugs the glyph.</strong> Less breathing room, almost a typographic underline reborn as a frame. Loses some of the &ldquo;element&rdquo; reading.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scale demo: v2 -->
+    <section>
+      <div class="section-head">
+        <div class="section-num">02 · Scale</div>
+        <div>
+          <h2>v2 across every size that matters.</h2>
+          <p>Same construction at every size. Box border thins from 1.5px → 1px below 22px. Em-based geometry means proportions hold from 17px to 88px without per-size tuning.</p>
+        </div>
+      </div>
+
+      <div class="scale-row">
+        <div class="meta"><strong>Landing hero</strong><br>88px · marketing</div>
+        <div class="ph v2 size-hero"><span class="p-glyph">P</span>hosphor</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="meta"><strong>Page header</strong><br>36px · h1</div>
+        <div class="ph v2 size-h2"><span class="p-glyph">P</span>hosphor</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="meta"><strong>Sidebar brand</strong><br>22px · in-app</div>
+        <div>
+          <div class="sidebar-mock">
+            <div class="top">
+              <div class="ph v2 size-side"><span class="p-glyph">P</span>hosphor</div>
+            </div>
+            <div class="nav-item active">Dashboard</div>
+            <div class="nav-item">Experiments</div>
+            <div class="nav-item">Documents</div>
+            <div class="nav-item">Opportunities</div>
+            <div class="nav-item">Lab state</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row">
+        <div class="meta"><strong>Tab title row</strong><br>17px · narrow</div>
+        <div class="ph v2 size-tab"><span class="p-glyph">P</span>hosphor</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="meta"><strong>Favicon</strong><br>32 / 16px · drops the 15</div>
+        <div>
+          <div class="favi-row">
+            <div class="favi large"><div class="favi-pbox">P</div></div>
+            <div class="favi"><div class="favi-pbox">P</div></div>
+            <div class="favi favi-fill"><div class="favi-pbox favi-fill" style="border: none;">P</div></div>
+            <div class="meta" style="padding: 0;"><strong>64 · 32 · 32 alt</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommendation -->
+    <section>
+      <div class="section-head">
+        <div class="section-num">03 · Pick</div>
+        <div>
+          <h2>v2 wordmark, v4 favicon.</h2>
+          <p>Hairline box reads as periodic table where the &ldquo;15&rdquo; survives; filled box wins at 16px where every detail loses.</p>
+        </div>
+      </div>
+      <div class="reco">
+        <div>
+          <h3>One mark, two contexts.</h3>
+          <p>
+            <strong>v2 (hairline + 15)</strong> is the wordmark. The box overlays the P; the rest of the word reads as a word. Red border is the only color on the page; everything else stays ink-on-paper.
+          </p>
+          <p>
+            <strong>v4 (filled, knockout P)</strong> is the favicon and any 16-32px square slot.
+          </p>
+          <p style="font-size: 12px; color: var(--ink-3); margin-top: 24px;">Say go and I'll wire <span class="mono">.brand-mark</span> into <span class="mono">styles.css</span> + <span class="mono">Layout.tsx</span>, and ship a tiny SVG favicon.</p>
+        </div>
+        <div class="reco-stage">
+          <div class="ph v2" style="font-size: 64px;"><span class="p-glyph">P</span>hosphor</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
