@@ -279,13 +279,17 @@ pre {
 }
 
 .sidebar-top .brand {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
   flex: 1;
   min-width: 0;
+}
+
+/* ---- Brand mark (P-15 element card) ---- */
+
+.brandmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
 }
 
 .sidebar-top .menu-toggle {
@@ -304,6 +308,88 @@ pre {
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.brandmark-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.brandmark-glyph {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.brandmark-num,
+.brandmark-mass {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-feature-settings: 'zero';
+}
+
+.brandmark-num {
+  top: 5px;
+  left: 7px;
+  font-size: 10px;
+  color: var(--ink-2);
+  letter-spacing: 0.04em;
+}
+
+.brandmark-mass {
+  bottom: 5px;
+  right: 7px;
+  font-size: 9px;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+
+.brandmark-word {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.brandmark-sidebar .brandmark-card {
+  width: 26px;
+  height: 26px;
+}
+
+.brandmark-sidebar .brandmark-glyph {
+  font-size: 18px;
+}
+
+.brandmark-sidebar .brandmark-word {
+  font-size: 17px;
+}
+
+.brandmark-full {
+  gap: 16px;
+}
+
+.brandmark-full .brandmark-card {
+  width: 88px;
+  height: 88px;
+}
+
+.brandmark-full .brandmark-glyph {
+  font-size: 52px;
+}
+
+.brandmark-full .brandmark-word {
+  font-size: 36px;
+  letter-spacing: -0.02em;
 }
 
 .sidebar a.nav {
@@ -1016,9 +1102,6 @@ textarea.mono {
     padding-bottom: 0;
     border-bottom: none;
   }
-  .sidebar-top .brand {
-    font-size: 18px;
-  }
   .sidebar-top .menu-toggle {
     display: inline-flex;
   }
@@ -1065,11 +1148,8 @@ textarea.mono {
 }
 
 .landing-top .brand {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
 }
 
 .landing-nav {
@@ -1092,6 +1172,10 @@ textarea.mono {
 .landing-hero {
   padding: var(--s-7) 0 var(--s-9);
   border-bottom: 1px solid var(--rule);
+}
+
+.landing-hero-mark {
+  margin-bottom: var(--s-6);
 }
 
 .landing-hero .kicker {

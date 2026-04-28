@@ -1,4 +1,5 @@
 import { SignInButton, SignUpButton } from '@clerk/clerk-react'
+import BrandMark from './BrandMark'
 
 /**
  * Public-facing landing page rendered in <SignedOut>.
@@ -9,7 +10,7 @@ export default function Landing() {
   return (
     <div className="landing">
       <header className="landing-top">
-        <div className="brand">Phosphor</div>
+        <div className="brand"><BrandMark size="sidebar" /></div>
         <nav className="landing-nav">
           <a href="#how" className="muted">How it works</a>
           <a href="#why" className="muted">Why</a>

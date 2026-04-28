@@ -1,6 +1,7 @@
 import { UserButton } from '@clerk/clerk-react'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import BrandMark from './BrandMark'
 
 const NAV: { to: string; label: string }[] = [
   { to: '/', label: 'Dashboard' },
@@ -25,7 +26,7 @@ export default function Layout() {
     <div className="app">
       <nav className="sidebar" aria-label="Primary">
         <div className="sidebar-top">
-          <div className="brand">Phosphor</div>
+          <div className="brand"><BrandMark size="sidebar" /></div>
           <button
             type="button"
             className="ghost menu-toggle"
