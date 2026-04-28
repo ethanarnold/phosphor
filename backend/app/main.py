@@ -9,8 +9,8 @@ from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from app.api.routes import api_keys as api_keys_routes
 from app.api.routes import (
+    agents,
     documents,
     experiments,
     feedback,
@@ -24,6 +24,7 @@ from app.api.routes import (
     signals,
     states,
 )
+from app.api.routes import api_keys as api_keys_routes
 from app.core.audit import AuditLogMiddleware
 from app.core.config import get_settings
 from app.core.database import close_db, init_db
@@ -180,4 +181,9 @@ app.include_router(
     api_keys_routes.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["api-keys"],
+)
+app.include_router(
+    agents.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["agents"],
 )

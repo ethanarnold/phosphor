@@ -267,13 +267,20 @@ pre {
   padding: var(--s-6) var(--s-5) var(--s-4);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--s-4);
 }
 
-.sidebar .brand {
-  padding: 0 0 var(--s-4);
-  margin-bottom: var(--s-4);
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding-bottom: var(--s-4);
   border-bottom: 1px solid var(--rule);
+}
+
+.sidebar-top .brand {
+  flex: 1;
+  min-width: 0;
 }
 
 /* ---- Brand mark (P-15 element card) ---- */
@@ -283,6 +290,24 @@ pre {
   align-items: center;
   gap: 10px;
   color: var(--ink);
+}
+
+.sidebar-top .menu-toggle {
+  display: none;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.sidebar-top .sidebar-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .brandmark-card {
@@ -387,15 +412,6 @@ pre {
 .sidebar a.nav.active {
   background: var(--surface-2);
   color: var(--ink);
-}
-
-.sidebar .footer {
-  margin-top: auto;
-  padding-top: var(--s-4);
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
 }
 
 .main {
@@ -1013,6 +1029,63 @@ textarea.mono {
   color: var(--ink-2);
 }
 
+/* ---- Review page (reviewer agent) ---- */
+
+.review-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-7);
+  padding-top: var(--s-5);
+  align-items: start;
+}
+
+.review-result {
+  border-left: 1px solid var(--rule);
+  padding-left: var(--s-5);
+  min-height: 200px;
+}
+
+.tool-trace {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-3);
+}
+
+.tool-trace summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--ink-3);
+}
+
+.tool-trace summary::-webkit-details-marker {
+  display: none;
+}
+
+.tool-trace summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 10px;
+  color: var(--ink-3);
+  transition: transform 120ms ease-out;
+}
+
+.tool-trace[open] summary::before {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 900px) {
+  .review-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  .review-result {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding-left: 0;
+    padding-top: var(--s-5);
+  }
+}
+
 /* ---- Mobile ---- */
 
 @media (max-width: 720px) {
@@ -1020,29 +1093,26 @@ textarea.mono {
     grid-template-columns: 1fr;
   }
   .sidebar {
-    flex-direction: row;
-    overflow-x: auto;
     border-right: none;
     border-bottom: 1px solid var(--rule);
-    padding: var(--s-2) var(--s-3);
-    gap: var(--s-2);
-    align-items: center;
+    padding: var(--s-3) var(--s-4);
+    gap: 0;
   }
-  .sidebar .brand {
-    padding: 0 var(--s-2) 0 0;
-    margin-bottom: 0;
+  .sidebar-top {
+    padding-bottom: 0;
     border-bottom: none;
   }
-  .sidebar a.nav {
-    white-space: nowrap;
-    margin: 0;
+  .sidebar-top .menu-toggle {
+    display: inline-flex;
   }
-  .sidebar .footer {
-    margin-top: 0;
-    margin-left: auto;
-    border-top: none;
-    padding-top: 0;
-    flex-direction: row;
+  .nav-list {
+    display: none;
+    margin-top: var(--s-3);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--rule);
+  }
+  .nav-list.open {
+    display: flex;
   }
   .main {
     padding: var(--s-5) var(--s-4) var(--s-8);

@@ -1,5 +1,6 @@
-import { OrganizationSwitcher, UserButton } from '@clerk/clerk-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { UserButton } from '@clerk/clerk-react'
+import { useEffect, useState } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import BrandMark from './BrandMark'
 
 const NAV: { to: string; label: string }[] = [
@@ -7,29 +8,49 @@ const NAV: { to: string; label: string }[] = [
   { to: '/experiments', label: 'Experiments' },
   { to: '/documents', label: 'Documents' },
   { to: '/opportunities', label: 'Opportunities' },
+  { to: '/review', label: 'Review' },
   { to: '/state', label: 'Lab state' },
   { to: '/search', label: 'Search' },
   { to: '/literature', label: 'Literature' },
 ]
 
 export default function Layout() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
   return (
     <div className="app">
       <nav className="sidebar" aria-label="Primary">
-        <div className="brand"><BrandMark size="sidebar" /></div>
-        {NAV.map((n) => (
-          <NavLink
-            key={n.to}
-            to={n.to}
-            end={n.to === '/'}
-            className={({ isActive }) => `nav${isActive ? ' active' : ''}`}
+        <div className="sidebar-top">
+          <div className="brand"><BrandMark size="sidebar" /></div>
+          <button
+            type="button"
+            className="ghost menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="primary-nav"
+            onClick={() => setMenuOpen((o) => !o)}
           >
-            {n.label}
-          </NavLink>
-        ))}
-        <div className="footer">
-          <OrganizationSwitcher hidePersonal />
-          <UserButton />
+            {menuOpen ? 'Close' : 'Menu'}
+          </button>
+          <div className="sidebar-user">
+            <UserButton />
+          </div>
+        </div>
+        <div id="primary-nav" className={`nav-list${menuOpen ? ' open' : ''}`}>
+          {NAV.map((n) => (
+            <NavLink
+              key={n.to}
+              to={n.to}
+              end={n.to === '/'}
+              className={({ isActive }) => `nav${isActive ? ' active' : ''}`}
+            >
+              {n.label}
+            </NavLink>
+          ))}
         </div>
       </nav>
       <main className="main">

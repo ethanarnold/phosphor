@@ -1,0 +1,309 @@
+{
+  "cases": [
+    {
+      "id": "microglia_crispri_trem2",
+      "description": "Neuroimmunology lab with bulk RNA-seq but no primary microglia or scRNA-seq. Aim proposes CRISPRi screen in primary human microglia.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Illumina NextSeq 550", "capabilities": ["Short-read sequencing", "Bulk RNA-seq"], "limitations": null},
+          {"name": "Bio-Rad CFX96 qPCR", "capabilities": ["qPCR"], "limitations": null},
+          {"name": "Leica DM6 upright microscope", "capabilities": ["Widefield imaging", "ICC"], "limitations": "No confocal"},
+          {"name": "Tissue culture hood (BSL-2)", "capabilities": ["Cell culture"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Bulk RNA-seq", "proficiency": "expert", "notes": "4 experiments over 12 months"},
+          {"name": "qPCR", "proficiency": "expert", "notes": null},
+          {"name": "Immunocytochemistry", "proficiency": "competent", "notes": null},
+          {"name": "CRISPR-Cas9 knockout", "proficiency": "competent", "notes": "All work in HEK293 and K562 cell lines"},
+          {"name": "Primary astrocyte culture", "proficiency": "competent", "notes": "Signal #142, Jan 2024"}
+        ],
+        "expertise": [
+          {"domain": "Neuroinflammation", "confidence": "high"},
+          {"domain": "Bulk transcriptomics", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Mouse", "strains": ["C57BL/6J"], "notes": null},
+          {"name": "HEK293", "strains": [], "notes": null},
+          {"name": "K562", "strains": [], "notes": null}
+        ],
+        "reagents": [],
+        "experimental_history": [
+          {"technique": "CRISPR-Cas9 knockout", "outcome": "success", "insight": "7 successful KO experiments in HEK293 / K562 over 18 months"},
+          {"technique": "Primary astrocyte culture", "outcome": "success", "insight": "Jan 2024; signal #142"},
+          {"technique": "Bulk RNA-seq", "outcome": "success", "insight": "4 runs; last Feb 2025"}
+        ],
+        "resource_constraints": {},
+        "signal_count": 42
+      },
+      "aim": "Aim 2: We will optimize a CRISPR interference screen in primary human microglia to identify regulators of TREM2 expression, validating hits by immunocytochemistry and bulk RNA-seq.",
+      "expected_grounded": ["CRISPR", "bulk RNA-seq", "immunocytochemistry"],
+      "expected_missing": ["primary microglia", "CRISPRi", "single-cell", "primary human"],
+      "expected_next_step_keywords": ["collaborat", "method development", "drop", "months"]
+    },
+    {
+      "id": "cryoem_overreach",
+      "description": "Biochemistry lab with X-ray crystallography and no cryo-EM access proposes structural work.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Rigaku MicroMax-007 HF", "capabilities": ["X-ray crystallography"], "limitations": null},
+          {"name": "AKTA pure FPLC", "capabilities": ["Protein purification"], "limitations": null},
+          {"name": "Bruker NMR 500 MHz", "capabilities": ["Solution NMR"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Protein expression and purification", "proficiency": "expert", "notes": null},
+          {"name": "X-ray crystallography", "proficiency": "expert", "notes": "15 solved structures"},
+          {"name": "Crystallization screening", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Structural biology", "confidence": "high"},
+          {"domain": "Protein biochemistry", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "E. coli", "strains": ["BL21(DE3)", "Rosetta"], "notes": null}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {},
+        "signal_count": 30
+      },
+      "aim": "We will determine the structure of the full-length TRPV1 ion channel in its open and closed states using cryo-electron microscopy at 2.5 \u00c5 resolution.",
+      "expected_grounded": ["protein", "structural"],
+      "expected_missing": ["cryo-EM", "cryo-electron", "membrane protein", "single-particle"],
+      "expected_next_step_keywords": ["collaborat", "months", "drop"]
+    },
+    {
+      "id": "genomics_solid_fit",
+      "description": "Well-equipped genomics lab proposes an aim that matches their capabilities closely.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Illumina NovaSeq 6000", "capabilities": ["High-throughput sequencing"], "limitations": null},
+          {"name": "10x Chromium Controller", "capabilities": ["Single-cell library prep"], "limitations": null},
+          {"name": "Bio-Rad CFX96 qPCR", "capabilities": ["qPCR"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Single-cell RNA-seq", "proficiency": "expert", "notes": "10x Genomics, 12 datasets"},
+          {"name": "CRISPR-Cas9 knockout", "proficiency": "expert", "notes": "In primary murine T cells"},
+          {"name": "FACS", "proficiency": "expert", "notes": null},
+          {"name": "Primary T cell isolation", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Immunology", "confidence": "high"},
+          {"domain": "Single-cell genomics", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Mouse", "strains": ["C57BL/6J", "OT-I"], "notes": "primary T cells"}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {},
+        "signal_count": 60
+      },
+      "aim": "We will perform a CRISPR knockout screen in primary mouse T cells to identify regulators of T cell exhaustion, reading out with single-cell RNA-seq.",
+      "expected_grounded": ["CRISPR", "single-cell RNA-seq", "primary", "T cell"],
+      "expected_missing": [],
+      "expected_next_step_keywords": ["proceed", "power", "pilot", "scale"]
+    },
+    {
+      "id": "imaging_no_animal",
+      "description": "Imaging lab with two-photon but no animal-housing proposes in vivo work.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Olympus two-photon microscope", "capabilities": ["Two-photon imaging", "Calcium imaging"], "limitations": "Fixed-stage, slice-only"},
+          {"name": "Vibratome", "capabilities": ["Brain slicing"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Acute brain slice calcium imaging", "proficiency": "expert", "notes": null},
+          {"name": "Patch clamp electrophysiology", "proficiency": "competent", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Systems neuroscience", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Mouse", "strains": ["C57BL/6J"], "notes": "brain tissue obtained ex vivo only"}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {"personnel_notes": "No AALAS-trained surgeon on staff."},
+        "signal_count": 25
+      },
+      "aim": "We will perform chronic in vivo two-photon calcium imaging of cortical pyramidal neurons in awake, behaving mice over a 60-day learning paradigm.",
+      "expected_grounded": ["two-photon", "calcium imaging"],
+      "expected_missing": ["in vivo", "cranial window", "surgical", "awake", "chronic", "behaving"],
+      "expected_next_step_keywords": ["collaborat", "training", "months", "drop"]
+    },
+    {
+      "id": "proteomics_transition",
+      "description": "Proteomics lab with LC-MS/MS proposes proteomics work they can do, but adds mouse work they can't.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Thermo Q Exactive HF-X", "capabilities": ["LC-MS/MS"], "limitations": null},
+          {"name": "Dionex Ultimate 3000 RSLC", "capabilities": ["Nano-flow LC"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Shotgun proteomics", "proficiency": "expert", "notes": null},
+          {"name": "Phosphopeptide enrichment", "proficiency": "expert", "notes": null},
+          {"name": "Tandem mass tag labeling", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Proteomics", "confidence": "high"},
+          {"domain": "Post-translational modifications", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Human cell lines", "strains": ["HeLa", "HEK293"], "notes": null}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {},
+        "signal_count": 35
+      },
+      "aim": "We will use TMT-based quantitative phosphoproteomics to map signaling pathway rewiring in primary mouse hepatocytes isolated from a high-fat-diet model of NAFLD.",
+      "expected_grounded": ["TMT", "phosphoproteomics", "quantitative", "LC-MS"],
+      "expected_missing": ["mouse", "hepatocyte", "primary", "high-fat", "in vivo"],
+      "expected_next_step_keywords": ["collaborat", "obtain", "source"]
+    },
+    {
+      "id": "behavior_no_surgery",
+      "description": "Behavioral neuroscience lab proposes optogenetic circuit dissection — has behavior but no optogenetics.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Med Associates operant chambers", "capabilities": ["Operant conditioning"], "limitations": null},
+          {"name": "EthoVision tracking", "capabilities": ["Video tracking"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Operant conditioning", "proficiency": "expert", "notes": null},
+          {"name": "Open field test", "proficiency": "expert", "notes": null},
+          {"name": "Fear conditioning", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Behavioral neuroscience", "confidence": "high"},
+          {"domain": "Rodent learning and memory", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Rat", "strains": ["Long-Evans"], "notes": null}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {"personnel_notes": "No stereotaxic surgeon."},
+        "signal_count": 50
+      },
+      "aim": "We will use optogenetic silencing of basolateral amygdala projections to medial prefrontal cortex to dissect their causal role in extinction learning.",
+      "expected_grounded": ["extinction", "behavior", "conditioning", "rat"],
+      "expected_missing": ["optogenet", "viral", "fiber", "stereotaxic", "AAV"],
+      "expected_next_step_keywords": ["collaborat", "training", "months"]
+    },
+    {
+      "id": "chemistry_sound",
+      "description": "Synthetic chemistry lab proposes a synthesis target well within their competence.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Bruker Avance 400 MHz NMR", "capabilities": ["1H NMR", "13C NMR"], "limitations": null},
+          {"name": "Agilent 6890 GC-MS", "capabilities": ["GC-MS"], "limitations": null},
+          {"name": "Biotage Isolera", "capabilities": ["Flash chromatography"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "Multistep organic synthesis", "proficiency": "expert", "notes": null},
+          {"name": "Pd-catalyzed cross-coupling", "proficiency": "expert", "notes": "Suzuki, Buchwald-Hartwig"},
+          {"name": "Column chromatography", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Synthetic organic chemistry", "confidence": "high"}
+        ],
+        "organisms": [],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {},
+        "signal_count": 40
+      },
+      "aim": "We will synthesize a series of 2,6-disubstituted pyridine analogues of kinase inhibitor XYZ by Suzuki coupling, characterized by NMR and GC-MS.",
+      "expected_grounded": ["Suzuki", "NMR", "cross-coupling", "synthesis"],
+      "expected_missing": [],
+      "expected_next_step_keywords": ["proceed", "library", "scale"]
+    },
+    {
+      "id": "scrnaseq_no_bioinformatics",
+      "description": "Wet lab can generate scRNA-seq libraries but has no bioinformatics expertise.",
+      "lab_state": {
+        "equipment": [
+          {"name": "10x Chromium Controller", "capabilities": ["Single-cell library prep"], "limitations": null},
+          {"name": "Illumina MiSeq", "capabilities": ["Short-read sequencing"], "limitations": "Low throughput"}
+        ],
+        "techniques": [
+          {"name": "Single-cell RNA-seq library prep", "proficiency": "competent", "notes": null},
+          {"name": "Cell isolation", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Cell biology", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Mouse", "strains": [], "notes": null}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {"personnel_notes": "No computational biologist."},
+        "signal_count": 20
+      },
+      "aim": "We will generate and analyze a single-cell RNA-seq atlas of murine embryonic cardiac development, applying RNA velocity and trajectory inference to identify lineage branchpoints.",
+      "expected_grounded": ["single-cell", "library", "murine"],
+      "expected_missing": ["bioinformatic", "velocity", "trajectory", "computational", "analys"],
+      "expected_next_step_keywords": ["collaborat", "hire", "training"]
+    },
+    {
+      "id": "zebrafish_genetics_fit",
+      "description": "Zebrafish lab with well-established genetic tools proposes a mutant screen.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Zebrafish facility (250 tanks)", "capabilities": ["Fish husbandry"], "limitations": null},
+          {"name": "Zeiss LSM 880 confocal", "capabilities": ["Confocal imaging"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "CRISPR-Cas9 in zebrafish embryos", "proficiency": "expert", "notes": null},
+          {"name": "Morpholino injection", "proficiency": "expert", "notes": null},
+          {"name": "In situ hybridization", "proficiency": "expert", "notes": null},
+          {"name": "Live confocal imaging of zebrafish embryos", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "Zebrafish developmental biology", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Zebrafish", "strains": ["AB", "Tg(kdrl:GFP)"], "notes": null}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {},
+        "signal_count": 45
+      },
+      "aim": "We will perform a CRISPR-Cas9 F0 screen in zebrafish embryos to identify genes required for cardiovascular development, scored by Tg(kdrl:GFP) live confocal imaging.",
+      "expected_grounded": ["zebrafish", "CRISPR", "kdrl", "confocal", "embryo"],
+      "expected_missing": [],
+      "expected_next_step_keywords": ["proceed", "screen", "pilot"]
+    },
+    {
+      "id": "clinical_trial_no_gmp",
+      "description": "Academic lab with basic science tools proposes a first-in-human trial.",
+      "lab_state": {
+        "equipment": [
+          {"name": "Standard BSL-2 tissue culture", "capabilities": ["Cell culture"], "limitations": null},
+          {"name": "Flow cytometer (BD FACSAria)", "capabilities": ["FACS", "Cell sorting"], "limitations": null}
+        ],
+        "techniques": [
+          {"name": "T cell engineering (CAR-T, bench scale)", "proficiency": "competent", "notes": "Not GMP"},
+          {"name": "Flow cytometry", "proficiency": "expert", "notes": null}
+        ],
+        "expertise": [
+          {"domain": "T cell biology", "confidence": "high"}
+        ],
+        "organisms": [
+          {"name": "Human primary T cells", "strains": [], "notes": "From healthy donors, bench scale"}
+        ],
+        "reagents": [],
+        "experimental_history": [],
+        "resource_constraints": {"personnel_notes": "No regulatory / clinical staff. No GMP facility."},
+        "signal_count": 18
+      },
+      "aim": "We will initiate a Phase I clinical trial of a novel CD19-CAR-T therapy in pediatric relapsed ALL patients within 12 months.",
+      "expected_grounded": ["CAR-T", "T cell"],
+      "expected_missing": ["GMP", "clinical", "regulatory", "IND", "manufacturing"],
+      "expected_next_step_keywords": ["collaborat", "partner", "drop", "months"]
+    }
+  ]
+}
