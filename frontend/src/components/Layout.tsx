@@ -1,5 +1,6 @@
 import { OrganizationSwitcher, UserButton } from '@clerk/clerk-react'
 import { NavLink, Outlet } from 'react-router-dom'
+import BrandMark from './BrandMark'
 
 const NAV: { to: string; label: string }[] = [
   { to: '/', label: 'Dashboard' },
@@ -15,7 +16,7 @@ export default function Layout() {
   return (
     <div className="app">
       <nav className="sidebar" aria-label="Primary">
-        <div className="brand">Phosphor</div>
+        <div className="brand"><BrandMark size="sidebar" /></div>
         {NAV.map((n) => (
           <NavLink
             key={n.to}
