@@ -16,6 +16,10 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
+        # Treat shell-exported empty strings as unset so .env wins. Without
+        # this, an `export ANTHROPIC_API_KEY=""` in the user's rc shadows
+        # the real key in .env and downstream LLM calls fail with 401.
+        env_ignore_empty=True,
     )
 
     # Environment
