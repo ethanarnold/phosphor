@@ -64,11 +64,7 @@ class OpenAlexClient:
         self._semaphore = asyncio.Semaphore(8)
         self._headers = {
             "Accept": "application/json",
-            "User-Agent": (
-                f"phosphor (mailto:{contact_email})"
-                if contact_email
-                else "phosphor"
-            ),
+            "User-Agent": (f"phosphor (mailto:{contact_email})" if contact_email else "phosphor"),
         }
 
     async def fetch_works_by_orcid(
@@ -114,9 +110,7 @@ class OpenAlexClient:
         if response.status_code == 404:
             raise OpenAlexError(f"ORCID iD not found in OpenAlex: {orcid_id}")
         if response.status_code != 200:
-            raise OpenAlexError(
-                f"OpenAlex API error: HTTP {response.status_code} for {orcid_id}"
-            )
+            raise OpenAlexError(f"OpenAlex API error: HTTP {response.status_code} for {orcid_id}")
 
         data = response.json()
         return self._parse_works(data.get("results") or [])
@@ -150,9 +144,7 @@ class OpenAlexClient:
             )
 
         if response.status_code != 200:
-            raise OpenAlexError(
-                f"OpenAlex search error: HTTP {response.status_code}"
-            )
+            raise OpenAlexError(f"OpenAlex search error: HTTP {response.status_code}")
 
         data = response.json()
         return self._parse_works(data.get("results") or [])

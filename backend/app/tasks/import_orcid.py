@@ -99,9 +99,7 @@ async def _run_import_async(import_id: str) -> dict[str, Any]:
             row.prompt_version = EXTRACTION_PROMPT_VERSION
             await session.commit()
 
-            extractions = await _extract_chunked(
-                session, row, papers, EXTRACTION_CONCURRENCY
-            )
+            extractions = await _extract_chunked(session, row, papers, EXTRACTION_CONCURRENCY)
 
             # ---- Phase 3: aggregate + persist for review ----
             proposed = aggregate_capabilities(extractions, papers)
@@ -175,9 +173,7 @@ async def _safe_extract(paper: dict[str, Any], settings: Any) -> Any:
 
 
 async def _load_import(session: Any, iid: uuid.UUID) -> LabStateImport | None:
-    result = await session.execute(
-        select(LabStateImport).where(LabStateImport.id == iid)
-    )
+    result = await session.execute(select(LabStateImport).where(LabStateImport.id == iid))
     row: LabStateImport | None = result.scalar_one_or_none()
     return row
 

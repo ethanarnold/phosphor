@@ -109,27 +109,26 @@ class TestAggregation:
         # 1 paper → learning, 2-4 → competent, 5+ → expert
         papers = [_make_paper(i) for i in range(6)]
         extractions = [
-            _make_extraction(techniques=[{"name": "PCR", "evidence": "x"}])
-            for _ in range(6)
+            _make_extraction(techniques=[{"name": "PCR", "evidence": "x"}]) for _ in range(6)
         ]
         proposed = aggregate_capabilities(extractions, papers)
         assert proposed.techniques[0].frequency == 6
         assert proposed.techniques[0].proficiency == "expert"
 
         papers_one = [_make_paper(0)]
-        extractions_one = [
-            _make_extraction(techniques=[{"name": "PCR", "evidence": "x"}])
-        ]
+        extractions_one = [_make_extraction(techniques=[{"name": "PCR", "evidence": "x"}])]
         proposed_one = aggregate_capabilities(extractions_one, papers_one)
         assert proposed_one.techniques[0].proficiency == "learning"
 
     def test_results_sorted_by_frequency_descending(self) -> None:
         papers = [_make_paper(i) for i in range(3)]
         extractions = [
-            _make_extraction(techniques=[
-                {"name": "PCR", "evidence": "x"},
-                {"name": "Cloning", "evidence": "x"},
-            ]),
+            _make_extraction(
+                techniques=[
+                    {"name": "PCR", "evidence": "x"},
+                    {"name": "Cloning", "evidence": "x"},
+                ]
+            ),
             _make_extraction(techniques=[{"name": "PCR", "evidence": "x"}]),
             _make_extraction(techniques=[{"name": "PCR", "evidence": "x"}]),
         ]

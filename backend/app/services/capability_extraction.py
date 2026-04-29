@@ -234,7 +234,9 @@ def aggregate_capabilities(
         source = _make_source(paper)
 
         for item in extraction.techniques:
-            _accumulate(techniques, _normalize_name(item.name, _TECHNIQUE_ALIASES), item.name, source)
+            _accumulate(
+                techniques, _normalize_name(item.name, _TECHNIQUE_ALIASES), item.name, source
+            )
         for item in extraction.organisms:
             _accumulate(organisms, _normalize_name(item.name, _ORGANISM_ALIASES), item.name, source)
         for item in extraction.equipment:

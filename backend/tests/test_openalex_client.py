@@ -85,9 +85,7 @@ class TestParseWork:
             },
             "publication_year": 2025,
             "publication_date": "2025-04-15",
-            "primary_location": {
-                "source": {"display_name": "Nucleic Acids Research"}
-            },
+            "primary_location": {"source": {"display_name": "Nucleic Acids Research"}},
             "authorships": [
                 {"author": {"display_name": "Ethan B Arnold"}},
                 {"author": {"display_name": "Alisha Jones"}},
