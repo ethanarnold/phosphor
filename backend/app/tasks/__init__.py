@@ -35,5 +35,6 @@ celery_app.conf.update(
 from app.tasks import (
     agents,  # noqa: F401, E402
     distill,  # noqa: F401, E402
+    import_orcid,  # noqa: F401, E402
     literature,  # noqa: F401, E402
 )

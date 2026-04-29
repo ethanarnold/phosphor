@@ -1,0 +1,162 @@
+[
+  {
+    "id": "cap_001",
+    "pmid": "38101001",
+    "doi": "10.1000/cap001",
+    "year": 2024,
+    "title": "Cryo-EM structure of the human ribosome bound to a translation inhibitor at 2.4 Å resolution",
+    "abstract": "We determined the structure of the human 80S ribosome bound to homoharringtonine using single-particle cryo-electron microscopy at 2.4 Å resolution. Particles were collected on a Titan Krios microscope equipped with a K3 detector and processed with RELION 4.0. The structure reveals direct competition with incoming aminoacyl-tRNA at the A-site. Site-directed mutagenesis of the inhibitor-binding pocket in HEK293 cells confirmed the binding mode by an in vitro translation assay.",
+    "mesh_terms": ["Cryoelectron Microscopy", "Ribosomes", "Mutagenesis, Site-Directed"],
+    "expected": {
+      "techniques": ["cryo-electron microscopy", "single-particle cryo-em", "site-directed mutagenesis", "in vitro translation assay"],
+      "organisms": ["homo sapiens", "hek293"],
+      "equipment": ["titan krios", "k3 detector"],
+      "reagents": ["homoharringtonine"],
+      "expertise": ["structural biology"]
+    }
+  },
+  {
+    "id": "cap_002",
+    "pmid": "38101002",
+    "doi": "10.1000/cap002",
+    "year": 2023,
+    "title": "Single-cell RNA sequencing of mouse hippocampal interneurons reveals stress-induced state transitions",
+    "abstract": "Using 10x Genomics Chromium single-cell RNA-seq, we profiled 78,000 cells from the dorsal hippocampus of adult C57BL/6J mice exposed to chronic restraint stress. Trajectory analysis with Monocle3 identified a parvalbumin-positive interneuron subpopulation that transitions to a stress-responsive state marked by upregulation of Npas4. Validation by fluorescence in situ hybridization confirmed Npas4 expression in PV+ neurons. Whole-cell patch-clamp electrophysiology in acute hippocampal slices revealed reduced firing rates in stressed animals.",
+    "mesh_terms": ["Single-Cell Analysis", "Hippocampus", "Mice, Inbred C57BL", "Stress, Psychological", "Patch-Clamp Techniques"],
+    "expected": {
+      "techniques": ["single-cell rna-seq", "trajectory analysis", "fluorescence in situ hybridization", "patch-clamp electrophysiology"],
+      "organisms": ["mus musculus"],
+      "equipment": ["10x genomics chromium"],
+      "reagents": [],
+      "expertise": ["computational neuroscience", "neuroscience"]
+    }
+  },
+  {
+    "id": "cap_003",
+    "pmid": "38101003",
+    "doi": "10.1000/cap003",
+    "year": 2024,
+    "title": "CRISPR-Cas9 screening identifies regulators of TREM2 expression in human iPSC-derived microglia",
+    "abstract": "We performed a genome-wide CRISPR-Cas9 knockout screen in human iPSC-derived microglia using the Brunello sgRNA library. Cells were sorted by FACS for TREM2 surface expression and sequenced on an Illumina NovaSeq 6000. Top hits including SYK and CSF1R were validated by individual knockouts and confirmed by Western blot and immunofluorescence. The screen identifies CSF1R as a master regulator of TREM2 expression.",
+    "mesh_terms": ["CRISPR-Cas Systems", "Induced Pluripotent Stem Cells", "Microglia"],
+    "expected": {
+      "techniques": ["crispr-cas9 knockout", "genome-wide crispr screen", "fluorescence-activated cell sorting", "western blot", "immunofluorescence", "ipsc-derived microglia differentiation"],
+      "organisms": ["homo sapiens", "ipsc-derived microglia"],
+      "equipment": ["illumina novaseq 6000"],
+      "reagents": ["brunello sgrna library"],
+      "expertise": ["functional genomics", "neuroimmunology"]
+    }
+  },
+  {
+    "id": "cap_004",
+    "pmid": "38101004",
+    "doi": "10.1000/cap004",
+    "year": 2022,
+    "title": "Engineered Saccharomyces cerevisiae for high-titer biosynthesis of cannabinoid precursors",
+    "abstract": "We engineered Saccharomyces cerevisiae for de novo biosynthesis of olivetolic acid and cannabigerolic acid using a 12-gene metabolic pathway. Genes were assembled by Golden Gate cloning and integrated into the yeast genome via CRISPR-Cas9. Fermentation in 2L bioreactors yielded 50 mg/L of cannabigerolic acid, quantified by LC-MS/MS. Pathway flux was analyzed by 13C metabolic flux analysis.",
+    "mesh_terms": ["Saccharomyces cerevisiae", "Metabolic Engineering"],
+    "expected": {
+      "techniques": ["metabolic engineering", "golden gate cloning", "crispr-cas9 integration", "fermentation", "lc-ms/ms", "metabolic flux analysis"],
+      "organisms": ["saccharomyces cerevisiae"],
+      "equipment": ["bioreactor", "lc-ms/ms instrument"],
+      "reagents": [],
+      "expertise": ["synthetic biology", "metabolic engineering"]
+    }
+  },
+  {
+    "id": "cap_005",
+    "pmid": "38101005",
+    "doi": "10.1000/cap005",
+    "year": 2024,
+    "title": "Long-read nanopore sequencing reveals structural variants in pediatric leukemia",
+    "abstract": "Oxford Nanopore PromethION long-read sequencing of 30 pediatric acute lymphoblastic leukemia samples identified 47 previously uncharacterized structural variants affecting tumor suppressor loci. Variant calling used Sniffles2 and was validated by quantitative PCR. Functional follow-up used CRISPR base editing in Nalm-6 cell lines.",
+    "mesh_terms": ["Nanopore Sequencing", "Precursor Cell Lymphoblastic Leukemia-Lymphoma"],
+    "expected": {
+      "techniques": ["long-read nanopore sequencing", "structural variant calling", "quantitative pcr", "crispr base editing"],
+      "organisms": ["homo sapiens", "nalm-6 cells"],
+      "equipment": ["oxford nanopore promethion"],
+      "reagents": [],
+      "expertise": ["cancer genomics"]
+    }
+  },
+  {
+    "id": "cap_006",
+    "pmid": "38101006",
+    "doi": "10.1000/cap006",
+    "year": 2023,
+    "title": "Spatial transcriptomics of murine kidney reveals zonation in proximal tubule injury response",
+    "abstract": "We applied 10x Visium spatial transcriptomics to mouse kidneys after ischemia-reperfusion injury. Sections from C57BL/6J mice at 24h, 7d, and 28d post-injury revealed zonated expression of injury markers. Validation by immunohistochemistry and RNAscope confirmed spatial restriction of NGAL to the S3 segment.",
+    "mesh_terms": ["Reperfusion Injury", "Mice, Inbred C57BL", "Kidney"],
+    "expected": {
+      "techniques": ["spatial transcriptomics", "immunohistochemistry", "rnascope"],
+      "organisms": ["mus musculus"],
+      "equipment": ["10x visium"],
+      "reagents": [],
+      "expertise": ["renal physiology"]
+    }
+  },
+  {
+    "id": "cap_007",
+    "pmid": "38101007",
+    "doi": "10.1000/cap007",
+    "year": 2021,
+    "title": "Western blot quantification of HSP70 in heat-shocked HeLa cells",
+    "abstract": "HeLa cells were exposed to a 42°C heat shock for 1 hour and harvested at 0, 2, 4, and 8 hours post-recovery. HSP70 protein levels were quantified by Western blot using a mouse monoclonal anti-HSP70 antibody (clone C92F3A-5) with GAPDH loading control. Densitometry was performed in ImageJ. HSP70 peaked at 4 hours.",
+    "mesh_terms": ["HSP70 Heat-Shock Proteins", "HeLa Cells"],
+    "expected": {
+      "techniques": ["western blot"],
+      "organisms": ["hela cells"],
+      "equipment": [],
+      "reagents": ["anti-hsp70 antibody"],
+      "expertise": []
+    }
+  },
+  {
+    "id": "cap_008",
+    "pmid": "38101008",
+    "doi": "10.1000/cap008",
+    "year": 2024,
+    "title": "Molecular dynamics simulations reveal allosteric coupling in a SARS-CoV-2 main protease inhibitor",
+    "abstract": "All-atom molecular dynamics simulations on the Anton 3 supercomputer (1 microsecond per replica, 5 replicas) identified an allosteric pocket in the SARS-CoV-2 main protease distinct from the active site. Free-energy perturbation calculations using the AMBER force field predicted binding affinities for 20 candidate small molecules. Top hits were validated by isothermal titration calorimetry.",
+    "mesh_terms": ["Molecular Dynamics Simulation", "SARS-CoV-2"],
+    "expected": {
+      "techniques": ["molecular dynamics simulation", "free-energy perturbation", "isothermal titration calorimetry"],
+      "organisms": [],
+      "equipment": ["anton 3 supercomputer", "isothermal titration calorimeter"],
+      "reagents": [],
+      "expertise": ["computational chemistry", "structural biology"]
+    }
+  },
+  {
+    "id": "cap_009",
+    "pmid": "38101009",
+    "doi": "10.1000/cap009",
+    "year": 2023,
+    "title": "Patch-clamp electrophysiology of Drosophila motor neurons under thermal stress",
+    "abstract": "Whole-cell patch-clamp recordings were made from aCC motor neurons in Drosophila melanogaster larvae expressing GCaMP7f under the OK371-Gal4 driver. Calcium imaging during temperature ramps from 22°C to 38°C revealed adaptation in firing rates. Confocal imaging used a Zeiss LSM 880.",
+    "mesh_terms": ["Drosophila melanogaster", "Patch-Clamp Techniques", "Motor Neurons"],
+    "expected": {
+      "techniques": ["patch-clamp electrophysiology", "calcium imaging", "confocal microscopy"],
+      "organisms": ["drosophila melanogaster"],
+      "equipment": ["zeiss lsm 880"],
+      "reagents": ["gcamp7f"],
+      "expertise": ["neurophysiology"]
+    }
+  },
+  {
+    "id": "cap_010",
+    "pmid": "38101010",
+    "doi": "10.1000/cap010",
+    "year": 2024,
+    "title": "ChIP-seq mapping of H3K27ac in primary human macrophages reveals lipopolysaccharide-induced enhancers",
+    "abstract": "We performed ChIP-seq for H3K27ac in primary human monocyte-derived macrophages treated with LPS. Libraries were sequenced on an Illumina NextSeq 2000. Differential enhancer analysis identified 412 LPS-induced enhancers enriched for AP-1 and NF-κB motifs. ATAC-seq was used to confirm chromatin accessibility at the same loci.",
+    "mesh_terms": ["Macrophages", "Histone Code", "Lipopolysaccharides"],
+    "expected": {
+      "techniques": ["chip-seq", "atac-seq", "differential enhancer analysis"],
+      "organisms": ["homo sapiens", "primary human macrophages"],
+      "equipment": ["illumina nextseq 2000"],
+      "reagents": ["lipopolysaccharide", "anti-h3k27ac antibody"],
+      "expertise": ["epigenomics", "immunology"]
+    }
+  }
+]

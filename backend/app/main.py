@@ -15,6 +15,7 @@ from app.api.routes import (
     experiments,
     feedback,
     health,
+    imports,
     labs,
     literature,
     matching,
@@ -186,4 +187,9 @@ app.include_router(
     agents.router,
     prefix=f"{settings.api_prefix}/labs",
     tags=["agents"],
+)
+app.include_router(
+    imports.router,
+    prefix=f"{settings.api_prefix}/labs",
+    tags=["imports"],
 )

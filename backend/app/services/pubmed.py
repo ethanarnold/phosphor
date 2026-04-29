@@ -97,6 +97,75 @@ class PubMedClient:
 
         return results
 
+    async def resolve_doi_to_pmid(self, doi: str) -> str | None:
+        """Look up the PMID for a single DOI via ESearch.
+
+        Returns ``None`` if the DOI is not indexed in PubMed (some journals
+        and most preprints aren't).
+        """
+        # PubMed's [doi] field is case-insensitive and matches the literal
+        # string. We escape brackets defensively in case a DOI ever contains
+        # them (rare but legal per the DOI handbook).
+        params = {
+            **self._base_params(),
+            "db": "pubmed",
+            "term": f"{doi}[doi]",
+            "retmax": "1",
+        }
+        async with self._semaphore:
+            response = await self._client.get(
+                f"{PUBMED_BASE_URL}/esearch.fcgi",
+                params=params,
+                timeout=30.0,
+            )
+            response.raise_for_status()
+
+        root = ET.fromstring(response.text)
+        id_list = root.find("IdList")
+        if id_list is None:
+            return None
+        first = id_list.find("Id")
+        return first.text if first is not None and first.text else None
+
+    async def fetch_by_dois(self, dois: list[str]) -> list[dict[str, Any]]:
+        """Fetch papers for a list of DOIs.
+
+        Resolves each DOI to a PMID via ESearch (concurrently, bounded by the
+        client semaphore), then bulk-fetches abstracts via EFetch. DOIs that
+        don't resolve to a PMID are silently dropped — they'll just not appear
+        in the result. Returned dicts may include the resolved DOI even if
+        EFetch's normalized `doi` field is null.
+        """
+        if not dois:
+            return []
+
+        unique_dois = list({d.strip().lower() for d in dois if d and d.strip()})
+        pmid_results = await asyncio.gather(
+            *(self.resolve_doi_to_pmid(d) for d in unique_dois),
+            return_exceptions=True,
+        )
+
+        # Map resolved PMID -> DOI so we can backfill the doi field on rows
+        # whose XML didn't include an ArticleId/IdType=doi tag.
+        pmid_to_doi: dict[str, str] = {}
+        pmids: list[str] = []
+        for doi, pmid in zip(unique_dois, pmid_results, strict=False):
+            if not isinstance(pmid, str):
+                # BaseException (return_exceptions=True) or None — skip.
+                continue
+            pmids.append(pmid)
+            pmid_to_doi[pmid] = doi
+
+        if not pmids:
+            return []
+
+        papers = await self.fetch_by_pmids(pmids)
+        for paper in papers:
+            pmid = paper.get("pmid")
+            if not paper.get("doi") and pmid and pmid in pmid_to_doi:
+                paper["doi"] = pmid_to_doi[pmid]
+        return papers
+
     async def _efetch_batch(self, pmids: list[str]) -> list[dict[str, Any]]:
         """Fetch a batch of papers from EFetch."""
         params = {
