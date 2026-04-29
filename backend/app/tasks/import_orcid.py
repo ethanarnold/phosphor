@@ -1,9 +1,9 @@
 """Celery task that drives an ORCID-based lab state import end-to-end.
 
 Pipeline:
-    ORCID Public API → DOI list → sort newest-first, cap at MAX_PAPERS
-    → PubMed efetch (abstracts + MeSH) → per-paper LLM extraction
-    → aggregate with provenance → write `proposed_state`, set status=review.
+    OpenAlex (filter by ORCID, one call) → cap at MAX_PAPERS, newest-first
+    → per-paper LLM extraction → aggregate with provenance
+    → write `proposed_state`, set status=review.
 
 Progress is written to the `lab_state_imports.progress` JSONB column so the
 frontend's polling endpoint can render "Reading 23 of 50…" without waiting
@@ -35,8 +35,7 @@ from app.services.capability_extraction import (
     aggregate_capabilities,
     extract_capabilities_from_paper,
 )
-from app.services.orcid import OrcidClient, OrcidError
-from app.services.pubmed import PubMedClient
+from app.services.openalex import OpenAlexClient, OpenAlexError
 from app.tasks import celery_app
 
 # Cap papers per import. Bounds latency (~1 min at concurrency=5) and cost
@@ -67,50 +66,30 @@ async def _run_import_async(import_id: str) -> dict[str, Any]:
             return {"status": "not_found", "import_id": import_id}
 
         try:
-            # ---- Phase 1: fetch ORCID works ----
+            # ---- Phase 1: fetch publications from OpenAlex ----
             row.status = IMPORT_STATUS_FETCHING
-            row.progress = {"current_step": "Fetching publications from ORCID…"}
+            row.progress = {"current_step": "Fetching publications from OpenAlex…"}
             await session.commit()
 
             async with httpx.AsyncClient() as http:
-                orcid = OrcidClient(http)
-                works = await orcid.fetch_works(row.orcid_id)
-
-            if not works:
-                row.status = IMPORT_STATUS_FAILED
-                row.error = "No public works found for this ORCID iD."
-                row.completed_at = datetime.now(UTC)
-                await session.commit()
-                return {"status": "failed", "import_id": import_id, "reason": "no_works"}
-
-            # Sort newest-first, take top MAX_PAPERS, prefer DOI lookups.
-            works.sort(key=lambda w: (w.get("year") or 0), reverse=True)
-            works = works[:MAX_PAPERS]
-            dois = [w["doi"] for w in works if w.get("doi")]
-
-            # ---- Phase 2: PubMed efetch ----
-            row.progress = {
-                "current_step": "Fetching abstracts from PubMed…",
-                "papers_total": len(works),
-                "papers_processed": 0,
-            }
-            await session.commit()
-
-            async with httpx.AsyncClient() as http:
-                pubmed = PubMedClient(http, api_key=settings.pubmed_api_key)
-                papers = await pubmed.fetch_by_dois(dois) if dois else []
+                openalex = OpenAlexClient(http, contact_email=settings.openalex_contact_email)
+                papers = await openalex.fetch_works_by_orcid(row.orcid_id)
 
             if not papers:
                 row.status = IMPORT_STATUS_FAILED
                 row.error = (
-                    "Found ORCID works but none had abstracts indexed in PubMed. "
-                    "Try a researcher with biomedical publications."
+                    "No publications with abstracts found in OpenAlex for this "
+                    "ORCID iD. Check that your ORCID record has works attached "
+                    "and is publicly visible."
                 )
                 row.completed_at = datetime.now(UTC)
                 await session.commit()
-                return {"status": "failed", "import_id": import_id, "reason": "no_pubmed_hits"}
+                return {"status": "failed", "import_id": import_id, "reason": "no_works"}
 
-            # ---- Phase 3: per-paper LLM extraction ----
+            # OpenAlex already sorts newest-first; cap to MAX_PAPERS.
+            papers = papers[:MAX_PAPERS]
+
+            # ---- Phase 2: per-paper LLM extraction ----
             row.status = IMPORT_STATUS_EXTRACTING
             row.progress = {
                 "current_step": "Reading papers and extracting capabilities…",
@@ -124,7 +103,7 @@ async def _run_import_async(import_id: str) -> dict[str, Any]:
                 session, row, papers, EXTRACTION_CONCURRENCY
             )
 
-            # ---- Phase 4: aggregate + persist for review ----
+            # ---- Phase 3: aggregate + persist for review ----
             proposed = aggregate_capabilities(extractions, papers)
             row.proposed_state = proposed.model_dump(mode="json")
             row.status = IMPORT_STATUS_REVIEW
@@ -142,12 +121,12 @@ async def _run_import_async(import_id: str) -> dict[str, Any]:
                 "papers_processed": len(papers),
             }
 
-        except OrcidError as exc:
+        except OpenAlexError as exc:
             row.status = IMPORT_STATUS_FAILED
             row.error = str(exc)[:2000]
             row.completed_at = datetime.now(UTC)
             await session.commit()
-            return {"status": "failed", "import_id": import_id, "reason": "orcid_error"}
+            return {"status": "failed", "import_id": import_id, "reason": "openalex_error"}
         except Exception as exc:  # noqa: BLE001 — record & return; do not re-raise
             row.status = IMPORT_STATUS_FAILED
             row.error = f"Import crashed: {exc}"[:2000]

@@ -63,7 +63,7 @@ class Settings(BaseSettings):
     distillation_batch_size: int = 10
 
     # Literature ingestion
-    pubmed_api_key: str | None = None
+    openalex_contact_email: str | None = None
     semantic_scholar_api_key: str | None = None
     literature_scan_max_results: int = 200
 
