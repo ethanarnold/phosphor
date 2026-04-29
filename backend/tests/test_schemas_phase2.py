@@ -26,7 +26,7 @@ class TestPaperSchemas:
             lab_id=uuid.uuid4(),
             title="Test Paper",
             abstract="Test abstract text",
-            source="pubmed",
+            source="openalex",
             created_at=datetime.now(),
         )
         assert paper.title == "Test Paper"
@@ -110,10 +110,10 @@ class TestScanSchemas:
             mesh_terms=["Gene Editing"],
             field_of_study="Biology",
             max_results=50,
-            sources=["pubmed"],
+            sources=["openalex"],
         )
         assert req.max_results == 50
-        assert req.sources == ["pubmed"]
+        assert req.sources == ["openalex"]
 
     def test_scan_request_empty_query_terms(self) -> None:
         """Scan request requires at least one query term."""

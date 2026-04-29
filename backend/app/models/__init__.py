@@ -8,6 +8,7 @@ from app.models.distillation import DistillationRun
 from app.models.document import Document
 from app.models.lab import Lab
 from app.models.lab_state import LabState
+from app.models.lab_state_import import LabStateImport
 from app.models.literature_scan import LiteratureScan
 from app.models.opportunity import Opportunity
 from app.models.paper import Paper
@@ -24,6 +25,7 @@ __all__ = [
     "Document",
     "Lab",
     "LabState",
+    "LabStateImport",
     "LiteratureScan",
     "Opportunity",
     "Paper",

@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings, get_settings
 from app.models.paper import Paper
-from app.services.pubmed import PubMedClient
+from app.services.openalex import OpenAlexClient
 from app.services.semantic_scholar import SemanticScholarClient
 
 
@@ -32,23 +32,26 @@ async def ingest_literature(
     if settings is None:
         settings = get_settings()
     if sources is None:
-        sources = ["pubmed", "semantic_scholar"]
+        sources = ["openalex", "semantic_scholar"]
 
-    query = " ".join(query_terms)
+    # OpenAlex search uses free text; fold any MeSH-style hints into the query
+    # so callers that historically passed them still benefit.
+    query_parts = list(query_terms)
+    if mesh_terms:
+        query_parts.extend(mesh_terms)
+    query = " ".join(query_parts)
     all_papers: list[dict[str, Any]] = []
 
     async with httpx.AsyncClient() as http_client:
-        # Fetch from PubMed
-        if "pubmed" in sources:
-            pubmed = PubMedClient(http_client, api_key=settings.pubmed_api_key)
-            pubmed_papers = await pubmed.search(
+        if "openalex" in sources:
+            openalex = OpenAlexClient(http_client, contact_email=settings.openalex_contact_email)
+            openalex_papers = await openalex.search(
                 query=query,
-                mesh_terms=mesh_terms,
+                field_of_study=field_of_study,
                 max_results=max_results,
             )
-            all_papers.extend(pubmed_papers)
+            all_papers.extend(openalex_papers)
 
-        # Fetch from Semantic Scholar
         if "semantic_scholar" in sources:
             s2 = SemanticScholarClient(http_client, api_key=settings.semantic_scholar_api_key)
             s2_papers = await s2.search(

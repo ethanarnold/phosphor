@@ -8,6 +8,7 @@ import LabStatePage from './pages/LabState'
 import Literature from './pages/Literature'
 import OpportunityDetail from './pages/OpportunityDetail'
 import Opportunities from './pages/Opportunities'
+import PublicationImport from './pages/PublicationImport'
 import Review from './pages/Review'
 import Search from './pages/Search'
 
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="opportunities/:opportunityId" element={<OpportunityDetail />} />
           <Route path="review" element={<Review />} />
           <Route path="state" element={<LabStatePage />} />
+          <Route path="import-publications" element={<PublicationImport />} />
           <Route path="search" element={<Search />} />
           <Route path="literature" element={<Literature />} />
           <Route

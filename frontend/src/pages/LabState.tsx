@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Empty from '../components/Empty'
 import {
   useApi,
   useApiKeyPrefix,
@@ -142,7 +144,26 @@ export default function LabStatePage() {
             <h1>Lab state</h1>
           </div>
         </header>
-        <p className="muted">No state yet — log experiments or upload documents to seed the compressor.</p>
+        <Empty
+          title="No state yet"
+          body={
+            <>
+              Seed the compressor from your published work — paste an ORCID iD
+              and we&apos;ll extract techniques, organisms, equipment, reagents,
+              and expertise from your most recent papers for review.
+            </>
+          }
+          cta={
+            <div className="row" style={{ justifyContent: 'center', gap: 12 }}>
+              <Link to="/import-publications">
+                <button type="button">Import from publications</button>
+              </Link>
+              <span className="muted">
+                or log experiments &amp; documents to seed manually
+              </span>
+            </div>
+          }
+        />
       </>
     )
   }
@@ -177,6 +198,11 @@ export default function LabStatePage() {
           </div>
           <h1>Lab state</h1>
         </div>
+        <Link to="/import-publications">
+          <button type="button" className="ghost">
+            Refresh from publications
+          </button>
+        </Link>
       </header>
 
       <p className="muted" style={{ marginBottom: 24, maxWidth: '62ch' }}>

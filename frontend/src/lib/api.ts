@@ -448,6 +448,79 @@ export interface ReviewerDetail {
   completed_at: string | null
 }
 
+// ---------- Publication import (ORCID) ----------
+
+export type ImportStatus =
+  | 'queued'
+  | 'fetching'
+  | 'extracting'
+  | 'review'
+  | 'committed'
+  | 'failed'
+  | 'cancelled'
+
+export interface ImportProgress {
+  papers_total?: number | null
+  papers_processed?: number | null
+  current_step?: string | null
+}
+
+export interface CapabilitySource {
+  pmid: string | null
+  doi: string | null
+  title: string
+  year: number | null
+}
+
+export interface ProposedEquipment extends Equipment {
+  sources: CapabilitySource[]
+  frequency: number
+}
+export interface ProposedTechnique extends Technique {
+  sources: CapabilitySource[]
+  frequency: number
+}
+export interface ProposedExpertise extends Expertise {
+  sources: CapabilitySource[]
+  frequency: number
+}
+export interface ProposedOrganism extends Organism {
+  sources: CapabilitySource[]
+  frequency: number
+}
+export interface ProposedReagent extends Reagent {
+  sources: CapabilitySource[]
+  frequency: number
+}
+
+export interface ProposedLabState {
+  equipment: ProposedEquipment[]
+  techniques: ProposedTechnique[]
+  expertise: ProposedExpertise[]
+  organisms: ProposedOrganism[]
+  reagents: ProposedReagent[]
+}
+
+export interface LabStateImport {
+  id: string
+  lab_id: string
+  orcid_id: string
+  status: ImportStatus
+  progress: ImportProgress
+  proposed_state: ProposedLabState | null
+  error: string | null
+  created_at: string
+  completed_at: string | null
+}
+
+export interface AcceptedLabState {
+  equipment: Equipment[]
+  techniques: Technique[]
+  expertise: Expertise[]
+  organisms: Organism[]
+  reagents: Reagent[]
+}
+
 // ---------- Metrics ----------
 
 export interface EventTypeStats {

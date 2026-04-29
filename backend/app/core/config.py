@@ -16,6 +16,10 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
+        # Treat shell-exported empty strings as unset so .env wins. Without
+        # this, an `export ANTHROPIC_API_KEY=""` in the user's rc shadows
+        # the real key in .env and downstream LLM calls fail with 401.
+        env_ignore_empty=True,
     )
 
     # Environment
@@ -63,7 +67,7 @@ class Settings(BaseSettings):
     distillation_batch_size: int = 10
 
     # Literature ingestion
-    pubmed_api_key: str | None = None
+    openalex_contact_email: str | None = None
     semantic_scholar_api_key: str | None = None
     literature_scan_max_results: int = 200
 

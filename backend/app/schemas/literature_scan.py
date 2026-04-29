@@ -18,8 +18,8 @@ class ScanRequest(BaseModel):
     journals: list[str] = Field(default_factory=list, max_length=20)
     field_of_study: str | None = Field(default=None, max_length=100)
     max_results: int = Field(default=100, ge=1, le=500)
-    sources: list[Literal["pubmed", "semantic_scholar"]] = Field(
-        default=["pubmed", "semantic_scholar"]
+    sources: list[Literal["openalex", "semantic_scholar"]] = Field(
+        default=["openalex", "semantic_scholar"]
     )
 
 
