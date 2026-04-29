@@ -112,7 +112,7 @@ class AuditLogMiddleware(BaseHTTPMiddleware):
                             :resource_type,
                             :resource_id,
                             :details,
-                            :ip_address::inet,
+                            CAST(:ip_address AS inet),
                             :created_at
                         )
                     """),
@@ -142,7 +142,7 @@ async def log_audit_event(
     resource_type: str,
     resource_id: uuid.UUID | None = None,
     details: dict[str, Any] | None = None,
-    ip_address: str = "internal",
+    ip_address: str | None = None,
 ) -> None:
     """Manually log an audit event.
 
@@ -160,7 +160,7 @@ async def log_audit_event(
                 :resource_type,
                 :resource_id,
                 :details,
-                :ip_address::inet,
+                CAST(:ip_address AS inet),
                 :created_at
             )
         """),
