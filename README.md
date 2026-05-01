@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/banner.png" alt="Phosphor — Your lab, in every prompt." width="100%" />
+</p>
+
 # Phosphor
 
 An AI tool for research labs that surfaces high-value research opportunities by matching a lab's capabilities against emerging directions from scientific literature.

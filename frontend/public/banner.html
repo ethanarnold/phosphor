@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phosphor — README banner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #fafaf7;
+        --surface: #ffffff;
+        --rule: #e4e2da;
+        --rule-strong: #cac7bb;
+        --ink: #0a0a0a;
+        --ink-2: #3d3d3a;
+        --ink-3: #6b6b66;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #d8d6cf;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+        box-sizing: border-box;
+        font-family: 'Inter Tight', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* ?bare strips chrome so a 1280x400 viewport renders just the banner. */
+      html.bare-html { background: var(--paper); }
+      body.bare {
+        padding: 0;
+        background: var(--paper);
+        min-height: 0;
+        display: block;
+      }
+      body.bare .hint { display: none; }
+      body.bare .banner { border: 0; }
+
+      /* The banner — screenshot this rectangle. */
+      .banner {
+        width: 1280px;
+        height: 400px;
+        background: var(--paper);
+        border: 1px solid var(--rule);
+        position: relative;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 64px;
+        padding: 0 96px;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      /* Top + bottom hairline interior frame for editorial feel */
+      .banner::before,
+      .banner::after {
+        content: '';
+        position: absolute;
+        left: 96px;
+        right: 96px;
+        height: 1px;
+        background: var(--rule);
+      }
+      .banner::before { top: 32px; }
+      .banner::after { bottom: 32px; }
+
+      /* Top metadata strip */
+      .meta {
+        position: absolute;
+        top: 12px;
+        left: 96px;
+        right: 96px;
+        display: flex;
+        justify-content: space-between;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-feature-settings: 'zero';
+        font-size: 11px;
+        color: var(--ink-3);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      /* Bottom metadata strip */
+      .footmeta {
+        position: absolute;
+        bottom: 12px;
+        left: 96px;
+        right: 96px;
+        display: flex;
+        justify-content: space-between;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-feature-settings: 'zero';
+        font-size: 11px;
+        color: var(--ink-3);
+        letter-spacing: 0.04em;
+      }
+
+      /* Element card */
+      .card {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        background: var(--surface);
+        border: 1px solid var(--ink);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .card .glyph {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-variation-settings: 'opsz' 144;
+        font-weight: 400;
+        font-size: 132px;
+        line-height: 1;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+      }
+      .card .num {
+        position: absolute;
+        top: 14px;
+        left: 18px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-feature-settings: 'zero';
+        font-size: 18px;
+        color: var(--ink-2);
+        letter-spacing: 0.04em;
+      }
+      .card .mass {
+        position: absolute;
+        bottom: 14px;
+        right: 18px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-feature-settings: 'zero';
+        font-size: 16px;
+        color: var(--ink-3);
+        letter-spacing: 0.02em;
+      }
+
+      /* Wordmark + tagline column */
+      .text {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .word {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-variation-settings: 'opsz' 144;
+        font-weight: 500;
+        font-size: 88px;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        line-height: 1;
+      }
+      .tagline {
+        font-family: 'Inter Tight', system-ui, sans-serif;
+        font-weight: 400;
+        font-size: 26px;
+        line-height: 1.35;
+        color: var(--ink-2);
+        letter-spacing: -0.005em;
+      }
+
+      /* Help banner shown outside the screenshot frame */
+      .hint {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 11px;
+        color: #4a4a47;
+        background: #ecebe4;
+        border: 1px solid #c8c6bd;
+        padding: 6px 10px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      if (location.search.includes('bare')) {
+        document.body.classList.add('bare');
+        document.documentElement.classList.add('bare-html');
+      }
+    </script>
+    <div class="hint">Screenshot the 1280 × 400 paper rectangle below.</div>
+
+    <div class="banner">
+      <div class="meta">
+        <span>Phosphor / 0.1</span>
+        <span>Lab Intelligence</span>
+      </div>
+
+      <div class="card">
+        <span class="num">15</span>
+        <span class="glyph">P</span>
+        <span class="mass">30.97</span>
+      </div>
+
+      <div class="text">
+        <div class="word">Phosphor</div>
+        <div class="tagline">Your lab, in every prompt.</div>
+      </div>
+
+      <div class="footmeta">
+        <span>github.com/ethanarnold/phosphor</span>
+        <span>—</span>
+      </div>
+    </div>
+  </body>
+</html>
