@@ -16,13 +16,11 @@ Phosphor distills a research lab — equipment, techniques, expertise, experimen
 - **Address reviewer comments.** Draft targeted responses to peer-review feedback, grounded in what the lab has actually done and what it can realistically run.
 - **Surface research directions.** Scan PubMed and Semantic Scholar for concrete opportunities, score each against the lab state for feasibility, and draft protocols using the lab's own methods.
 
-The hard part is the representation. The agents are the easy part — and more follow once a lab is readable.
-
 ---
 
 ## Architecture
 
-**Compressed lab state (the primitive).** A continuously-updated ~2K-token summary distilled from experiment logs, documents, protocols, and feedback. Validated by factual-QA evals: a frontier model must be able to answer ground-truth questions about the lab from this representation alone.
+**Compressed lab state (the primitive).** A continuously-updated ~2K-token summary distilled from OpenAlex, ORCID, experiment logs, documents, protocols, and feedback. Validated by factual-QA evals: a frontier model must be able to answer ground-truth questions about the lab from this representation alone.
 
 **Agents (the layer above).** Each agent reads the compressed lab state plus its own task input — a project plan, a set of reviewer comments, a literature feed — and produces output grounded in what the lab can actually do.
 
