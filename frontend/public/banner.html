@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phosphor — README banner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #fafaf7;
+        --surface: #ffffff;
+        --ink: #0a0a0a;
+        --ink-2: #3d3d3a;
+        --ink-3: #6b6b66;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #d8d6cf;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* ?bare strips chrome so a viewport-sized capture renders just the banner. */
+      html.bare-html { background: var(--paper); }
+      body.bare {
+        padding: 0;
+        background: var(--paper);
+        min-height: 0;
+        display: block;
+      }
+      body.bare .hint { display: none; }
+
+      /* The banner — screenshot this rectangle. */
+      .banner {
+        width: 1280px;
+        height: 280px;
+        background: var(--paper);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        box-sizing: border-box;
+      }
+
+      /* Element card */
+      .card {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        background: var(--surface);
+        border: 1px solid var(--ink);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .card .glyph {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-variation-settings: 'opsz' 144;
+        font-weight: 400;
+        font-size: 120px;
+        line-height: 1;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+      }
+      .card .num {
+        position: absolute;
+        top: 12px;
+        left: 16px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-feature-settings: 'zero';
+        font-size: 16px;
+        color: var(--ink-2);
+        letter-spacing: 0.04em;
+      }
+      .card .mass {
+        position: absolute;
+        bottom: 12px;
+        right: 16px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-feature-settings: 'zero';
+        font-size: 14px;
+        color: var(--ink-3);
+        letter-spacing: 0.02em;
+      }
+
+      .word {
+        font-family: 'Fraunces', ui-serif, Georgia, serif;
+        font-variation-settings: 'opsz' 144;
+        font-weight: 500;
+        font-size: 132px;
+        letter-spacing: -0.025em;
+        color: var(--ink);
+        line-height: 1;
+      }
+
+      /* Help banner shown outside the screenshot frame */
+      .hint {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 11px;
+        color: #4a4a47;
+        background: #ecebe4;
+        border: 1px solid #c8c6bd;
+        padding: 6px 10px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      if (location.search.includes('bare')) {
+        document.body.classList.add('bare');
+        document.documentElement.classList.add('bare-html');
+      }
+    </script>
+    <div class="hint">Screenshot the 1280 × 280 paper rectangle below.</div>
+
+    <div class="banner">
+      <div class="card">
+        <span class="num">15</span>
+        <span class="glyph">P</span>
+        <span class="mass">30.97</span>
+      </div>
+      <div class="word">Phosphor</div>
+    </div>
+  </body>
+</html>

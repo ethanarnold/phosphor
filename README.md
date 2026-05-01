@@ -1,18 +1,32 @@
-# Phosphor
+<p align="center">
+  <img src="docs/banner.png" alt="Phosphor" width="100%" />
+</p>
 
-An AI tool for research labs that surfaces high-value research opportunities by matching a lab's capabilities against emerging directions from scientific literature.
+---
+
+Frontier models can now reason about scientific work at the scale of an entire field. What they can't do — yet — is know what's in your freezer, which assays your postdocs are trained on, or which failures your lab has already logged. Phosphor closes that gap.
+
+---
 
 ## What It Does
 
-Phosphor maintains a compressed, continuously-updated representation of what your lab can do—equipment, techniques, expertise, past experiments—and matches it against actionable opportunities extracted from PubMed and Semantic Scholar. It ranks opportunities by feasibility (do you have the resources?) and alignment (does it fit your focus?), then generates protocols grounded in your actual capabilities.
+Phosphor distills a research lab — equipment, techniques, expertise, experimental history — into a compressed representation a model can hold in a single prompt. With that primitive in place, agents can act on the lab:
+
+- **Strengthen project plans.** Read an in-flight plan alongside the lab state, surface gaps, and suggest experiments that shore up the strongest claims.
+- **Address reviewer comments.** Draft targeted responses to peer-review feedback, grounded in what the lab has actually done and what it can realistically run.
+- **Surface research directions.** Scan PubMed and Semantic Scholar for concrete opportunities, score each against the lab state for feasibility, and draft protocols using the lab's own methods.
+
+The hard part is the representation. The agents are the easy part — and more follow once a lab is readable.
+
+---
 
 ## Architecture
 
-**Two inputs, one output:**
+**Compressed lab state (the primitive).** A continuously-updated ~2K-token summary distilled from experiment logs, documents, protocols, and feedback. Validated by factual-QA evals: a frontier model must be able to answer ground-truth questions about the lab from this representation alone.
 
-- **Lab State** — A living summary distilled from experiment logs, documents, and feedback. Compressed to ~2K tokens while retaining enough fidelity for LLM reasoning.
-- **Research Directions** — Concrete opportunities extracted from literature. Not vague "further research needed"—actionable directions with identifiable resource requirements.
-- **The Match** — Opportunities ranked by feasibility and alignment, with gap analysis and protocol generation.
+**Agents (the layer above).** Each agent reads the compressed lab state plus its own task input — a project plan, a set of reviewer comments, a literature feed — and produces output grounded in what the lab can actually do.
+
+---
 
 ## Tech Stack
 
@@ -27,6 +41,8 @@ Phosphor maintains a compressed, continuously-updated representation of what you
 | Storage | S3/GCS |
 | Infrastructure | Docker, Cloud Run or ECS |
 
+---
+
 ## Project Structure
 
 ```
@@ -34,6 +50,8 @@ Phosphor maintains a compressed, continuously-updated representation of what you
 /frontend    # React TypeScript application
 /evals       # Evaluation harnesses for LLM prompts
 ```
+
+---
 
 ## Development
 
@@ -53,6 +71,7 @@ cd backend && pytest
 # Run frontend
 cd frontend && npm run dev
 ```
+---
 
 ## Security
 
@@ -62,6 +81,8 @@ Lab data is proprietary and often pre-publication. Security is the highest prior
 - Row-level security for tenant isolation
 - Encryption at rest and in transit
 - Audit logging on all write operations
+
+---
 
 ## License
 
